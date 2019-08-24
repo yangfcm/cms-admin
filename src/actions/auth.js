@@ -1,10 +1,13 @@
 import axios from '../settings';
+import Cookies from 'js-cookie';
 
 import {
 	LOGIN,
 	LOGOUT,
 	LOGIN_ERR,
-	LOGOUT_ERR
+	LOGOUT_ERR,
+	CHECK_AUTH,
+	CHECK_AUTH_ERR
 } from './types';
 
 export const login = (data, callback) => {
@@ -47,4 +50,32 @@ export const logout = (callback) => {
 			})
 		}
 	} 
+}
+
+/** Check the validity of token and get current admin info */
+export const checkAuth = () => {
+	const token = Cookies.get('token');
+	if(!token) {
+		return {
+			type: CHECK_AUTH_ERR,
+			payload: 'No token available'
+		};
+	}
+
+	return async(dispatch) => {
+		try {
+			const response = await axios.post('/api/admins/me', null, {
+				headers: {'x-auth': `Bearer ${token}`}
+			});
+			dispatch({
+				type: CHECK_AUTH,
+				payload: response.data
+			})
+		}catch(e) {
+			dispatch({
+				type: CHECK_AUTH_ERR,
+				payload: e.message
+			})
+		}
+	}
 }
