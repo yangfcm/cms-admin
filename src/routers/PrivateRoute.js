@@ -7,7 +7,7 @@ import { checkAuth } from '../actions/auth';
 class PrivateRoute extends React.Component {
 
 	componentDidMount = () => {
-		console.log('check auth,', this.props);
+		// console.log('check auth,', this.props);
 		this.props.checkAuth();
 	}
 	
@@ -18,13 +18,13 @@ class PrivateRoute extends React.Component {
 			component: Component, 
 			...rest
 		} = this.props;
-		console.log(auth);
+		// console.log(auth);
 		if(auth === null && error === null) { 	// Initial state
 			return <div>Loading...</div>;
 		}
 
-		if(!!error || !auth.data) {
-			console.log(auth);  
+		if(!!error || !auth.data) {	// Auth failed
+			// console.log(auth);  
 			return <Redirect to="/login" />
 		}
 		

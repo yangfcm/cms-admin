@@ -22,10 +22,10 @@ export const login = (data, callback) => {
 				payload: response.data
 			});
 			callback();
-		} catch(e) {
+		} catch(e) {  
 			dispatch({
 				type: LOGIN_ERR,
-				payload: e.message
+				payload: e.response.data
 			})
 		}
 	};
@@ -46,7 +46,7 @@ export const logout = (callback) => {
 		} catch(e) {
 			dispatch({
 				type: LOGOUT_ERR,
-				payload: e.message
+				payload: e.response.data
 			})
 		}
 	} 
@@ -74,7 +74,7 @@ export const checkAuth = () => {
 		}catch(e) {
 			dispatch({
 				type: CHECK_AUTH_ERR,
-				payload: e.message
+				payload: e.response.data
 			})
 		}
 	}

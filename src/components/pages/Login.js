@@ -6,11 +6,13 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import { login } from '../../actions/auth';
 import { RenderTextField } from '../form/Fields';
+import { validateLoginInput } from '../../utils/validate';
 
 const styles = (theme) => {
 	return {
@@ -36,11 +38,7 @@ const styles = (theme) => {
 
 class Login extends React.Component {
 
-	formSubmit = (values) => {
-		console.log('form submit', values);
-		// const formData = new FormData();
-		// formData.append('email', values.email);
-		// formData.append('password', values.password);
+	formSubmit = async (values) => {
 		this.props.login({
 			email: values.email,
 			password: values.password
@@ -51,7 +49,7 @@ class Login extends React.Component {
 	}
 
 	render() {
-		const { handleSubmit, classes } = this.props; 
+		const { handleSubmit, classes, loginError } = this.props; 
 		return (
 			<Container maxWidth='xs'>
 				<div className={classes['login--container']}>
@@ -74,7 +72,7 @@ class Login extends React.Component {
 							type="text"
 							label="Email"
 							autoFocus={true}
-							required={true}
+							required={false}
 							component={RenderTextField}
 						/>
 						<Field 
@@ -82,9 +80,12 @@ class Login extends React.Component {
 							id="password"
 							type="password"
 							label="Password"
-							required={true}
+							required={false}
 							component={RenderTextField}
 						/>
+						<FormHelperText error>
+							{ !!loginError && loginError}
+						</FormHelperText>
 						<Button 
 							type="submit"
 							fullWidth
@@ -102,11 +103,14 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		error: state.auth.error
+		loginError: state.auth.error
 	}
 }
 
 export default compose(
 	connect(mapStateToProps, { login }),
-	reduxForm({ form: 'loginForm' })
+	reduxForm({ 
+		form: 'loginForm',
+		validate: validateLoginInput
+	})
 )(withStyles(styles)(Login));

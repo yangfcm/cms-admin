@@ -1,5 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 export const RenderTextField = ({
 	id, 
@@ -25,9 +26,10 @@ export const RenderTextField = ({
 				placeholder={placeholder}
 				autoFocus={autoFocus}
 				required={required}
+				error={ !!(touched && error) }
 				{...input}
 			/>
-			{ touched && error && <span> {error} </span>}
+			{ touched && error && <FormHelperText error>{ error }</FormHelperText> }
 		</React.Fragment>		
 	);
 }
