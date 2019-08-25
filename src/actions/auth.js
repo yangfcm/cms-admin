@@ -14,13 +14,13 @@ export const login = (data, callback) => {
 	return async(dispatch) => {
 		try {
 			const response = await axios.post('/api/admins/login', data);
-			const token = response.get('x-auth');
+			const { token } = response.data.data;
+			Cookies.set('admin_token', token);	// Save admin token to cookies
 			// const aid = response.data.admin._id;			
 			dispatch({
 				type: LOGIN,
 				payload: response.data
 			});
-			Cookies.set('admin_token', token);	// Save admin token to cookies
 			callback();
 		} catch(e) {
 			dispatch({
@@ -35,7 +35,7 @@ export const logout = (callback) => {
 	return async (dispatch) => {
 		try {
 			const token = Cookies.get('admin_token');
-			const response = await axios.post('/api/admins/logout', null, {
+			const response = await axios.post('/api/admins/logout', {
 				headers: {'x-auth': `Bearer ${token}`}
 			});
 			dispatch({
@@ -54,7 +54,7 @@ export const logout = (callback) => {
 
 /** Check the validity of token and get current admin info */
 export const checkAuth = () => {
-	const token = Cookies.get('token');
+	const token = Cookies.get('admin_token');
 	if(!token) {
 		return {
 			type: CHECK_AUTH_ERR,
@@ -62,9 +62,9 @@ export const checkAuth = () => {
 		};
 	}
 
-	return async(dispatch) => {
+	return async (dispatch) => {
 		try {
-			const response = await axios.post('/api/admins/me', null, {
+			const response = await axios.get('/api/admins/me', {
 				headers: {'x-auth': `Bearer ${token}`}
 			});
 			dispatch({

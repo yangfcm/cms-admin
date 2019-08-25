@@ -4,30 +4,43 @@ import { Route, Redirect } from 'react-router-dom';
 
 import { checkAuth } from '../actions/auth';
 
-const PrivateRoute = ({
-	isAuthenticated,
-	checkAuth,
-	component: Component, 
-	...rest
-}) => {
-	checkAuth();
-	return (
-		<Route component={
-			(props) => (
-				!isAuthenticated ? <Redirect to="/login" /> :
-				<div>
-					<Component {...props} />
-				</div>
-			)
-		} 
-		{...rest}
-		/>
-	);
+class PrivateRoute extends React.Component {
+
+	componentDidMount = () => {
+		console.log('check auth,', this.props);
+		this.props.checkAuth();
+	}
+	
+	render() {
+		const {
+			auth: { auth, error},
+			checkAuth,
+			component: Component, 
+			...rest
+		} = this.props;
+		console.log(auth);
+		if(auth === null && error === null) { 	// Initial state
+			return <div>Loading...</div>;
+		}
+
+		if(!!error || !auth.data) {
+			console.log(auth);  
+			return <Redirect to="/login" />
+		}
+		
+		return (
+			<Route component={
+				(props) => ( <div><Component {...props} /></div> )
+			} 
+			{...rest}
+			/>
+		);
+	}
 }
 
 const mapStateToProps = (state) => {
 	return {
-		isAuthenticated: !!state.auth.token && !state.error 
+		auth: state.auth
 	}
 }
 

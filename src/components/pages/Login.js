@@ -1,11 +1,16 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button'; 
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { reduxForm, Field } from 'redux-form';
+import { login } from '../../actions/auth';
+import { RenderTextField } from '../form/Fields';
 
 const styles = (theme) => {
 	return {
@@ -30,8 +35,23 @@ const styles = (theme) => {
 }
 
 class Login extends React.Component {
+
+	formSubmit = (values) => {
+		console.log('form submit', values);
+		// const formData = new FormData();
+		// formData.append('email', values.email);
+		// formData.append('password', values.password);
+		this.props.login({
+			email: values.email,
+			password: values.password
+		}, () => {
+			// console.log('login', this.props.history);
+			this.props.history.push('/dashboard');
+		});
+	}
+
 	render() {
-		const { classes } = this.props;
+		const { handleSubmit, classes } = this.props; 
 		return (
 			<Container maxWidth='xs'>
 				<div className={classes['login--container']}>
@@ -44,27 +64,26 @@ class Login extends React.Component {
 					<Typography component="h1" variant="h5">
 						Log in
 					</Typography>
-					<form className={classes['login--form']}>
-						<TextField 
-							variant="outlined"
-							required
-							id="email"
+					<form 
+						className={classes['login--form']}
+						onSubmit={ handleSubmit(this.formSubmit) }
+					>
+						<Field 
 							name="email"
+							id="email"
+							type="text"
 							label="Email"
-							autoFocus
-							fullWidth
-							margin="normal"
+							autoFocus={true}
+							required={true}
+							component={RenderTextField}
 						/>
-						<TextField 
-							variant="outlined"
-							id="password"
-							required
+						<Field 
 							name="password"
+							id="password"
 							type="password"
 							label="Password"
-							fullWidth
-							margin="normal"
-							
+							required={true}
+							component={RenderTextField}
 						/>
 						<Button 
 							type="submit"
@@ -81,4 +100,13 @@ class Login extends React.Component {
 	}
 }
 
-export default withStyles(styles)(Login);
+const mapStateToProps = (state) => {
+	return {
+		error: state.auth.error
+	}
+}
+
+export default compose(
+	connect(mapStateToProps, { login }),
+	reduxForm({ form: 'loginForm' })
+)(withStyles(styles)(Login));
