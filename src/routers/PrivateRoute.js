@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
+import Header from '../components/layout/Header';
+import Sidebar from '../components/layout/Sidebar';
+import Body from '../components/layout/Body';
+import Footer from '../components/layout/Footer';
 import { checkAuth } from '../actions/auth';
 
 class PrivateRoute extends React.Component {
@@ -30,7 +34,15 @@ class PrivateRoute extends React.Component {
 		
 		return (
 			<Route component={
-				(props) => ( <div><Component {...props} /></div> )
+				(props) => ( 
+					<div>
+						<Header />
+						<Sidebar />
+						<Body>							
+							<Component {...props} />
+						</Body>
+						<Footer />
+					</div> )
 			} 
 			{...rest}
 			/>
