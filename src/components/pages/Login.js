@@ -6,10 +6,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, SubmissionError } from 'redux-form';
 import { login } from '../../actions/auth';
 import { RenderTextField } from '../form/Fields';
 import { validateLoginInput } from '../../utils/validate';
@@ -39,17 +38,23 @@ const styles = (theme) => {
 class Login extends React.Component {
 
 	formSubmit = async (values) => {
-		this.props.login({
+		await this.props.login({
 			email: values.email,
 			password: values.password
 		}, () => {
 			// console.log('login', this.props.history);
 			this.props.history.push('/dashboard');
 		});
+		if(this.props.loginError) {
+			throw new SubmissionError({
+				password: this.props.loginError,
+				_error: 'Fail to login'
+			})
+		}
 	}
 
 	render() {
-		const { handleSubmit, classes, loginError } = this.props; 
+		const { handleSubmit, classes } = this.props; 
 		return (
 			<Container maxWidth='xs'>
 				<div className={classes['login--container']}>
@@ -83,9 +88,6 @@ class Login extends React.Component {
 							required={false}
 							component={RenderTextField}
 						/>
-						<FormHelperText error>
-							{ !!loginError && loginError}
-						</FormHelperText>
 						<Button 
 							type="submit"
 							fullWidth

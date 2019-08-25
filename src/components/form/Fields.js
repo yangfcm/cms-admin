@@ -11,7 +11,7 @@ export const RenderTextField = ({
 	placeholder,
 	required,
 	input,
-	meta: { touched, error }
+	meta: { touched, error },
 }) => {
 	return (
 		<React.Fragment>
@@ -29,7 +29,9 @@ export const RenderTextField = ({
 				error={ !!(touched && error) }
 				{...input}
 			/>
-			{ touched && error && <FormHelperText error>{ error }</FormHelperText> }
+			{ touched && error && 
+				<FormHelperText error style={{ marginTop: '0'}}>{ error }</FormHelperText> 
+			}
 		</React.Fragment>		
 	);
 }
