@@ -14,7 +14,7 @@ class PrivateRoute extends React.Component {
 		// console.log('check auth,', this.props);
 		this.props.checkAuth();
 	}
-	
+
 	render() {
 		const {
 			auth: { auth, error},
@@ -34,14 +34,14 @@ class PrivateRoute extends React.Component {
 		
 		return (
 			<Route component={
-				(props) => ( 
+				(props) => (
 					<div>
 						<Header />
-						<Sidebar />
-						<Body>							
-							<Component {...props} />
+						<Body>
+						<Sidebar /> 
+						<Component {...props} />
+						<Footer /> 
 						</Body>
-						<Footer />
 					</div> )
 			} 
 			{...rest}

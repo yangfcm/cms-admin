@@ -2,9 +2,9 @@ import React from 'react';
 
 const Body = (props) => {
 	return (
-		<React.Fragment>
+		<div style={{ paddingTop: 15+'px', paddingLeft: 120+'px'}}>
 			{props.children}
-		</React.Fragment>
+		</div>
 	)
 };
 

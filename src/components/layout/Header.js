@@ -6,10 +6,14 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
+import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import Avatar from '../common/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+	appBar: {
+		zIndex: 99999
+	},
 	toolbar: {
 		paddingRight: 24
 	},
@@ -30,13 +34,13 @@ const Header = (props) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<AppBar position="absolute">
+			<AppBar position="absolute" className={classes.appBar}>
 				<Toolbar className={classes.toolbar}>
 					<IconButton
 						edge="start"
 						color="inherit"
 					>
-						<MenuIcon />
+						<CreateOutlinedIcon />
 					</IconButton>	{/* Menu button */}	
 					<Typography 
 						commponent="h1"
