@@ -1,10 +1,19 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+	body: {
+		flexGrow: 1,
+		padding: theme.spacing(3),
+		marginLeft: 150+'px'
+	}
+}) );
 
 const Body = (props) => {
-	return (
-		<div style={{ paddingTop: 15+'px', paddingLeft: 120+'px'}}>
-			{props.children}
-		</div>
+	const classes = useStyles();
+
+	return ( 
+		<div className={classes.body}>{props.children}</div> 
 	)
 };
 

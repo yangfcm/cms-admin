@@ -5,7 +5,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import Avatar from '../common/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -49,7 +48,7 @@ const Header = (props) => {
 						className={classes.title}
 					>
 						<span style={{textTransform: "capitalize"}}>
-							{props.location.pathname.replace('/', '')}
+							CMS Admin
 						</span>
 					</Typography>	{ /* Title */}
 					<Typography

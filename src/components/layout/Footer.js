@@ -1,9 +1,16 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography'; 
 
+const footerStyle = {
+	position: 'fixed', 
+	bottom: 15,
+	left: 50+'%',
+	transform: 'translateX(' + -25 + '%)' 
+}
+
 const Footer = (props) => {
 	return (
-		<div>
+		<div style={footerStyle}>
 			<Typography 
 				variant="body2"
 				color="textSecondary"

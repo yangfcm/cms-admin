@@ -1,61 +1,58 @@
-import React, { useState } from 'react';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import React from 'react';
+import Drawer from '@material-ui/core/Drawer'; 
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import { makeStyles } from '@material-ui/core/styles';
+import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
+import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
+import CategoryOutlinedIcon from '@material-ui/icons/CategoryOutlined';
+import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 
-const drawerWidth = 240;
+import ListItemLink from '../common/ListItemLink'; 
 
 const useStyles = makeStyles(theme => ({
-	drawer: {
-		[theme.breakpoints.up('sm')]: {
-			width: drawerWidth,
-			flexShrink: 0
-		}, 
+	toolbar: theme.mixins.toolbar,
+	'active-link': {
+		color: theme.palette.primary.main,
+		'& > *': {
+			color: 'inherit'
+		}
 	},
-	drawerPadding: {
-		paddingTop: theme.spacing(5)
-	},
-	toolbar: theme.mixins.toolbar
 }) );
 
-const Sidebar = (props) => {
-	const { container } = props;
-	const classes = useStyles();
-	const theme = useTheme();
-	const [ mobileOpen, setMobileOpen ] = useState(false);
-
-	const handleDrawerToggle = () => {
-		setMobileOpen(!mobileOpen);
-	}
+const Sidebar = (props) => { 
+	const classes = useStyles(); 
 
 	const drawer = (
-		<div>
-			<List>
-				{
-					['New Post', 'Posts', 'Categories'].map((text, index) => {
-						return (
-							<ListItem button key={index}>
-								<ListItemText primary={text} />
-							</ListItem>
-						)
-					})
-				}
-			</List>
-		</div>
+		<List>				
+			<ListItemLink button to="/dashboard" activeClassName={classes['active-link']}>
+				<ListItemIcon><DashboardOutlinedIcon /></ListItemIcon>
+				<ListItemText primary="Dashboard" />
+			</ListItemLink>
+			<ListItemLink button to="/new" activeClassName={classes['active-link']}>
+				<ListItemIcon><CreateOutlinedIcon /></ListItemIcon>
+				<ListItemText primary="New Post" />
+			</ListItemLink>
+			<ListItemLink button to="/posts" activeClassName={classes['active-link']}>
+				<ListItemIcon><LibraryBooksOutlinedIcon /></ListItemIcon>
+				<ListItemText primary="Posts" />
+			</ListItemLink>
+			<ListItemLink button to="/categories" activeClassName={classes['active-link']}>
+				<ListItemIcon><CategoryOutlinedIcon /></ListItemIcon>
+				<ListItemText primary="Categories" />
+			</ListItemLink>
+		</List>
 	)
 
 	return ( 
-		<Drawer 
-			variant="permanent"
-		>
-			<div className={classes.toolbar}></div>
-			{drawer}
-		</Drawer>  
+		<div>
+			<div className={classes.toolbar}></div> 
+			<Drawer variant="permanent">
+				<div className={classes.toolbar} />
+				{drawer}
+			</Drawer> 
+		</div>
 	);
 }
 

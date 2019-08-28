@@ -1,22 +1,14 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-
-const styles = (theme) => {
-	return { 	
-		toolbar: theme.mixins.toolbar,
-	}
-}
+import React from 'react'; 
+import UnderConstruction from '../common/UnderConstruction';
 
 class Dashboard extends React.Component {
-	render() {
-		const { classes } = this.props;
+	render() { 
 		return (
-			<div>
-				<div className={classes.toolbar}></div>
-				Dashboard page {process.env.REACT_APP_API_URL}
+			<div>  
+				<UnderConstruction />
 			</div>
 		) ;
 	}
 }
 
-export default withStyles(styles)(Dashboard);
+export default Dashboard;
