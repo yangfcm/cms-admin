@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import authReducer from '../reducers/auth';
 import postReducer from '../reducers/post';
 import categoryReducer from '../reducers/category';
+import tagReducer from '../reducers/tag';
 import errorReducer from '../reducers/error';
 import { reducer as formReducer } from 'redux-form';
 
@@ -16,6 +17,7 @@ const configStore = () => {
 			form: formReducer,
 			post: postReducer,
 			category: categoryReducer,
+			tag: tagReducer,
 			error: errorReducer
 		}),
 		composeEnhancers(applyMiddleware(thunk))

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 class Editor extends React.Component {
 	state = {
@@ -17,14 +18,19 @@ class Editor extends React.Component {
 
 	render() {
 		return (
-			<ReactQuill
-				value={this.state.text}
-				onChange={this.handleTextChange}
-				modules={Editor.modules}
-				formats={Editor.formats}
-				placeholder="Write your post..."  
-				style={{height: 20+'rem'}}
-			/>
+			<React.Fragment>
+				<ReactQuill
+					value={this.state.text}
+					onChange={this.handleTextChange}
+					modules={Editor.modules}
+					formats={Editor.formats}
+					placeholder="Write your post..."  
+					style={{height: 20+'rem'}}
+				/>
+				{ this.props.meta.touched && this.props.meta.error && 
+				<FormHelperText error style={{ marginTop: '0'}}>{ this.props.meta.error  }</FormHelperText> 
+				}
+			</React.Fragment>			
 		)
 	}
 }

@@ -9,7 +9,7 @@ import {
 export default (state = [], action) => {
 	switch(action.type) {
 		case CREATE_CATEGORY:
-			return [...state, action.payload];
+			return [...state, action.payload.data];
 
 		case DELETE_CATEGORY:
 			return state.filter((category) => {

@@ -1,6 +1,7 @@
 import {  
 	OPER_CATEGORY_ERR,
-	OPER_POST_ERR
+	OPER_POST_ERR,
+	OPER_TAG_ERR
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -22,6 +23,12 @@ export default (state = INITIAL_STATE, action) => {
 				type: 'post',
 				error: action.payload
 			};
+		case OPER_TAG_ERR:
+			return {
+				...INITIAL_STATE,
+				type: 'tag',
+				error: action.payload
+			}
     default: 
       return state;
   }
