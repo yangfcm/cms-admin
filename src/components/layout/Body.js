@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
 	body: {
 		flexGrow: 1,
 		padding: theme.spacing(3),
-		marginLeft: 150+'px'
+		marginLeft: 160+'px'
 	}
 }) );
 

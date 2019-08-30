@@ -4,3 +4,17 @@ export const LOGOUT = 'LOGOUT';
 export const LOGOUT_ERR = 'LOGOUT_ERR';
 export const CHECK_AUTH = 'CHECK_AUTH';
 export const CHECK_AUTH_ERR = 'CHECK_AUTH_ERR';
+
+export const CREATE_POST = 'CREATE_POST';
+export const DELETE_POST = 'DELETE_POST';
+export const UPDATE_POST = 'UPDATE_POST';
+export const READ_POSTS = 'READ_POSTS';
+export const READ_POST = 'READ_POST';
+export const OPER_POST_ERR = 'OPER_POST_ERR';
+
+export const CREATE_CATEGORY = 'CREATE_CATEGORY';
+export const DELETE_CATEGORY = 'DELETE_CATEGORY';
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
+export const READ_CATEGORIES = 'READ_CATEGORIES';
+export const READ_CATEGORY = 'READ_CATEGORY';
+export const OPER_CATEGORY_ERR = 'OPER_CATEGORY_ERR';
