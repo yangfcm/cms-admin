@@ -18,3 +18,10 @@ export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
 export const READ_CATEGORIES = 'READ_CATEGORIES';
 export const READ_CATEGORY = 'READ_CATEGORY';
 export const OPER_CATEGORY_ERR = 'OPER_CATEGORY_ERR';
+
+export const CREATE_TAG = 'CREATE_TAG';
+export const DELETE_TAG = 'DELETE_TAG';
+export const UPDATE_TAG = 'UPDATE_TAG';
+export const READ_TAGS = 'READ_TAGS';
+export const READ_TAG = 'READ_TAG';
+export const OPER_TAG_ERR = 'OPER_TAG_ERR';
