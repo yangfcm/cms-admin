@@ -12,6 +12,7 @@ import Editor from '../form/Editor';
 import { createPost } from '../../actions/post';
 import { readCategories } from '../../actions/category';
 import { readTags, createTag } from '../../actions/tag';
+import { validatePostInput } from '../../utils/validate';
 
 class PostForm extends React.Component {
 	state = {
@@ -27,9 +28,12 @@ class PostForm extends React.Component {
 		if(!this.props.tag || this.props.tag.length === 0) {
 			// console.log('read tag');
 			await this.props.readTags();
-		}		
+		}
 		this.setCategoryOptions();
 		this.setTagOptions(); 
+	}
+
+	componentWillUnmount() { 
 	}
 
 	formSubmit = (formValues) => {
@@ -95,7 +99,6 @@ class PostForm extends React.Component {
 							id="title"
 							type="text"
 							label="Title"
-							autoFocus
 							component={RenderTextField}
 						/>
 					</Grid>
@@ -132,8 +135,7 @@ class PostForm extends React.Component {
 						name="content"
 						component={Editor} 
 					/>
-					<Container style={{marginBottom: 5+'rem'}}></Container>
-					<Container align="center">						
+					<Container align="center" style={{paddingTop: 3+'rem'}}>						
 						<Button 
 							type="submit"
 							variant="outlined"
@@ -179,5 +181,12 @@ const mapDispatchToProps = (dispatch) => {
 
 export default compose(
 	connect(mapStateToProps, mapDispatchToProps),
-	reduxForm({ form: 'post', fields: ['tags'] })
+	reduxForm({ 
+		form: 'post', 
+		fields: ['tags'],
+		validate: validatePostInput,
+		destroyOnUnmount: false,
+		touchOnBlur: false,
+		touchOnChange: true
+	})
 )(PostForm);

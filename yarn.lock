@@ -4339,10 +4339,6 @@ immer@1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
 
-immutable@3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-
 import-cwd@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/import-cwd/-/import-cwd-2.1.0.tgz#aa6cf36e722761285cb371ec6519f53e2435b0a9"
@@ -5494,7 +5490,7 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
-lodash-es@^4.17.15:
+lodash-es@^4.17.11:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
 
@@ -7613,22 +7609,20 @@ recursive-readdir@2.2.2:
   dependencies:
     minimatch "3.0.4"
 
-redux-form@^8.2.6:
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-8.2.6.tgz#6840bbe9ed5b2aaef9dd82e6db3e5efcfddd69b1"
+redux-form@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-8.1.0.tgz#087b39eaa96b6f5cc0764a30eca10e0459884cce"
   dependencies:
     "@babel/runtime" "^7.2.0"
     es6-error "^4.1.1"
     hoist-non-react-statics "^3.2.1"
     invariant "^2.2.4"
     is-promise "^2.1.0"
-    lodash "^4.17.15"
-    lodash-es "^4.17.15"
+    lodash "^4.17.11"
+    lodash-es "^4.17.11"
     prop-types "^15.6.1"
     react-is "^16.7.0"
     react-lifecycles-compat "^3.0.4"
-  optionalDependencies:
-    immutable "3.8.2"
 
 redux-thunk@^2.3.0:
   version "2.3.0"

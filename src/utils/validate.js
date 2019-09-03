@@ -14,3 +14,18 @@ export const validateLoginInput = (values) => {
 
 	return errors;
 }
+
+export const validatePostInput = (values) => {
+	const errors = {};
+	const { title, category, tags, content } = values;
+	if(!title || title.trim().length < 1) {
+		errors.title = 'Title cannot be blank';
+	}
+	if(!category) {
+		errors.category = 'Category cannot be blank';
+	}
+	if(!content || content.trim().length < 15) {
+		errors.content = 'Content must be at least 15 characters';
+	}
+	return errors;
+}

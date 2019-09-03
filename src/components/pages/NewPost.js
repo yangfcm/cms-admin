@@ -8,6 +8,9 @@ import PostForm from '../modules/PostForm';
 
 class NewPost extends React.Component {
 
+	componentDidMount() {
+	}
+
 	onSubmit = (formValues) => {
 		console.log(formValues);
 	}

@@ -1,8 +1,5 @@
-import React from 'react';
-import Drawer from '@material-ui/core/Drawer'; 
-import List from '@material-ui/core/List';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import React from 'react'; 
+import {Drawer, List, ListItemText, ListItemIcon} from '@material-ui/core'; 
 import { makeStyles } from '@material-ui/core/styles';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
@@ -41,7 +38,7 @@ const Sidebar = (props) => {
 			<ListItemLink button to="/categories" activeClassName={classes['active-link']}>
 				<ListItemIcon><CategoryOutlinedIcon /></ListItemIcon>
 				<ListItemText primary="Categories" />
-			</ListItemLink>
+			</ListItemLink> 
 		</List>
 	)
 
