@@ -13,6 +13,7 @@ import {
  * Create a tag
  */
 export const createTag = (data, callback) => {
+	console.log(data);
 	return async(dispatch) => {
 		try {
 			const token = Cookies.get('admin_token');
@@ -25,7 +26,9 @@ export const createTag = (data, callback) => {
 				type: CREATE_TAG,
 				payload: response.data
 			});
-			callback();
+			if(callback) {
+				callback();
+			}
 		} catch(e) {
 			dispatch({
 				type: OPER_TAG_ERR,

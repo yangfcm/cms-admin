@@ -46,7 +46,7 @@ export const RenderSelect = ({
 	options, 
 	isClearable,
 	isMulti,
-	defaultValue,
+	defaultValue, 
 	input: { onChange, value},
 	meta: { touched, error },
 }) => {
@@ -84,6 +84,7 @@ export const RenderCreatableSelect = ({
 	isClearable,
 	isMulti,
 	defaultValue,
+	handleCreateOption,
 	input: { onChange, value},
 	meta: { touched, error },
 }) => {
@@ -101,6 +102,7 @@ export const RenderCreatableSelect = ({
 					defaultValue={defaultValue || []}
 					onChange={onChange}
 					options={options}
+					onCreateOption={handleCreateOption}
 					value={value}
 				/> 
 			</FormControl>

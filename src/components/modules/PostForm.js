@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, change, formValueSelector } from 'redux-form';
 import { Typography, Container, Button, Grid } from '@material-ui/core';
 import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
+import PanoramaOutlinedIcon from '@material-ui/icons/PanoramaOutlined';
 
 import { RenderTextField, RenderSelect, RenderCreatableSelect } from '../form/Fields';
 import Editor from '../form/Editor';
 import { createPost } from '../../actions/post';
 import { readCategories } from '../../actions/category';
-import { readTags } from '../../actions/tag';
+import { readTags, createTag } from '../../actions/tag';
 
 class PostForm extends React.Component {
 	state = {
@@ -65,6 +66,24 @@ class PostForm extends React.Component {
 		}
 	}
 
+	/**
+	 * When creating a tag on form, add the tag into database.
+	 * In order to achieve this, we need to customize the behavior of react select
+	 */
+	handleCreateOption = async (inputTag) => {
+		// console.log(inputTag);
+		await this.props.createTag({ name: inputTag });
+		this.setTagOptions();
+		const newTag = this.props.tag[this.props.tag.length - 1];	
+		// The last one is the tag just created
+		
+		this.props.changeTagsValue('tags', [...this.props.tagsValue, {
+			id: newTag._id,
+			label: newTag.name,
+			value: newTag.name
+		}]);
+	}
+
 	render() {
 		const { handleSubmit } = this.props;
 		// console.log(this.state.tagOptions);
@@ -80,8 +99,8 @@ class PostForm extends React.Component {
 							component={RenderTextField}
 						/>
 					</Grid>
-					<Grid container spacing={4} style={{marginBottom: 3+'px'}}>
-						<Grid item xs={12} sm={6}>
+					<Grid container spacing={2} style={{marginBottom: 3+'px'}}>
+						<Grid item xs={12} sm={4}>
 							<Field 
 								name="category"
 								id="category"
@@ -91,7 +110,7 @@ class PostForm extends React.Component {
 								options={ this.state.categoryOptions || [] }
 							/>
 						</Grid>
-						<Grid item xs={12} sm={6}>
+						<Grid item xs={12} sm={8}>
 							<Field 
 								name="tags"
 								id="tags"
@@ -100,15 +119,21 @@ class PostForm extends React.Component {
 								isMulti={true}
 								component={RenderCreatableSelect}
 								options={this.state.tagOptions || []}
+								handleCreateOption={this.handleCreateOption}
 							/>
 						</Grid>
 					</Grid>				
-					
+					<Grid container style={{marginBottom: 10+'px'}}>
+						<Button variant="outlined" color="default" >
+							Featured Image&nbsp;&nbsp;<PanoramaOutlinedIcon></PanoramaOutlinedIcon>
+						</Button>
+					</Grid>
 					<Field
 						name="content"
-						component={Editor}
+						component={Editor} 
 					/>
-					<Container align="center" style={{marginTop: 4+'rem'}}>						
+					<Container style={{marginBottom: 5+'rem'}}></Container>
+					<Container align="center">						
 						<Button 
 							type="submit"
 							variant="outlined"
@@ -132,15 +157,27 @@ class PostForm extends React.Component {
 	}
 }
 
+const selector = formValueSelector('post');
 const mapStateToProps = (state) => {
+	const tagsValue = selector(state, 'tags');	// Get tags value from post form
 	return {
 		category: state.category,
 		tag: state.tag,
-		error: state.error 
+		error: state.error,
+		tagsValue: tagsValue || []
+	}
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		readCategories: () => dispatch(readCategories()),
+		readTags: () => dispatch(readTags()),
+		createTag: (data, callback) => dispatch(createTag(data, callback)),
+		changeTagsValue: (field, value) => dispatch(change('post', field, value))
 	}
 }
 
 export default compose(
-	connect(mapStateToProps, { readCategories, readTags }),
-	reduxForm({ form: 'post' })
+	connect(mapStateToProps, mapDispatchToProps),
+	reduxForm({ form: 'post', fields: ['tags'] })
 )(PostForm);
