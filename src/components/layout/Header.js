@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import Avatar from '../common/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -28,12 +29,26 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+const ElevationScroll = (props) => {
+	const { children, window } = props;
+	const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+    target: window? window() : undefined,
+  });
+
+  return React.cloneElement(children, {
+    elevation: trigger ? 4 : 0,
+  });
+}
+
 const Header = (props) => {
 	const { admin } = props.auth.auth.data;
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<AppBar position="absolute" className={classes.appBar}>
+		<ElevationScroll {...props}>
+			<AppBar className={classes.appBar}>
 				<Toolbar className={classes.toolbar}>
 					<IconButton
 						edge="start"
@@ -60,6 +75,7 @@ const Header = (props) => {
 					<Avatar loginUser = {admin}/> 
 				</Toolbar>
 			</AppBar>
+		</ElevationScroll>
 		</React.Fragment>
 	)
 }
