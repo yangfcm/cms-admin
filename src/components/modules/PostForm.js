@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field, change, formValueSelector } from 'redux-form';
-import { Typography, Container, Button, Grid } from '@material-ui/core';
+import { Typography, Container, Button, Grid, Modal, Backdrop, Fade } from '@material-ui/core';
 import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PanoramaOutlinedIcon from '@material-ui/icons/PanoramaOutlined';
 
 import { RenderTextField, RenderSelect, RenderCreatableSelect } from '../form/Fields';
 import Editor from '../form/Editor';
+import FileUpload from '../modals/FileUpload';
 import { createPost } from '../../actions/post';
 import { readCategories } from '../../actions/category';
 import { readTags, createTag } from '../../actions/tag';
@@ -17,7 +18,8 @@ import { validatePostInput } from '../../utils/validate';
 class PostForm extends React.Component {
 	state = {
 		categoryOptions: null,
-		tagOptions: null
+		tagOptions: null,
+		isFileUploadModalOpen: false
 	};
 
 	componentDidMount = async () => {
@@ -87,9 +89,71 @@ class PostForm extends React.Component {
 			value: newTag.name
 		}]);
 	}
+ 
+	handleCloseFileUploadModal = () => {
+		this.setState({
+			isFileUploadModalOpen: false
+		});
+	}
+
+	handleImageLoaded = (image) => {
+		console.log(image);
+		this.setState({
+			imageRef: image
+		});
+	}
+
+	makeClientCrop = async (crop) => {
+		console.log(this.state.imageRef);
+		console.log(crop);
+		if (this.state.imageRef && crop.width && crop.height) {
+      const croppedImageUrl = await this.getCroppedImg(
+        this.state.imageRef,
+        crop,
+        "newFile.jpeg"
+      );
+      this.setState({ croppedImageUrl });
+    }
+	}
+
+	getCroppedImg(image, crop, fileName) {
+    const canvas = document.createElement("canvas");
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width,
+      crop.height
+    );
+
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => {
+        if (!blob) {
+          reject(new Error('Canvas is empty'));
+          // console.error("Canvas is empty");
+          return;
+        }
+        blob.name = fileName;
+        window.URL.revokeObjectURL(this.fileUrl);
+        this.fileUrl = window.URL.createObjectURL(blob);
+        resolve(this.fileUrl);
+      }, "image/jpeg");
+    });
+  }
 
 	render() {
 		const { handleSubmit } = this.props;
+		const { croppedImageUrl } = this.state;
 		// console.log(this.state.tagOptions);
 			return (
 				<form onSubmit={ handleSubmit(this.formSubmit) }>
@@ -127,10 +191,39 @@ class PostForm extends React.Component {
 						</Grid>
 					</Grid>				
 					<Grid container style={{marginBottom: 10+'px'}}>
-						<Button variant="outlined" color="default" >
-							Featured Image&nbsp;&nbsp;<PanoramaOutlinedIcon></PanoramaOutlinedIcon>
+						<Button 
+							variant="outlined" 
+							color="default" 
+							onClick={() => {this.setState({
+								isFileUploadModalOpen: true
+							})}}
+						>
+							<PanoramaOutlinedIcon></PanoramaOutlinedIcon>
+							Featured Image
 						</Button>
 					</Grid>
+					<Modal 
+						open={this.state.isFileUploadModalOpen}
+						// open={true}
+						onClose={this.handleCloseFileUploadModal}
+						closeAfterTransition
+						BackdropComponent={Backdrop}
+						BackdropProps={{
+							timeout: 500
+						}}
+						style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+					>
+						<Fade in={this.state.isFileUploadModalOpen}>
+							<FileUpload 
+								handleClose={this.handleCloseFileUploadModal}
+								handleImageLoaded = {this.handleImageLoaded}
+								handleMakeClientCrop={this.makeClientCrop}
+							/>
+						</Fade>					
+					</Modal>
+					{ croppedImageUrl && (
+						<img src={croppedImageUrl} alt="cropped image url" style={{maxHeight: 250+'px'}} /> 
+					)}
 					<Field
 						name="content"
 						component={Editor} 
