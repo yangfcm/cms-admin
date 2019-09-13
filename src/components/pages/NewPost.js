@@ -42,7 +42,7 @@ class NewPost extends React.Component {
 			isTop,
 			status,
 		} = formValues;	// Collect data from form
-		const categoryData = category.value;	
+		const categoryData = category.id;	
 		// Because data in 'category' from form is an object, we need to get its id from object
 		const tagsData = [];
 		tags.forEach((tag) => {
