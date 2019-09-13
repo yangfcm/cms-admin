@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
+/** Render text input (including number, hidden...) */
 export const RenderTextField = ({
 	id, 
 	type, 
@@ -43,11 +44,12 @@ export const RenderTextField = ({
 	);
 }
 
+/** Use material-ui to render check box */
 export const RenderCheckBox = ({
 	id,
 	name,
 	label,
-	input: {onChange, value}
+	input: {onChange}
 }) => {
 	return (
 		<FormControlLabel 
@@ -55,7 +57,6 @@ export const RenderCheckBox = ({
 				<Checkbox 
 					id={id} 
 					name={name}
-					value={value}
 					onChange={onChange}
 				/>
 			}
@@ -64,6 +65,7 @@ export const RenderCheckBox = ({
 	);
 }
 
+/** Render select */
 export const RenderSelect = ({
 	id,
 	name,
@@ -101,6 +103,7 @@ export const RenderSelect = ({
 	)
 };
 
+/** Render creatable select */
 export const RenderCreatableSelect = ({
 	id,
 	name,

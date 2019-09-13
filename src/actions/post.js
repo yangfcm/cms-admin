@@ -7,13 +7,13 @@ import {
 	UPDATE_POST,
 	READ_POSTS,
 	READ_POST,
-	OPER_POST_ERR
+	OPER_POST_ERR,
 } from './types';
 
 /**
  * Create a post
  */
-export const createPost = (postData, callback) => {
+export const createPost = (postData) => {
 	return async(dispatch) => {
 		try {
 			const token = Cookies.get('admin_token');
@@ -26,7 +26,6 @@ export const createPost = (postData, callback) => {
 				type: CREATE_POST,
 				payload: response.data
 			});
-			callback();
 		} catch(e) {
 			dispatch({
 				type: OPER_POST_ERR,
@@ -37,7 +36,7 @@ export const createPost = (postData, callback) => {
 }
 
 /** Delete a post by id */
-export const deletePost = (id, callback) => {
+export const deletePost = (id) => {
 	return async (dispatch) => {
 		try {
 			const token = Cookies.get('admin_token');

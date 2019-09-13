@@ -2,18 +2,36 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field, change, formValueSelector } from 'redux-form';
-import { Typography, Container, Button, Grid, Modal, Backdrop, Fade, Box } from '@material-ui/core';
+import { Typography, Container, Button, Grid, Modal, Backdrop, Fade, Box, CircularProgress } from '@material-ui/core';
 import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
-import PanoramaOutlinedIcon from '@material-ui/icons/PanoramaOutlined';
+import PanoramaOutlinedIcon from '@material-ui/icons/PanoramaOutlined'; 
+import { withStyles } from '@material-ui/core/styles';
 
 import { RenderTextField, RenderSelect, RenderCreatableSelect, RenderCheckBox } from '../form/Fields';
 import Editor from '../form/Editor';
 import FileUpload from '../modals/FileUpload';
-import { createPost } from '../../actions/post';
+import ButtonLink from '../common/ButtonLink';
 import { readCategories } from '../../actions/category';
 import { readTags, createTag } from '../../actions/tag';
+import { clearError } from '../../actions/error';
 import { validatePostInput } from '../../utils/validate';
+
+const styles = (theme) => {
+	return {
+		paper: {
+			backgroundColor: theme.palette.background.paper,
+    	border: '2px solid #aaa',
+    	boxShadow: theme.shadows[5],
+			padding: theme.spacing(2, 4, 3),
+			width: '50%',
+			minHeight: '20%',
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center'
+		}
+	}
+}
 
 class PostForm extends React.Component {
 	state = {
@@ -138,7 +156,7 @@ class PostForm extends React.Component {
     );
 
     return new Promise((resolve, reject) => {
-			resolve(canvas.toDataURL('image/png', 1));
+			resolve(canvas.toDataURL('image/png', 0.7));
       // canvas.toBlob(blob => {
       //   if (!blob) {
       //     reject(new Error('Canvas is empty'));
@@ -151,129 +169,173 @@ class PostForm extends React.Component {
       //   resolve(this.fileUrl);
       // }, "image/jpeg");
     });
-  }
-
+	}
+	 
 	render() {	{/* Render function*/}
-		const { handleSubmit } = this.props;
+		const { 
+			handleSubmit, 
+			postStatus, 
+			classes, 
+			resetPostStatus,
+			clearError
+		} = this.props;
 		const { croppedImageUrl } = this.state;
 		// console.log(this.state.tagOptions);
 			return (
-				<form onSubmit={ handleSubmit(this.formSubmit) }>
-					<Grid container style={{marginBottom: 10+'px'}}>
-						<Field // Title
-							name="title"
-							id="title"
-							type="text"
-							label="Title"
-							component={RenderTextField}
-						/>
-					</Grid>
-					<Grid container spacing={2} style={{marginBottom: 3+'px'}}>
-						<Grid item xs={12} sm={4}>
-							<Field 	// Category
-								name="category"
-								id="category"
-								label=""
-								placeholder="Category"
-								component={RenderSelect}
-								options={ this.state.categoryOptions || [] }
+				<React.Fragment>
+					<form onSubmit={ handleSubmit(this.formSubmit) }>
+						<Grid container style={{marginBottom: 10+'px'}}>
+							<Field // Title
+								name="title"
+								id="title"
+								type="text"
+								label="Title"
+								component={RenderTextField}
 							/>
 						</Grid>
-						<Grid item xs={12} sm={8}>
-							<Field 	// Tags
-								name="tags"
-								id="tags"
-								label=""
-								placeholder="Tags"
-								isMulti={true}
-								component={RenderCreatableSelect}
-								options={this.state.tagOptions || []}
-								handleCreateOption={this.handleCreateOption}
-							/>
+						<Grid container spacing={2} style={{marginBottom: 10+'px'}}>
+							<Grid item xs={12} sm={4}>
+								<Field 	// Category
+									name="category"
+									id="category"
+									label=""
+									placeholder="Category"
+									component={RenderSelect}
+									options={ this.state.categoryOptions || [] }
+								/>
+							</Grid>
+							<Grid item xs={12} sm={8}>
+								<Field 	// Tags
+									name="tags"
+									id="tags"
+									label=""
+									placeholder="Tags"
+									isMulti={true}
+									component={RenderCreatableSelect}
+									options={this.state.tagOptions || []}
+									handleCreateOption={this.handleCreateOption}
+								/>
+							</Grid>
+						</Grid>				
+						<Grid container style={{marginBottom: 10+'px'}}>
+							<Button 	// Featured image upload button
+								variant="outlined" 
+								color="default" 
+								onClick={() => {this.setState({
+									isFileUploadModalOpen: true
+								})}}
+							>
+								<PanoramaOutlinedIcon></PanoramaOutlinedIcon>
+								Featured Image
+							</Button>
 						</Grid>
-					</Grid>				
-					<Grid container style={{marginBottom: 10+'px'}}>
-						<Button 	// Featured image upload button
-							variant="outlined" 
-							color="default" 
-							onClick={() => {this.setState({
-								isFileUploadModalOpen: true
-							})}}
+						
+						{/* File upload modal*/}
+						<Modal
+							open={this.state.isFileUploadModalOpen}
+							// open={true}
+							onClose={this.handleCloseFileUploadModal}
+							closeAfterTransition
+							BackdropComponent={Backdrop}
+							BackdropProps={{
+								timeout: 500
+							}}
+							style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
 						>
-							<PanoramaOutlinedIcon></PanoramaOutlinedIcon>
-							Featured Image
-						</Button>
-					</Grid>
-					
-					{/* File upload modal*/}
+							<Fade in={this.state.isFileUploadModalOpen}>
+								<FileUpload 
+									handleClose={this.handleCloseFileUploadModal}
+									handleImageLoaded = {this.handleImageLoaded}
+									handleMakeClientCrop={this.makeClientCrop}
+								/>
+							</Fade>					
+						</Modal>
+						{ croppedImageUrl && (
+							<img src={croppedImageUrl} alt="cropped image url" style={{maxHeight: 250+'px'}} /> 
+						) }
+						{ this.props.featuredImageValue && <img src={this.props.featuredImageValue} alt="cropped image url" style={{maxHeight: 250+'px'}} /> }
+						<Field 
+							type="hidden"
+							id="featuredImage"
+							name="featuredImage"
+							component={RenderTextField} />
+						<Field
+							name="content"
+							component={Editor} 
+						/>
+						<Field 
+							id="isTop"
+							name="isTop"
+							label="Set as Top"
+							component={RenderCheckBox}
+						/>
+						<Box p={3}>
+							<Container align="center">						
+								<Button 
+									type="button"
+									variant="outlined"
+									color="primary"
+									onClick={ handleSubmit( (values)=>{
+										this.props.onSubmit({...values, status: '1'});
+										/** status='1' - publish */
+									})}
+								>
+									<PublishOutlinedIcon></PublishOutlinedIcon>
+									Publish
+								</Button>
+								<Button 
+									type="button"
+									variant="outlined"
+									color="secondary"
+									style={{marginLeft: 1+'rem'}}
+									onClick={ handleSubmit( (values)=>{
+										this.props.onSubmit({...values, status: '2'});
+										/** status='2' - draft */
+									})}
+								>
+									<SaveOutlinedIcon></SaveOutlinedIcon>
+									Save
+								</Button>
+							</Container>
+						</Box>
+					</form>
+
 					<Modal
-						open={this.state.isFileUploadModalOpen}
-						// open={true}
-						onClose={this.handleCloseFileUploadModal}
-						closeAfterTransition
-						BackdropComponent={Backdrop}
-						BackdropProps={{
-							timeout: 500
-						}}
+						open={!!postStatus}
 						style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
-					>
-						<Fade in={this.state.isFileUploadModalOpen}>
-							<FileUpload 
-								handleClose={this.handleCloseFileUploadModal}
-								handleImageLoaded = {this.handleImageLoaded}
-								handleMakeClientCrop={this.makeClientCrop}
-							/>
-						</Fade>					
+						onClose={() => {resetPostStatus()}}
+						disableBackdropClick
+						>
+						<Grid className={classes.paper} container direction="column" justify="space-around">
+							<Grid item>			
+								<Typography variant="h6">			
+									{ postStatus==='isDoing' && <CircularProgress />}
+									{ postStatus==='published' && 'Post is created successfully'}
+									{ postStatus==='saved' && 'Post is saved successfully'}	
+									{ postStatus==='failed' && 'Operation failed!'}
+								</Typography>	
+							</Grid>
+							<Grid item>
+							{ (postStatus === 'published' || postStatus==='saved') && 
+								(<Grid container justify="center" alignItems="center"> 
+									<Grid item>
+										<ButtonLink color="primary" to="/posts" onClick={this.props.reset}>Go to Posts List</ButtonLink>
+									</Grid>
+									<Grid item>
+										<ButtonLink color="secondary" to="/new" onClick={this.props.reset}>Write Another New Post</ButtonLink>
+									</Grid>
+								</Grid>)}
+							{ postStatus =='failed' && 
+								(<Grid container justify="center" alignItems="center">
+									<Grid item>
+										<Button color="primary" onClick={() => {clearError(); resetPostStatus()}}>OK</Button>
+									</Grid>
+								</Grid>)
+							}
+							</Grid>
+						</Grid>	
 					</Modal>
-					{ croppedImageUrl && (
-						<img src={croppedImageUrl} alt="cropped image url" style={{maxHeight: 250+'px'}} /> 
-					) }
-					{ this.props.featuredImageValue && <img src={this.props.featuredImageValue} alt="cropped image url" style={{maxHeight: 250+'px'}} /> }
-					<Field 
-						type="hidden"
-						id="featuredImage"
-						name="featuredImage"
-						component={RenderTextField} />
-					<Field
-						name="content"
-						component={Editor} 
-					/>
-					<Field 
-						id="isTop"
-						name="isTop"
-						label="Set as Top"
-						component={RenderCheckBox}
-					/>
-					<Box p={3}>
-						<Container align="center">						
-							<Button 
-								type="button"
-								variant="outlined"
-								color="primary"
-								onClick={ handleSubmit( (values)=>{
-									this.props.onSubmit({...values, status: '1'});
-									/** status='1' - publish */
-								})}
-							>
-								<PublishOutlinedIcon></PublishOutlinedIcon>
-								Publish
-							</Button>
-							<Button 
-								type="button"
-								variant="outlined"
-								color="secondary"
-								style={{marginLeft: 1+'rem'}}
-								onClick={ handleSubmit( (values)=>{
-									this.props.onSubmit({...values, status: '2'});
-									/** status='2' - draft */
-								})}
-							>
-								<SaveOutlinedIcon></SaveOutlinedIcon>
-								Save
-							</Button>
-						</Container>
-					</Box>
-				</form>
+				</React.Fragment>
 			);
 	}
 }
@@ -295,6 +357,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		readCategories: () => dispatch(readCategories()),
 		readTags: () => dispatch(readTags()),
+		clearError: () => dispatch(clearError()),
 		createTag: (data, callback) => dispatch(createTag(data, callback)),
 		changeTagsValue: (field, value) => dispatch(change('post', field, value)),
 		changeFeaturedImageValue: (field, value) => dispatch(change('post', field, value))
@@ -311,4 +374,4 @@ export default compose(
 		touchOnBlur: false,
 		touchOnChange: true
 	})
-)(PostForm);
+)(withStyles(styles)(PostForm));

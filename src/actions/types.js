@@ -25,3 +25,5 @@ export const UPDATE_TAG = 'UPDATE_TAG';
 export const READ_TAGS = 'READ_TAGS';
 export const READ_TAG = 'READ_TAG';
 export const OPER_TAG_ERR = 'OPER_TAG_ERR';
+
+export const CLEAR_ERR = 'CLEAR_ERR';
