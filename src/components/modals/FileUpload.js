@@ -131,7 +131,10 @@ class FileUpload extends React.Component {
 					style={{display: 'none'}}
 					onChange={this.handleSelectFile} />
 				<label htmlFor="file-upload-input">
-					<Button component="span">
+					<Button 
+						variant="outlined"
+						color="secondary"  
+						component="span">
 						Selecet File
 					</Button>
 				</label>
@@ -145,12 +148,16 @@ class FileUpload extends React.Component {
 						onChange={this.handleCropChange}
 					/>)
 				}			
-				<Button onClick={
-					() => { 
-						if(crop) this.props.handleMakeClientCrop(crop); 
-						this.props.handleClose() 
-					}
-				}>OK</Button>
+				<br />
+				<Button
+					variant="outlined"
+					color="inherit"  
+					onClick={
+						() => { 
+							if(crop) this.props.handleMakeClientCrop(crop); 
+							this.props.handleClose() 
+						}
+					}>OK</Button>
 				{ croppedImageUrl && (
 					<img src={croppedImageUrl} alt="cropped image url" /> 
 				)}

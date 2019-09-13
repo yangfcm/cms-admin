@@ -1,7 +1,12 @@
 import React from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import { TextField, FormControl, InputLabel } from '@material-ui/core';
+import { 
+	TextField, 
+	FormControl,
+	Checkbox,
+	FormControlLabel
+} from '@material-ui/core';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 export const RenderTextField = ({
@@ -35,6 +40,27 @@ export const RenderTextField = ({
 				<FormHelperText error style={{ marginTop: '0'}}>{ error }</FormHelperText> 
 			}
 		</React.Fragment>		
+	);
+}
+
+export const RenderCheckBox = ({
+	id,
+	name,
+	label,
+	input: {onChange, value}
+}) => {
+	return (
+		<FormControlLabel 
+			control={
+				<Checkbox 
+					id={id} 
+					name={name}
+					value={value}
+					onChange={onChange}
+				/>
+			}
+			label={label}
+		/>
 	);
 }
 

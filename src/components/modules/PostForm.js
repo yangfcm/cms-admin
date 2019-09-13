@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field, change, formValueSelector } from 'redux-form';
-import { Typography, Container, Button, Grid, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Typography, Container, Button, Grid, Modal, Backdrop, Fade, Box } from '@material-ui/core';
 import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PanoramaOutlinedIcon from '@material-ui/icons/PanoramaOutlined';
 
-import { RenderTextField, RenderSelect, RenderCreatableSelect } from '../form/Fields';
+import { RenderTextField, RenderSelect, RenderCreatableSelect, RenderCheckBox } from '../form/Fields';
 import Editor from '../form/Editor';
 import FileUpload from '../modals/FileUpload';
 import { createPost } from '../../actions/post';
@@ -107,12 +107,13 @@ class PostForm extends React.Component {
 		console.log(this.state.imageRef);
 		console.log(crop);
 		if (this.state.imageRef && crop.width && crop.height) {
-      const croppedImageUrl = await this.getCroppedImg(
+      const imageBase64 = await this.getCroppedImg(
         this.state.imageRef,
         crop,
         "newFile.jpeg"
       );
-      this.setState({ croppedImageUrl });
+      // this.setState({ croppedImageUrl });
+			this.props.changeFeaturedImageValue('featuredImage', imageBase64);
     }
 	}
 
@@ -137,28 +138,29 @@ class PostForm extends React.Component {
     );
 
     return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        if (!blob) {
-          reject(new Error('Canvas is empty'));
-          // console.error("Canvas is empty");
-          return;
-        }
-        blob.name = fileName;
-        window.URL.revokeObjectURL(this.fileUrl);
-        this.fileUrl = window.URL.createObjectURL(blob);
-        resolve(this.fileUrl);
-      }, "image/jpeg");
+			resolve(canvas.toDataURL('image/png', 1));
+      // canvas.toBlob(blob => {
+      //   if (!blob) {
+      //     reject(new Error('Canvas is empty'));
+      //     // console.error("Canvas is empty");
+      //     return;
+      //   }
+			// 	blob.name = fileName;
+      //   window.URL.revokeObjectURL(this.fileUrl);
+      //   this.fileUrl = window.URL.createObjectURL(blob);
+      //   resolve(this.fileUrl);
+      // }, "image/jpeg");
     });
   }
 
-	render() {
+	render() {	{/* Render function*/}
 		const { handleSubmit } = this.props;
 		const { croppedImageUrl } = this.state;
 		// console.log(this.state.tagOptions);
 			return (
 				<form onSubmit={ handleSubmit(this.formSubmit) }>
 					<Grid container style={{marginBottom: 10+'px'}}>
-						<Field 
+						<Field // Title
 							name="title"
 							id="title"
 							type="text"
@@ -168,7 +170,7 @@ class PostForm extends React.Component {
 					</Grid>
 					<Grid container spacing={2} style={{marginBottom: 3+'px'}}>
 						<Grid item xs={12} sm={4}>
-							<Field 
+							<Field 	// Category
 								name="category"
 								id="category"
 								label=""
@@ -178,7 +180,7 @@ class PostForm extends React.Component {
 							/>
 						</Grid>
 						<Grid item xs={12} sm={8}>
-							<Field 
+							<Field 	// Tags
 								name="tags"
 								id="tags"
 								label=""
@@ -191,7 +193,7 @@ class PostForm extends React.Component {
 						</Grid>
 					</Grid>				
 					<Grid container style={{marginBottom: 10+'px'}}>
-						<Button 
+						<Button 	// Featured image upload button
 							variant="outlined" 
 							color="default" 
 							onClick={() => {this.setState({
@@ -202,7 +204,9 @@ class PostForm extends React.Component {
 							Featured Image
 						</Button>
 					</Grid>
-					<Modal 
+					
+					{/* File upload modal*/}
+					<Modal
 						open={this.state.isFileUploadModalOpen}
 						// open={true}
 						onClose={this.handleCloseFileUploadModal}
@@ -223,30 +227,52 @@ class PostForm extends React.Component {
 					</Modal>
 					{ croppedImageUrl && (
 						<img src={croppedImageUrl} alt="cropped image url" style={{maxHeight: 250+'px'}} /> 
-					)}
+					) }
+					{ this.props.featuredImageValue && <img src={this.props.featuredImageValue} alt="cropped image url" style={{maxHeight: 250+'px'}} /> }
+					<Field 
+						type="hidden"
+						id="featuredImage"
+						name="featuredImage"
+						component={RenderTextField} />
 					<Field
 						name="content"
 						component={Editor} 
 					/>
-					<Container align="center" style={{paddingTop: 3+'rem'}}>						
-						<Button 
-							type="submit"
-							variant="outlined"
-							color="primary"
-						>
-							<PublishOutlinedIcon></PublishOutlinedIcon>
-							Publish
-						</Button>
-						<Button 
-							type="button"
-							variant="outlined"
-							color="secondary"
-							style={{marginLeft: 1+'rem'}}
-						>
-							<SaveOutlinedIcon></SaveOutlinedIcon>
-							Save
-						</Button>
-					</Container>
+					<Field 
+						id="isTop"
+						name="isTop"
+						label="Set as Top"
+						component={RenderCheckBox}
+					/>
+					<Box p={3}>
+						<Container align="center">						
+							<Button 
+								type="button"
+								variant="outlined"
+								color="primary"
+								onClick={ handleSubmit( (values)=>{
+									this.props.onSubmit({...values, status: '1'});
+									/** status='1' - publish */
+								})}
+							>
+								<PublishOutlinedIcon></PublishOutlinedIcon>
+								Publish
+							</Button>
+							<Button 
+								type="button"
+								variant="outlined"
+								color="secondary"
+								style={{marginLeft: 1+'rem'}}
+								onClick={ handleSubmit( (values)=>{
+									this.props.onSubmit({...values, status: '2'});
+									/** status='2' - draft */
+								})}
+							>
+								<SaveOutlinedIcon></SaveOutlinedIcon>
+								Save
+							</Button>
+						</Container>
+					</Box>
 				</form>
 			);
 	}
@@ -255,11 +281,13 @@ class PostForm extends React.Component {
 const selector = formValueSelector('post');
 const mapStateToProps = (state) => {
 	const tagsValue = selector(state, 'tags');	// Get tags value from post form
+	const featuredImageValue = selector(state, 'featuredImage');	// Get value of featured image from post form
 	return {
 		category: state.category,
 		tag: state.tag,
 		error: state.error,
-		tagsValue: tagsValue || []
+		tagsValue: tagsValue || [],
+		featuredImageValue
 	}
 }
 
@@ -268,7 +296,8 @@ const mapDispatchToProps = (dispatch) => {
 		readCategories: () => dispatch(readCategories()),
 		readTags: () => dispatch(readTags()),
 		createTag: (data, callback) => dispatch(createTag(data, callback)),
-		changeTagsValue: (field, value) => dispatch(change('post', field, value))
+		changeTagsValue: (field, value) => dispatch(change('post', field, value)),
+		changeFeaturedImageValue: (field, value) => dispatch(change('post', field, value))
 	}
 }
 
