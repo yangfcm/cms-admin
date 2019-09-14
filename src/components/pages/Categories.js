@@ -69,11 +69,7 @@ class Categories extends React.Component {
 
 	handleUpdateCategory = (newData, oldData) => {
 
-		return new Promise(async(resolve, reject) => { 
-			if(newData.name.trim().toLowerCase() === oldData.name.trim().toLowerCase()) {
-				// If name isn't changed delete name property in newData to prevent duplication error.
-				delete newData.name;
-			} 
+		return new Promise(async(resolve, reject) => {
 			const data = this.state.data;
 			const index = data.indexOf(oldData);
 			data[index] = newData;

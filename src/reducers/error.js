@@ -22,13 +22,13 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...INITIAL_STATE,
 				type: 'post',
-				errorMsg: action.payload
+				errorMsg: action.payload.message
 			};
 		case OPER_TAG_ERR:
 			return {
 				...INITIAL_STATE,
 				type: 'tag',
-				errorMsg: action.payload
+				errorMsg: action.payload.message
 			}
 		case CLEAR_ERR:
 			return {
