@@ -22,7 +22,11 @@ export default (state = [], action) => {
 					return {
 						...category,
 						...action.payload.data
-					}
+					};
+				} else {
+					return {
+						...category
+					};
 				}
 			});
 

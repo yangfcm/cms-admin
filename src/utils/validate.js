@@ -17,7 +17,7 @@ export const validateLoginInput = (values) => {
 
 export const validatePostInput = (values) => {
 	const errors = {};
-	const { title, category, tags, content } = values;
+	const { title, category, content } = values;
 	if(!title || title.trim().length < 1) {
 		errors.title = 'Title cannot be blank';
 	}

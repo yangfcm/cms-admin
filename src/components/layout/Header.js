@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
+import AssistantRoundedIcon from '@material-ui/icons/AssistantRounded';
 import Avatar from '../common/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -54,7 +55,7 @@ const Header = (props) => {
 						edge="start"
 						color="inherit"
 					>
-						<CreateOutlinedIcon />
+						<AssistantRoundedIcon />
 					</IconButton>	{/* Menu button */}	
 					<Typography 
 						commponent="h1"

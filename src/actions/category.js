@@ -11,7 +11,7 @@ import {
 } from './types';
 
 /** Create a category */
-export const createCategory = (data, callback) => {
+export const createCategory = (data) => {
 	return async(dispatch) => {
 		try {
 			const token = Cookies.get('admin_token');
@@ -24,11 +24,10 @@ export const createCategory = (data, callback) => {
 				type: CREATE_CATEGORY,
 				payload: response.data
 			});
-			callback();
 		} catch(e) {
 			dispatch({
 				type: OPER_CATEGORY_ERR,
-				payload: e.response.data
+				payload: e.response ? e.response.data : e.message
 			})
 		}
 	}
@@ -49,7 +48,7 @@ export const deleteCategory = (id) => {
     } catch(e) {
       dispatch({
         type: OPER_CATEGORY_ERR,
-        payload: e.response.data
+        payload: e.response ? e.response.data : e.message
       })
     }
 	}
@@ -72,7 +71,7 @@ export const updateCategory = (id, data) => {
 		} catch(e) {
 			dispatch({
 				type: OPER_CATEGORY_ERR,
-				payload: e.response.data
+				payload: e.response ? e.response.data : e.message
 			})
 		}
 	}
@@ -90,7 +89,7 @@ export const readCategories = () => {
     } catch(e) {
       dispatch({
         type: OPER_CATEGORY_ERR,
-        errorMsg: e.response.data
+        payload: e.response ? e.response.data : e.message
       })
     }
   }
@@ -108,7 +107,7 @@ export const readCategory = (id) => {
     } catch(e) {
       dispatch({
         type: OPER_CATEGORY_ERR,
-        errorMsg: e.response.data
+        payload: e.response ? e.response.data : e.message
       })
     }
   }

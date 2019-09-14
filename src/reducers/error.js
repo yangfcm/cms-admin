@@ -7,7 +7,7 @@ import {
 
 const INITIAL_STATE = {
 	type: null,
-	error: ''
+	errorMsg: ''
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -16,25 +16,25 @@ export default (state = INITIAL_STATE, action) => {
       return {
 				...INITIAL_STATE,
 				type: 'category',
-				error: action.payload
+				errorMsg: action.payload.message
 			};
 		case OPER_POST_ERR: 
 			return {
 				...INITIAL_STATE,
 				type: 'post',
-				error: action.payload
+				errorMsg: action.payload
 			};
 		case OPER_TAG_ERR:
 			return {
 				...INITIAL_STATE,
 				type: 'tag',
-				error: action.payload
+				errorMsg: action.payload
 			}
 		case CLEAR_ERR:
 			return {
 				...INITIAL_STATE,
 				type: null,
-				error: ''
+				errorMsg: ''
 			}
     default: 
       return state;

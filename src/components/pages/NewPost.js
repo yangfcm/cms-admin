@@ -70,10 +70,12 @@ class NewPost extends React.Component {
 					this.setState({
 						postStatus: 'published'
 					});
+					break;
 				case '2':
 					this.setState({
 						postStatus: 'saved'
-					})
+					});
+					break;
 				default:
 					return;
 			}

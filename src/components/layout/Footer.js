@@ -5,7 +5,8 @@ const footerStyle = {
 	position: 'fixed', 
 	bottom: 15,
 	left: 50+'%',
-	transform: 'translateX(' + -25 + '%)' 
+	transform: 'translateX(' + -25 + '%)',
+	background: '#fafafa'
 }
 
 const Footer = (props) => {

@@ -74,7 +74,7 @@ export const checkAuth = () => {
 		}catch(e) {
 			dispatch({
 				type: CHECK_AUTH_ERR,
-				payload: e.response.data
+				payload: e.response ? e.response.data : e.message
 			})
 		}
 	}

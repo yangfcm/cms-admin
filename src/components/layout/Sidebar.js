@@ -5,6 +5,7 @@ import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import CategoryOutlinedIcon from '@material-ui/icons/CategoryOutlined';
 import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
+import LocalOfferOutlinedIcon from '@material-ui/icons/LocalOfferOutlined';
 
 import ListItemLink from '../common/ListItemLink'; 
 
@@ -38,6 +39,10 @@ const Sidebar = (props) => {
 			<ListItemLink button to="/categories" activeClassName={classes['active-link']}>
 				<ListItemIcon><CategoryOutlinedIcon /></ListItemIcon>
 				<ListItemText primary="Categories" />
+			</ListItemLink> 
+			<ListItemLink button to="/tags" activeClassName={classes['active-link']}>
+				<ListItemIcon><LocalOfferOutlinedIcon /></ListItemIcon>
+				<ListItemText primary="Tags" />
 			</ListItemLink> 
 		</List>
 	)

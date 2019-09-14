@@ -225,7 +225,7 @@ class PostForm extends React.Component {
 									isFileUploadModalOpen: true
 								})}}
 							>
-								<PanoramaOutlinedIcon></PanoramaOutlinedIcon>
+								<PanoramaOutlinedIcon></PanoramaOutlinedIcon>&nbsp;
 								Featured Image
 							</Button>
 						</Grid>

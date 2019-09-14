@@ -10,6 +10,7 @@ import Categories from '../components/pages/Categories';
 import Comments from '../components/pages/Comments';
 import NewPost from '../components/pages/NewPost';
 import Posts from '../components/pages/Posts';
+import Tags from '../components/pages/Tags';
 
 const history = createBrowserHistory();
 const AppRouter = () => {
@@ -23,6 +24,7 @@ const AppRouter = () => {
 				<PrivateRoute path="/comments" component={Comments} />
 				<PrivateRoute path="/new" component={NewPost} />
 				<PrivateRoute path="/posts" component={Posts} />
+				<PrivateRoute path="/tags" component={Tags} />
 				<Route path="/" exact component={Login} />
 			</Switch>
 		</Router>

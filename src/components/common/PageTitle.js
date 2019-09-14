@@ -14,7 +14,7 @@ const PageTitle = (props) => {
 	const classes = useStyles();
 	return ( 
 		<Typography 
-			variant="h5" 
+			variant="h4" 
 			component="h1"
 			align="center" 
 			gutterBottom
