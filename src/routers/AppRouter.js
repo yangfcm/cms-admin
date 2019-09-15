@@ -9,6 +9,7 @@ import Admins from '../components/pages/Admins';
 import Categories from '../components/pages/Categories';
 import Comments from '../components/pages/Comments';
 import NewPost from '../components/pages/NewPost';
+import EditPost from '../components/pages/EditPost';
 import Posts from '../components/pages/Posts';
 import Tags from '../components/pages/Tags';
 
@@ -23,6 +24,7 @@ const AppRouter = () => {
 				<PrivateRoute path="/categories" component={Categories} />
 				<PrivateRoute path="/comments" component={Comments} />
 				<PrivateRoute path="/new" component={NewPost} />
+				<PrivateRoute path="/edit/:id" component={EditPost} />
 				<PrivateRoute path="/posts" component={Posts} />
 				<PrivateRoute path="/tags" component={Tags} />
 				<Route path="/" exact component={Login} />

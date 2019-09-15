@@ -4,6 +4,7 @@ import { Container, AppBar, Tabs, Tab, Typography, Box, Badge } from '@material-
 import { withStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import moment from 'moment';
+import { withRouter } from "react-router";
 
 import { 
 	readPosts,
@@ -144,6 +145,7 @@ class Posts extends React.Component {
 		this.props.clearError();
 	}
 	handleMoveToTrash = async (ev, rowData) => {
+		// Move post to trash
 		await this.props.updatePost(rowData._id, {
 			status: '3'
 		}); 
@@ -160,7 +162,9 @@ class Posts extends React.Component {
 		})
 	}
 	handleEdit = (ev, rowData) => {
+		// Go to post edit page
 		console.log(rowData);
+		this.props.history.push(`/edit/${rowData._id}`);
 	}
 	handleDeletePermanently = async () => {
 		await this.props.deletePost(this.state.postIdToDelete);
@@ -199,7 +203,7 @@ class Posts extends React.Component {
 	}
 
 	render() {
-		console.log(this.state);
+		// console.log(this.state);
 		const { error, classes } = this.props;
 		if(!this.state.postsData) {
 			// Is fetching data
@@ -286,4 +290,4 @@ export default connect(mapStateToProps, {
 	deletePost,
 	updatePost,
 	clearError
-})(withStyles(styles)(Posts));
+})(withStyles(styles)( withRouter(Posts) ));
