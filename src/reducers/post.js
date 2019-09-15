@@ -21,6 +21,10 @@ export default (state = [], action) => {
 						...post,
 						...action.payload.data
 					};
+				} else {
+					return {
+						...post
+					};
 				}
 			});
 		case READ_POSTS:

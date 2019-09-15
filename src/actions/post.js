@@ -51,7 +51,7 @@ export const deletePost = (id) => {
 		} catch(e) {
 			dispatch({
 				type: OPER_POST_ERR,
-				payload: e.reponse.data
+				payload: e.response.data
 			})
 		}
 	}
@@ -69,7 +69,7 @@ export const readPosts = () => {
 		} catch(e) {
 			dispatch({
 				type: OPER_POST_ERR,
-				payload: e.reponse.data
+				payload: e.response.data
 			})
 		}
 	}
@@ -87,7 +87,7 @@ export const readPost = (id) => {
 		} catch(e) {
 			dispatch({
 				type: OPER_POST_ERR,
-				payload: e.reponse.data
+				payload: e.response.data
 			})
 		}
 	}

@@ -15,6 +15,7 @@ import PageTitle from '../common/PageTitle';
 import Loading from '../common/Loading';
 import Avatar from '../common/Avatar';
 import Alert from '../modals/Alert';
+import Confirm from '../modals/Confirm';
 import tableIcons from '../common/TableIcons';
 
 const TabPanel = (props) => {
@@ -115,10 +116,12 @@ class Posts extends React.Component {
 			}
 		],
 		trashData: null,
-		value: 0
+		value: 0,
+		openConfirmDeleteModal: false,	// Open or not open the modal to confirm post deletion
+		postIdToDelete: null		// id of the post to delete
 	}
 
-	setData = () => {
+	filterData = () => {
 		// Filter out normal posts and deleted posts(in trash) and put them in different state
 		if(this.props.post && this.props.post.length >= 0) {
 			this.setState({
@@ -133,34 +136,70 @@ class Posts extends React.Component {
 	}
 
 	componentDidMount = async() => {
-		await this.props.readPosts();
-		// const posts = this.props.post.filter((post) => {
-		// 	return post.status === '1' || post.status === '2';
-		// });
-		// const trashPosts = this.props.post.filter((post) => {
-		// 	return post.status === '3';
-		// });
-		this.setData();
+		await this.props.readPosts(); 
+		this.filterData();
 	}
 
 	handleCloseAlert = () => {
 		this.props.clearError();
 	}
-	handleMoveToTrash = (ev, rowData) => {
-		console.log(rowData);
+	handleMoveToTrash = async (ev, rowData) => {
+		await this.props.updatePost(rowData._id, {
+			status: '3'
+		}); 
+		if(this.props.error.errorMsg) {
+			return;
+		} 
+		this.setState((state, props) => {
+			return {
+				postsData: props.post.filter((post) => {
+					return post.status === '1' || post.status === '2';
+				}),
+				trashData: [...state.trashData, rowData]
+			}
+		})
 	}
 	handleEdit = (ev, rowData) => {
 		console.log(rowData);
 	}
-	handleDeletePermanently = (ev, rowData) => {
-
+	handleDeletePermanently = async () => {
+		await this.props.deletePost(this.state.postIdToDelete);
+		if(this.props.error.errorMsg) {
+			this.setState({
+				openConfirmDeleteModal: false,
+				postIdToDelete: null
+			});
+			return;
+		}
+		this.setState((state, props) => {
+			return {
+				trashData: props.post.filter((post) => {
+					return post.status === '3';
+				}),
+				openConfirmDeleteModal: false,	// close confirm modal
+				postIdToDelete: null
+			};
+		})
 	}
-	handleRestoreFromTrash = (ev, rowData) => {
-		
+	handleRestoreFromTrash = async (ev, rowData) => {
+		await this.props.updatePost(rowData._id, {
+			status: '2'
+		}); 
+		if(this.props.error.errorMsg) {
+			return;
+		} 
+		this.setState((state, props) => {
+			return {
+				trashData: props.post.filter((post) => {
+					return post.status === '3';
+				}),
+				postsData: [...state.postsData, rowData]
+			}
+		})
 	}
 
 	render() {
-		// console.log(this.state);
+		console.log(this.state);
 		const { error, classes } = this.props;
 		if(!this.state.postsData) {
 			// Is fetching data
@@ -204,8 +243,12 @@ class Posts extends React.Component {
 							columns={this.state.trashColumns}
 							data={this.state.trashData} 
 							actions={[
-								{icon: tableIcons.DeleteForever, tooltip: 'Delete Permanently', onClick: this.handleDeletePermanently },
-								{icon: tableIcons.Restore, tooltip: 'Restore', onClick: this.handleRestoreFromTrash}
+								{	icon: tableIcons.DeleteForever, 
+									tooltip: 'Delete Permanently', 
+									onClick: (ev, rowData) => { this.setState({ openConfirmDeleteModal: true, postIdToDelete: rowData._id })} },
+								{	icon: tableIcons.Restore, 
+									tooltip: 'Restore', 
+									onClick: this.handleRestoreFromTrash}
 							]}
 						/>
 					</TabPanel>
@@ -216,6 +259,15 @@ class Posts extends React.Component {
 					isOpen= {error.type==='post' && error.errorMsg}
 					message={error.errorMsg}
 					onCloseAlert={this.handleCloseAlert}
+				/>
+				<Confirm 
+					isOpen = {this.state.openConfirmDeleteModal}
+					message="Are you sure to delete the post permanently?"
+					onCloseConfirm={() => { this.setState({ 
+						openConfirmDeleteModal: false,
+						postIdToDelete: null
+					}) } }
+					onConfirm={this.handleDeletePermanently}
 				/>
 			</React.Fragment>
 		)
