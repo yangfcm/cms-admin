@@ -92,3 +92,26 @@ export const readPost = (id) => {
 		}
 	}
 }
+
+/** Update a post by id */
+export const updatePost = (id, data) => {
+	return async(dispatch) => {
+		try {
+			const token = Cookies.get('admin_token');
+			const response = await axios.patch(
+				`/api/posts/${id}`,
+				data,
+				{ headers: {'x-auth': token} }
+			);
+			dispatch({
+				type: UPDATE_POST,
+				payload: response.data
+			});
+		} catch(e) {
+			dispatch({
+				type: OPER_POST_ERR,
+				payload: e.response.data
+			})
+		}
+	}
+}

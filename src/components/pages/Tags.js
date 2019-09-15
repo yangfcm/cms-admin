@@ -106,7 +106,7 @@ class Tags extends React.Component {
 		} 
 		return (
 			<React.Fragment>
-				<PageTitle>Tags List</PageTitle>
+				<PageTitle>Tags Admin</PageTitle>
 				<Container maxWidth="lg">
 					<MaterialTable 
 						title="Tags List"
