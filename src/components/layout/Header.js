@@ -9,7 +9,7 @@ import {
 	useScrollTrigger,
 	Fade,
 	Paper,
-	Popper,
+	Popover ,
 	List,
 	ListItem,
 	ListItemIcon,
@@ -20,6 +20,7 @@ import AssistantRoundedIcon from '@material-ui/icons/AssistantRounded';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import Avatar from '../common/Avatar'; 
+import Confirm from '../modals/Confirm';
 import { logout } from '../../actions/auth';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,10 +65,14 @@ const Header = (props) => {
 	const { admin } = props.auth.auth.data;
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [isOpen, setIsOpen] = React.useState(false);
 
 	const handleClickAvatar = (ev) => {
 		// console.log(ev);
 		setAnchorEl(anchorEl ? null : ev.currentTarget);
+	}
+	const handleClose = () => {
+		setAnchorEl(null);
 	}
 	const open = !!anchorEl;
 	const id = open ? 'admin-popper' : undefined;
@@ -112,33 +117,40 @@ const Header = (props) => {
 					<IconButton className={classes.avatarButton} onClick={handleClickAvatar} style={{padding: 0}}> 
 						<Avatar loginUser={admin}/> 
 					</IconButton>
-					<Popper id={id} open={open} anchorEl={anchorEl} transition>
-						{
-							({TransitionProps}) => (
-								<Fade {...TransitionProps} timeout={350}>
-									<Paper className={classes.popup}>
-										<List>
-											<ListItem button onClick={handleGoToProfile}>
-												<ListItemIcon>
-													<AccountCircleOutlinedIcon />
-												</ListItemIcon>
-												<ListItemText primary="My Profile" />
-											</ListItem>
-											<ListItem button onClick={handleLogout}> 
-													<ListItemIcon>
-														<ExitToAppOutlinedIcon />
-													</ListItemIcon>												
-													<ListItemText primary="Log Out" /> 
-											</ListItem>
-										</List>
-									</Paper>
-								</Fade>
-							)
-						}
-					</Popper>
+					<Popover 
+						id={id} 
+						open={open} 
+						anchorEl={anchorEl} 
+						onClose={handleClose}
+						anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+						transformOrigin={{vertical:'top', horizontal: 'center'}} 
+					>
+						<Paper className={classes.popup}>
+							<List>
+								<ListItem button onClick={handleGoToProfile}>
+									<ListItemIcon>
+										<AccountCircleOutlinedIcon />
+									</ListItemIcon>
+									<ListItemText primary="My Profile" />
+								</ListItem>
+								<ListItem button onClick={() => { setIsOpen(true)}}> 
+										<ListItemIcon>
+											<ExitToAppOutlinedIcon />
+										</ListItemIcon>												
+										<ListItemText primary="Log Out" /> 
+								</ListItem>
+							</List>
+						</Paper>  
+					</Popover>
 				</Toolbar>
 			</AppBar>
 		</ElevationScroll>
+		<Confirm 
+			isOpen={isOpen} 
+			message="Are you sure to logout?" 
+			onCloseConfirm={() => {setIsOpen(false)}}
+			onConfirm={handleLogout}
+		/>
 		</React.Fragment>
 	)
 }
