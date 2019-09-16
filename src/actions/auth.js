@@ -21,7 +21,9 @@ export const login = (data, callback) => {
 				type: LOGIN,
 				payload: response.data
 			});
-			callback();
+			if(callback) {
+				callback();
+			}
 		} catch(e) {  
 			dispatch({
 				type: LOGIN_ERR,
@@ -35,9 +37,12 @@ export const logout = (callback) => {
 	return async (dispatch) => {
 		try {
 			const token = Cookies.get('admin_token');
-			const response = await axios.post('/api/admins/logout', {
-				headers: {'x-auth': `Bearer ${token}`}
-			});
+			Cookies.remove('admin_token');
+			const response = await axios.post(
+				'/api/admins/logout', 
+				null,				
+				{headers: {'x-auth': `Bearer ${token}`}} 
+			);
 			dispatch({
 				type: LOGOUT,
 				payload: response.data

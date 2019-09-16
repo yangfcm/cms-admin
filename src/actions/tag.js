@@ -108,7 +108,7 @@ export const updateTag = (id, data) => {
 			const response = await axios.patch(
 				`/api/tags/${id}`,
 				data,
-				{ headers: {'x-auth': token} }
+				{ headers: {'x-auth': `Bearer ${token}`} }
 			);
 			dispatch({
 				type: UPDATE_TAG,

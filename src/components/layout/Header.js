@@ -66,7 +66,7 @@ const Header = (props) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	const handleClickAvatar = (ev) => {
-		console.log(ev);
+		// console.log(ev);
 		setAnchorEl(anchorEl ? null : ev.currentTarget);
 	}
 	const open = !!anchorEl;
@@ -76,8 +76,10 @@ const Header = (props) => {
 		props.history.push('/profile');
 	}
 	const handleLogout = async () => {
-		await props.logout();
-		props.history.push('/login');
+		await props.logout(() => {
+			console.log('logout');
+			props.history.push('/login');
+		});
 	}
 
 	return (
