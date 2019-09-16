@@ -12,6 +12,7 @@ import NewPost from '../components/pages/NewPost';
 import EditPost from '../components/pages/EditPost';
 import Posts from '../components/pages/Posts';
 import Tags from '../components/pages/Tags';
+import Profile from '../components/pages/Profile';
 
 const history = createBrowserHistory();
 const AppRouter = () => {
@@ -27,6 +28,7 @@ const AppRouter = () => {
 				<PrivateRoute path="/edit/:id" component={EditPost} />
 				<PrivateRoute path="/posts" component={Posts} />
 				<PrivateRoute path="/tags" component={Tags} />
+				<PrivateRoute path="/profile" component={Profile} />
 				<Route path="/" exact component={Login} />
 			</Switch>
 		</Router>

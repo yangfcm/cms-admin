@@ -42,7 +42,9 @@ export const logout = (callback) => {
 				type: LOGOUT,
 				payload: response.data
 			});
-			callback();
+			if(callback) {
+				callback();
+			}
 		} catch(e) {
 			dispatch({
 				type: LOGOUT_ERR,

@@ -1,11 +1,11 @@
 import React from 'react'; 
-import UnderConstruction from '../common/UnderConstruction';
+import Greeting from '../modules/Greeting';
 
 class Dashboard extends React.Component {
 	render() { 
 		return (
 			<div>  
-				<UnderConstruction />
+				<Greeting />
 			</div>
 		) ;
 	}

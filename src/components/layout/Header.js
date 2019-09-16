@@ -1,15 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import AppBar from '@material-ui/core/AppBar'; 
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
-import AssistantRoundedIcon from '@material-ui/icons/AssistantRounded';
-import Avatar from '../common/Avatar';
+import {
+	AppBar, 
+	Typography, 
+	IconButton, 
+	Toolbar, 
+	useScrollTrigger,
+	Fade,
+	Paper,
+	Popper,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText
+} from '@material-ui/core'; 
 import { makeStyles } from '@material-ui/core/styles';
+import AssistantRoundedIcon from '@material-ui/icons/AssistantRounded';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import Avatar from '../common/Avatar'; 
+import { logout } from '../../actions/auth';
 
 const useStyles = makeStyles((theme) => ({
 	appBar: {
@@ -22,11 +33,17 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1
 	},
 	greeting: {
-		marginRight: 10,
+		marginRight: 15,
 		textTransform: 'capitalize',
 		[theme.breakpoints.down('xs')]: {
 			display: 'none'
 		}
+	},
+	avatarButton: {
+		marginRight: 20
+	},
+	popup: {
+		paddingTop: 12
 	}
 }));
 
@@ -46,6 +63,23 @@ const ElevationScroll = (props) => {
 const Header = (props) => {
 	const { admin } = props.auth.auth.data;
 	const classes = useStyles();
+	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	const handleClickAvatar = (ev) => {
+		console.log(ev);
+		setAnchorEl(anchorEl ? null : ev.currentTarget);
+	}
+	const open = !!anchorEl;
+	const id = open ? 'admin-popper' : undefined;
+
+	const handleGoToProfile = () => {
+		props.history.push('/profile');
+	}
+	const handleLogout = async () => {
+		await props.logout();
+		props.history.push('/login');
+	}
+
 	return (
 		<React.Fragment>
 		<ElevationScroll {...props}>
@@ -73,7 +107,33 @@ const Header = (props) => {
 						noWrap
 					> Welcome, {admin.firstname} {admin.lastname}
 					</Typography>
-					<Avatar loginUser = {admin}/> 
+					<IconButton className={classes.avatarButton} onClick={handleClickAvatar} style={{padding: 0}}> 
+						<Avatar loginUser={admin}/> 
+					</IconButton>
+					<Popper id={id} open={open} anchorEl={anchorEl} transition>
+						{
+							({TransitionProps}) => (
+								<Fade {...TransitionProps} timeout={350}>
+									<Paper className={classes.popup}>
+										<List>
+											<ListItem button onClick={handleGoToProfile}>
+												<ListItemIcon>
+													<AccountCircleOutlinedIcon />
+												</ListItemIcon>
+												<ListItemText primary="My Profile" />
+											</ListItem>
+											<ListItem button onClick={handleLogout}> 
+													<ListItemIcon>
+														<ExitToAppOutlinedIcon />
+													</ListItemIcon>												
+													<ListItemText primary="Log Out" /> 
+											</ListItem>
+										</List>
+									</Paper>
+								</Fade>
+							)
+						}
+					</Popper>
 				</Toolbar>
 			</AppBar>
 		</ElevationScroll>
@@ -87,4 +147,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, null)(withRouter(Header));
+export default connect(mapStateToProps, { logout })(withRouter(Header));
