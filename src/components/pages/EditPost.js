@@ -60,10 +60,7 @@ class EditPost extends React.Component {
 			<React.Fragment>
 				<PageTitle>Edit Post</PageTitle>
 				<Container maxWidth='md'>
-					<PostForm onSubmit={this.onSubmit} initialValues={{
-						title: post.title,
-						content: post.content
-					}} /> 
+					<PostForm onSubmit={this.onSubmit} editPost={this.state.postData} /> 
 				</Container>
 			</React.Fragment>
 		)

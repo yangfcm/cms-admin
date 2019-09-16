@@ -3,7 +3,8 @@ import {
 	DELETE_POST,
 	UPDATE_POST,
 	READ_POSTS,
-	READ_POST
+	READ_POST,
+	CLEAR_POST
 } from '../actions/types';
 
 export default (state = [], action) => {
@@ -31,6 +32,8 @@ export default (state = [], action) => {
 			return [...action.payload.data];
 		case READ_POST:
 			return [action.payload.data];
+		case CLEAR_POST:
+			return [];
 		default: 
 			return state;
 	}

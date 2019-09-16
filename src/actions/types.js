@@ -11,6 +11,7 @@ export const UPDATE_POST = 'UPDATE_POST';
 export const READ_POSTS = 'READ_POSTS';
 export const READ_POST = 'READ_POST';
 export const OPER_POST_ERR = 'OPER_POST_ERR';
+export const CLEAR_POST = 'CLEAR_POST';
 
 export const CREATE_CATEGORY = 'CREATE_CATEGORY';
 export const DELETE_CATEGORY = 'DELETE_CATEGORY';

@@ -8,6 +8,7 @@ import {
 	READ_POSTS,
 	READ_POST,
 	OPER_POST_ERR,
+	CLEAR_POST
 } from './types';
 
 /**
@@ -115,3 +116,12 @@ export const updatePost = (id, data) => {
 		}
 	}
 }
+
+/** Clear data in post reducer */
+export const clearPost = () => {
+	return (dispatch) => {
+		dispatch({
+			type: CLEAR_POST
+		})
+	}
+};

@@ -294,7 +294,7 @@ class PostForm extends React.Component {
 									})}
 								>
 									<SaveOutlinedIcon></SaveOutlinedIcon>
-									Save
+									Save as draft
 								</Button>
 							</Container>
 						</Box>
@@ -341,15 +341,44 @@ class PostForm extends React.Component {
 }
 
 const selector = formValueSelector('post');
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
 	const tagsValue = selector(state, 'tags');	// Get tags value from post form
 	const featuredImageValue = selector(state, 'featuredImage');	// Get value of featured image from post form
+	// console.log(ownProps);
+	const {editPost} = ownProps;
+	let initialValues = {};
+	
+	if(editPost) {
+		const initialCategory = {
+			id: editPost.category._id,
+			value: editPost.category.name,
+			label: editPost.category.name
+		}
+		const initialTags = editPost.tags.map((tag) => {
+			return {
+				id: tag._id,
+				value: tag.name,
+				label: tag.name
+			}
+		});
+
+		initialValues = {
+			title: editPost.title,
+			content: editPost.content,
+			isTop: editPost.isTop,
+			category: initialCategory,
+			tags: initialTags,
+			featuredImage: editPost.featuredImage
+		} 
+	}
+
 	return {
 		category: state.category,
 		tag: state.tag,
 		error: state.error,
 		tagsValue: tagsValue || [],
-		featuredImageValue
+		featuredImageValue,
+		initialValues
 	}
 }
 
@@ -372,6 +401,7 @@ export default compose(
 		validate: validatePostInput,
 		destroyOnUnmount: false,
 		touchOnBlur: false,
-		touchOnChange: true
+		touchOnChange: true,
+		enableReinitialize: true
 	})
 )(withStyles(styles)(PostForm));
