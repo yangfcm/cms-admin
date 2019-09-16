@@ -79,10 +79,10 @@ const Header = (props) => {
 
 	const handleGoToProfile = () => {
 		props.history.push('/profile');
+		setAnchorEl(null);
 	}
 	const handleLogout = async () => {
 		await props.logout(() => {
-			console.log('logout');
 			props.history.push('/login');
 		});
 	}
@@ -148,7 +148,7 @@ const Header = (props) => {
 		<Confirm 
 			isOpen={isOpen} 
 			message="Are you sure to logout?" 
-			onCloseConfirm={() => {setIsOpen(false)}}
+			onCloseConfirm={() => {setIsOpen(false); setAnchorEl(null)}}
 			onConfirm={handleLogout}
 		/>
 		</React.Fragment>

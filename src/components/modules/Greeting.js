@@ -1,7 +1,9 @@
 import React from 'react';
 import { Container, Typography, Box } from '@material-ui/core';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider } from '@material-ui/styles'; 
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
@@ -12,8 +14,10 @@ const Greeting = (props) => {
 	let greetingMsg;
 	if(hours>=6 && hours <=17) {
 		greetingMsg = 'Good day! Enjoy your time';
+		// greetingIcon = <WbSunnyIcon />
 	} else  {
-		greetingMsg = 'Good evening! How\'s your day going?'
+		greetingMsg = 'Good evening! How\'s your day going?';
+		// greetingIcon = <Brightness4Icon />
 	} 
 
 	return (
