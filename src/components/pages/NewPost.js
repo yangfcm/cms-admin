@@ -63,7 +63,7 @@ class NewPost extends React.Component {
 		}
 		await this.props.createPost(formData);
 
-		if(this.props.post && this.props.post.length>=1 && !this.props.error.error) {
+		if(this.props.post && this.props.post.length>=1 && !this.props.error.errorMsg) {
 			// Create(publish or save) post successfully
 			switch(status) {
 				case '1':

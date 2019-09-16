@@ -313,10 +313,11 @@ class PostForm extends React.Component {
 									{ postStatus==='published' && 'Post is created successfully'}
 									{ postStatus==='saved' && 'Post is saved successfully'}	
 									{ postStatus==='failed' && 'Operation failed!'}
+									{ postStatus==='updated' && 'Post is updated successfully'}
 								</Typography>	
 							</Grid>
 							<Grid item>
-							{ (postStatus === 'published' || postStatus==='saved') && 
+							{ (postStatus === 'published' || postStatus==='saved' || postStatus==='updated') && 
 								(<Grid container justify="center" alignItems="center"> 
 									<Grid item>
 										<ButtonLink color="primary" to="/posts" onClick={this.props.reset}>Go to Posts List</ButtonLink>
