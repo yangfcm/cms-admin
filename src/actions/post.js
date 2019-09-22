@@ -28,7 +28,7 @@ export const createPost = postData => {
     } catch (e) {
       dispatch({
         type: OPER_POST_ERR,
-        payload: e.response.data
+        payload: e.message
       });
     }
   };
@@ -49,7 +49,7 @@ export const deletePost = id => {
     } catch (e) {
       dispatch({
         type: OPER_POST_ERR,
-        payload: e.response.data
+        payload: e.message
       });
     }
   };
@@ -67,7 +67,7 @@ export const readPosts = () => {
     } catch (e) {
       dispatch({
         type: OPER_POST_ERR,
-        payload: e.response.data
+        payload: e.message
       });
     }
   };
@@ -85,7 +85,7 @@ export const readPost = id => {
     } catch (e) {
       dispatch({
         type: OPER_POST_ERR,
-        payload: e.response.data
+        payload: e.message
       });
     }
   };
@@ -106,7 +106,7 @@ export const updatePost = (id, data) => {
     } catch (e) {
       dispatch({
         type: OPER_POST_ERR,
-        payload: e.response.data
+        payload: e.message
       });
     }
   };
