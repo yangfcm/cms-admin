@@ -1,4 +1,4 @@
-/** Manage admins */
+/** Manage users */
 import React from "react";
 
 class Admins extends React.Component {

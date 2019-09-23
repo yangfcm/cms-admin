@@ -7,7 +7,8 @@ import {
   Tab,
   Badge,
   Typography,
-  Box
+  Box,
+  Grid
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
@@ -98,6 +99,9 @@ const columns = [
     field: "post",
     render: rowData => {
       return truncateString(rowData.post.title, 40);
+    },
+    customSort: (a, b) => {
+      return a.post.title.toLowerCase() > b.post.title.toLowerCase() ? 1 : -1;
     }
   },
   {
@@ -117,6 +121,11 @@ const columns = [
       ) : (
         "No avatar"
       );
+    },
+    customSort: (a, b) => {
+      return a.author.firstName.toLowerCase() > b.author.firstName.toLowerCase()
+        ? 1
+        : -1;
     }
   }
 ];
@@ -221,6 +230,82 @@ class Comments extends React.Component {
     this.setData();
   };
 
+  handleRowClick = async (ev, rowData, togglePanel) => {
+    togglePanel();
+    if (!rowData.isRead) {
+      await this.props.updateComment(rowData._id, {
+        isRead: true
+      });
+      this.setData();
+    }
+  };
+
+  renderCommentDetailPanel = rowData => {
+    return (
+      <Container maxWidth="md">
+        <Box component="div" p={1}>
+          <Grid container>
+            <Grid item xs={2}>
+              <Typography variant="subtitle2" component="span">
+                Comment
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <Typography variant="body1" component="span">
+                {rowData.content}
+              </Typography>
+            </Grid>
+          </Grid>{" "}
+          {/* Comment content */}
+          <Grid container>
+            <Grid item xs={2}>
+              <Typography variant="subtitle2" component="span">
+                Post
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <Typography variant="body1" component="span">
+                {rowData.post.title}
+              </Typography>
+            </Grid>
+          </Grid>{" "}
+          {/* Post title */}
+          <Grid container>
+            <Grid item xs={2}>
+              <Typography variant="subtitle2" component="span">
+                Author
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <Typography variant="body1" component="span">
+                {rowData.author.firstName + " " + rowData.author.lastName}
+              </Typography>
+              <Typography variant="subtitle2" component="span">
+                ({rowData.author.email})
+              </Typography>
+            </Grid>
+          </Grid>{" "}
+          {/* Comment author */}
+          <Grid container>
+            <Grid item xs={2}>
+              <Typography variant="subtitle2" component="span">
+                Created At
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <Typography variant="body1" component="span">
+                {moment(rowData.createdAt * 1000).format(
+                  "Do MMM YYYY, h:mm:ss a"
+                )}
+              </Typography>
+            </Grid>
+          </Grid>{" "}
+          {/* Creation date time */}
+        </Box>
+      </Container>
+    );
+  };
+
   render() {
     console.log(this.props.comment);
     console.log(this.state);
@@ -292,6 +377,11 @@ class Comments extends React.Component {
                   onClick: this.handleCensor
                 }
               ]}
+              detailPanel={this.renderCommentDetailPanel}
+              onRowClick={this.handleRowClick}
+              options={{
+                sorting: true
+              }}
             />
           </TabPanel>
           <TabPanel value={this.state.value} index={1}>
@@ -312,6 +402,11 @@ class Comments extends React.Component {
                   onClick: this.handleRestore
                 }
               ]}
+              detailPanel={this.renderCommentDetailPanel}
+              onRowClick={this.handleRowClick}
+              options={{
+                sorting: true
+              }}
             />
           </TabPanel>
         </Container>
