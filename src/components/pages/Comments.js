@@ -109,6 +109,7 @@ const columns = [
           loginUser={{
             lastname: rowData.author.lastName,
             firstname: rowData.author.firstName,
+            email: rowData.author.email,
             avatarSrc: rowData.author.avatar
           }}
           color="orange"
@@ -164,6 +165,59 @@ class Comments extends React.Component {
 
   componentDidMount = async () => {
     await this.props.readComments();
+    this.setData();
+  };
+
+  /** Set comment top
+   * If the comment is already set as top, then unset it top.
+   */
+  handleSetTop = async (ev, rowData) => {
+    console.log("set top", rowData);
+    if (rowData.isTop === false) {
+      await this.props.updateComment(rowData._id, {
+        isTop: true
+      });
+    }
+    if (rowData.isTop === true) {
+      await this.props.updateComment(rowData._id, {
+        isTop: false
+      });
+    }
+    if (this.props.error.type === "comment" || this.props.error.errorMsg) {
+      return;
+    }
+    this.setData();
+  };
+
+  /** Censor a comment(Move it to trash) */
+  handleCensor = async (ev, rowData) => {
+    console.log("censor", rowData);
+    await this.props.updateComment(rowData._id, {
+      status: "0"
+    });
+    if (this.props.error.type === "comment" || this.props.error.errorMsg) {
+      return;
+    }
+    this.setData();
+  };
+
+  /** Delete a comment permanently */
+  handleDeleteForever = async (ev, rowData) => {
+    await this.props.deleteComment(rowData._id);
+    if (this.props.error.type === "comment") {
+      return;
+    }
+    this.setData();
+  };
+
+  /** Uncensor a comment(move comment from trash to published) */
+  handleRestore = async (ev, rowData) => {
+    await this.props.updateComment(rowData._id, {
+      status: "1"
+    });
+    if (this.props.error.type === "comment") {
+      return;
+    }
     this.setData();
   };
 
@@ -226,6 +280,18 @@ class Comments extends React.Component {
               icons={tableIcons}
               columns={this.state.commentsColumns}
               data={this.state.commentsData}
+              actions={[
+                {
+                  icon: tableIcons.SetTop,
+                  tooltip: "Toggle Top",
+                  onClick: this.handleSetTop
+                },
+                {
+                  icon: tableIcons.Censor,
+                  tooltip: "Censor",
+                  onClick: this.handleCensor
+                }
+              ]}
             />
           </TabPanel>
           <TabPanel value={this.state.value} index={1}>
@@ -234,13 +300,25 @@ class Comments extends React.Component {
               icons={tableIcons}
               columns={this.state.trashColumns}
               data={this.state.trashData}
+              actions={[
+                {
+                  icon: tableIcons.DeleteForever,
+                  tooltip: "Delete permanently",
+                  onClick: this.handleDeleteForever
+                },
+                {
+                  icon: tableIcons.Restore,
+                  tooltip: "Restore",
+                  onClick: this.handleRestore
+                }
+              ]}
             />
           </TabPanel>
         </Container>
 
         <Alert
-          isOpen={error.type === "comment" && error.errorMsg}
-          message={error.errorMsg}
+          isOpen={error.type === "comment"}
+          message={error.errorMsg || "Operation failed!"}
           onCloseAlert={this.props.clearError}
         />
       </React.Fragment>
