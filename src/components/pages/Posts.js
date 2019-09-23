@@ -393,7 +393,8 @@ class Posts extends React.Component {
                     style={{ maxWidth: "80%", maxHeight: 160 + "px" }}
                   />
                 )}
-              </Grid>
+              </Grid>{" "}
+              {/* Featured image */}
             </Grid>
           </Grid>
         </Box>
