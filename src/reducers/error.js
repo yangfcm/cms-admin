@@ -42,7 +42,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...INITIAL_STATE,
         type: "profile",
-        errorMsg: action.payload
+        errorMsg: action.payload.message
       };
     case CLEAR_ERR:
       return {

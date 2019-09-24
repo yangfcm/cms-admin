@@ -28,7 +28,7 @@ export const createTag = data => {
     } catch (e) {
       dispatch({
         type: OPER_TAG_ERR,
-        payload: e.response.data
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -51,7 +51,7 @@ export const deleteTag = id => {
     } catch (e) {
       dispatch({
         type: OPER_TAG_ERR,
-        payload: e.response.data
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -71,7 +71,7 @@ export const readTags = () => {
     } catch (e) {
       dispatch({
         type: OPER_TAG_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -91,7 +91,7 @@ export const readTag = id => {
     } catch (e) {
       dispatch({
         type: OPER_TAG_ERR,
-        payload: e.response.data
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -112,7 +112,7 @@ export const updateTag = (id, data) => {
     } catch (e) {
       dispatch({
         type: OPER_TAG_ERR,
-        payload: e.response.data
+        payload: e.response ? e.response.data : e
       });
     }
   };

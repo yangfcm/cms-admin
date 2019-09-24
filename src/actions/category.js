@@ -25,7 +25,7 @@ export const createCategory = data => {
     } catch (e) {
       dispatch({
         type: OPER_CATEGORY_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -46,7 +46,7 @@ export const deleteCategory = id => {
     } catch (e) {
       dispatch({
         type: OPER_CATEGORY_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -67,7 +67,7 @@ export const updateCategory = (id, data) => {
     } catch (e) {
       dispatch({
         type: OPER_CATEGORY_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -85,7 +85,7 @@ export const readCategories = () => {
     } catch (e) {
       dispatch({
         type: OPER_CATEGORY_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -103,7 +103,7 @@ export const readCategory = id => {
     } catch (e) {
       dispatch({
         type: OPER_CATEGORY_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };

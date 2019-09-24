@@ -23,10 +23,10 @@ export const changePassword = data => {
         payload: response.data
       });
     } catch (e) {
-      console.log(e.response.data);
+      console.log(e.response);
       dispatch({
         type: OPER_PROFILE_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };

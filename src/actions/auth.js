@@ -28,7 +28,7 @@ export const login = (data, callback) => {
     } catch (e) {
       dispatch({
         type: LOGIN_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -52,7 +52,7 @@ export const logout = callback => {
     } catch (e) {
       dispatch({
         type: LOGOUT_ERR,
-        payload: e.response ? e.response.data : e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };

@@ -24,7 +24,7 @@ export const readComments = () => {
     } catch (e) {
       dispatch({
         type: OPER_COMMENT_ERR,
-        payload: e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -42,7 +42,7 @@ export const readComment = id => {
     } catch (e) {
       dispatch({
         type: OPER_COMMENT_ERR,
-        payload: e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -63,7 +63,7 @@ export const updateComment = (id, data) => {
     } catch (e) {
       dispatch({
         type: OPER_COMMENT_ERR,
-        payload: e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };
@@ -84,7 +84,7 @@ export const deleteComment = id => {
     } catch (e) {
       dispatch({
         type: OPER_COMMENT_ERR,
-        payload: e.message
+        payload: e.response ? e.response.data : e
       });
     }
   };

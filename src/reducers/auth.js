@@ -9,8 +9,7 @@ import {
 
 const INITIAL_STATE = {
   auth: null,
-  error: null,
-  changePasswordErr: null
+  error: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -19,20 +18,18 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         auth: action.payload,
-        error: null,
-        changePasswordErr: null
+        error: null
       };
     case LOGOUT:
       return {
         ...state,
         auth: null,
-        error: null,
-        changePasswordErr: null
+        error: null
       };
     case LOGIN_ERR:
       return {
         ...state,
-        error: action.payload
+        error: action.payload.message
       };
     case LOGOUT_ERR:
       return {
@@ -43,8 +40,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         auth: action.payload,
-        error: null,
-        changePasswordErr: null
+        error: null
       };
     case CHECK_AUTH_ERR:
       return {
