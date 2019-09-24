@@ -1,8 +1,8 @@
 import React from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { reduxForm, Field, SubmissionError } from "redux-form";
-import { Container, Typography, Button, Grid } from "@material-ui/core";
+import { reduxForm, Field, reset } from "redux-form";
+import { Container, Button, Grid } from "@material-ui/core";
 
 import { RenderTextField } from "../form/Fields";
 import { validateChangePasswordInput } from "../../utils/validate";
@@ -19,7 +19,7 @@ class ChangePassword extends React.Component {
 
   render() {
     const { handleSubmit, changePasswordState, onResetState } = this.props;
-    console.log(changePasswordState);
+    // console.log(changePasswordState);
     return (
       <Container>
         <form onSubmit={handleSubmit(this.formSubmit)}>
@@ -59,6 +59,7 @@ class ChangePassword extends React.Component {
             message={changePasswordState.message}
             isOpen={changePasswordState.state}
             onCloseAlert={onResetState}
+            type={changePasswordState.state === "success" ? "success" : "error"}
           />
         </form>
       </Container>
@@ -83,6 +84,10 @@ export default compose(
     form: "changePassword",
     validate: validateChangePasswordInput,
     touchOnBlur: false,
-    touchOnChange: false
+    touchOnChange: false,
+    onSubmitSuccess: (result, dispatch) => {
+      // Reset form after submitted successfully
+      return dispatch(reset("changePassword"));
+    }
   })
 )(ChangePassword);

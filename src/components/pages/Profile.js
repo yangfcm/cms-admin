@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Container } from "@material-ui/core";
+import { Container, Button, Grid } from "@material-ui/core";
 
 import Loading from "../common/Loading";
 import ProfileDetail from "../modules/ProfileDetail";
@@ -11,10 +11,11 @@ import { clearError } from "../../actions/error";
 class Profile extends React.Component {
   state = {
     profile: null, // User's profile
-    changePasswordState: { state: null, message: "" }
+    changePasswordState: { state: null, message: "" },
     // null - no action,
     // success - password is successfully changed
     // fail - failed to change password
+    isChangingPassword: false
   };
 
   componentDidMount = async () => {
@@ -57,7 +58,7 @@ class Profile extends React.Component {
         message: ""
       }
     });
-    this.props.history.push("/profile");
+    // this.props.history.push("/profile");
   };
 
   render() {
@@ -70,11 +71,32 @@ class Profile extends React.Component {
         <Container maxWidth="sm">
           <ProfileDetail profile={profile} />
           <br />
-          <ChangePassword
-            onChangePassword={this.handleChangePassword}
-            changePasswordState={this.state.changePasswordState}
-            onResetState={this.handleResetState}
-          />
+          <Grid container justify="space-around">
+            <Grid item>
+              <Button
+                variant={
+                  this.state.isChangingPassword ? "contained" : "outlined"
+                }
+                onClick={() => {
+                  this.setState(state => {
+                    return {
+                      isChangingPassword: !state.isChangingPassword
+                    };
+                  });
+                }}
+              >
+                Change Password
+              </Button>
+            </Grid>
+          </Grid>
+          <br />
+          {this.state.isChangingPassword && (
+            <ChangePassword
+              onChangePassword={this.handleChangePassword}
+              changePasswordState={this.state.changePasswordState}
+              onResetState={this.handleResetState}
+            />
+          )}
         </Container>
       </React.Fragment>
     );
