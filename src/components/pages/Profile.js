@@ -1,94 +1,80 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Container, Grid, Typography, Button } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { Container } from "@material-ui/core";
 
 import Loading from "../common/Loading";
 import ProfileDetail from "../modules/ProfileDetail";
 import ChangePassword from "../modules/ChangePassword";
-import ProfileForm from "../modules/ProfileForm";
-import { changePassword } from "../../actions/auth";
+import { changePassword } from "../../actions/profile";
+import { clearError } from "../../actions/error";
 
 class Profile extends React.Component {
   state = {
     profile: null, // User's profile
-    isEditingProfile: false,
-    isChangingPassword: false
+    changePasswordState: { state: null, message: "" }
+    // null - no action,
+    // success - password is successfully changed
+    // fail - failed to change password
   };
 
   componentDidMount = async () => {
     if (this.props.auth) {
       this.setState({
-        profile: this.props.auth.auth.data.admin
+        profile: this.props.auth.data.admin
       });
     }
   };
 
-  handleBackToProfile = () => {
-    this.setState({
-      isEditingProfile: false,
-      isChangingPassword: false
-    });
+  handleChangePassword = async formValues => {
+    // console.log(formValues);
+    const { oldPassword, newPassword } = formValues;
+    const { email } = this.state.profile;
+    await this.props.changePassword({ oldPassword, newPassword, email });
+    const { error } = this.props;
+    if (error.type === "profile") {
+      this.setState({
+        changePasswordState: {
+          state: "fail",
+          message: error.errorMsg
+        }
+      });
+    }
+    if (error.type !== "profile" && error.errorMsg === "") {
+      this.setState({
+        changePasswordState: {
+          state: "success",
+          message: "Password is changed successfully"
+        }
+      });
+    }
   };
 
-  handleChangePassword = formValues => {
-    console.log(formValues);
-    console.log(this.props.auth.auth.data.admin.email);
-    const { email } = this.props.auth.auth.data.admin;
-    this.props.changePassword({ ...formValues, email });
+  handleResetState = () => {
+    this.props.clearError();
     this.setState({
-      isChangingPassword: true
+      changePasswordState: {
+        state: null,
+        message: ""
+      }
     });
+    this.props.history.push("/profile");
   };
 
   render() {
-    const { profile, isChangingPassword, isEditingProfile } = this.state;
+    const { profile } = this.state;
     if (!profile) {
       return <Loading />;
     }
     return (
       <React.Fragment>
         <Container maxWidth="sm">
-          {!isEditingProfile && <ProfileDetail profile={profile} />}
-
-          {!isEditingProfile && (
-            <Grid container justify="space-around">
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  this.setState({
-                    isEditingProfile: true,
-                    isChangingPassword: false
-                  });
-                }}
-              >
-                Edit Profile
-              </Button>
-              <Button
-                variant={isChangingPassword ? "contained" : "outlined"}
-                onClick={() => {
-                  this.setState(state => {
-                    return {
-                      isEditingProfile: false,
-                      isChangingPassword: !state.isChangingPassword
-                    };
-                  });
-                }}
-              >
-                Change Password
-              </Button>
-            </Grid>
-          )}
+          <ProfileDetail profile={profile} />
           <br />
-          {isChangingPassword && (
-            <ChangePassword changePassword={this.handleChangePassword} />
-          )}
-          {isEditingProfile && (
-            <ProfileForm
-              profile={profile}
-              handleBackToProfile={this.handleBackToProfile}
-            />
-          )}
+          <ChangePassword
+            onChangePassword={this.handleChangePassword}
+            changePasswordState={this.state.changePasswordState}
+            onResetState={this.handleResetState}
+          />
         </Container>
       </React.Fragment>
     );
@@ -97,10 +83,13 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    auth: state.auth
+    auth: state.auth.auth,
+    profile: state.profile.profile,
+    error: state.error
   };
 };
+
 export default connect(
   mapStateToProps,
-  { changePassword }
+  { changePassword, clearError }
 )(Profile);

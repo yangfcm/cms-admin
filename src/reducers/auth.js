@@ -4,10 +4,7 @@ import {
   LOGIN_ERR,
   LOGOUT_ERR,
   CHECK_AUTH,
-  CHECK_AUTH_ERR,
-  CHANGE_PASSWORD,
-  CHANGE_PASSWORD_ERR,
-  CLEAR_AUTH_ERR
+  CHECK_AUTH_ERR
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -53,24 +50,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         error: action.payload
-      };
-    case CHANGE_PASSWORD:
-      return {
-        ...state,
-        error: null,
-        changePasswordErr: null
-      };
-    case CHANGE_PASSWORD_ERR:
-      return {
-        ...state,
-        error: null,
-        changePasswordErr: action.payload
-      };
-    case CLEAR_AUTH_ERR:
-      return {
-        ...state,
-        error: null,
-        changePasswordErr: null
       };
     default:
       return state;

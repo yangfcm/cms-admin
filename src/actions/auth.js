@@ -8,8 +8,6 @@ import {
   LOGOUT_ERR,
   CHECK_AUTH,
   CHECK_AUTH_ERR,
-  CHANGE_PASSWORD,
-  CHANGE_PASSWORD_ERR,
   CLEAR_AUTH_ERR
 } from "./types";
 
@@ -30,7 +28,7 @@ export const login = (data, callback) => {
     } catch (e) {
       dispatch({
         type: LOGIN_ERR,
-        payload: e.response.data
+        payload: e.response ? e.response.data : e.message
       });
     }
   };
@@ -54,7 +52,7 @@ export const logout = callback => {
     } catch (e) {
       dispatch({
         type: LOGOUT_ERR,
-        payload: e.response.data
+        payload: e.response ? e.response.data : e.message
       });
     }
   };
@@ -83,35 +81,6 @@ export const checkAuth = () => {
       dispatch({
         type: CHECK_AUTH_ERR,
         payload: e.response ? e.response.data : e.message
-      });
-    }
-  };
-};
-
-/** Change password */
-/**
- * data - should be an object like this:
- *  {
-			email: "email@email.com",
-			oldPassword: "old-password",
-			newPassword: "new-password"
-		}
- */
-export const changePassword = data => {
-  return async dispatch => {
-    const token = Cookies.get("admin_token");
-    try {
-      const response = await axios.post("/api/admins/changePassword", data, {
-        headers: { "x-auth": `Bearer ${token}` }
-      });
-      dispatch({
-        type: CHANGE_PASSWORD,
-        payload: response.data
-      });
-    } catch (e) {
-      dispatch({
-        type: CHANGE_PASSWORD_ERR,
-        payload: e.response.data
       });
     }
   };

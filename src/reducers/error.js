@@ -3,6 +3,7 @@ import {
   OPER_POST_ERR,
   OPER_TAG_ERR,
   OPER_COMMENT_ERR,
+  OPER_PROFILE_ERR,
   CLEAR_ERR
 } from "../actions/types";
 
@@ -36,6 +37,12 @@ export default (state = INITIAL_STATE, action) => {
         ...INITIAL_STATE,
         type: "comment",
         errorMsg: action.payload.message
+      };
+    case OPER_PROFILE_ERR:
+      return {
+        ...INITIAL_STATE,
+        type: "profile",
+        errorMsg: action.payload
       };
     case CLEAR_ERR:
       return {

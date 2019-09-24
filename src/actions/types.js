@@ -5,7 +5,7 @@ export const LOGOUT_ERR = "LOGOUT_ERR";
 export const CHECK_AUTH = "CHECK_AUTH";
 export const CHECK_AUTH_ERR = "CHECK_AUTH_ERR";
 export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
-export const CHANGE_PASSWORD_ERR = "CHANGE_PASSWORD_ERR";
+export const OPER_PROFILE_ERR = "OPER_PROFILE_ERR";
 export const CLEAR_AUTH_ERR = "CLEAR_AUTH_ERR";
 
 export const CREATE_POST = "CREATE_POST";

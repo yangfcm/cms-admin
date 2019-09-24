@@ -7,6 +7,7 @@ import categoryReducer from "../reducers/category";
 import tagReducer from "../reducers/tag";
 import commentReducer from "../reducers/comment";
 import errorReducer from "../reducers/error";
+import profileReducer from "../reducers/profile";
 import { reducer as formReducer } from "redux-form";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -20,6 +21,7 @@ const configStore = () => {
       category: categoryReducer,
       tag: tagReducer,
       comment: commentReducer,
+      profile: profileReducer,
       error: errorReducer
     }),
     composeEnhancers(applyMiddleware(thunk))
