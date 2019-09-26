@@ -39,7 +39,7 @@ class Login extends React.Component {
   formSubmit = async values => {
     await this.props.login(
       {
-        email: values.email,
+        loginId: values.loginId,
         password: values.password
       },
       () => {
@@ -74,10 +74,10 @@ class Login extends React.Component {
             onSubmit={handleSubmit(this.formSubmit)}
           >
             <Field
-              name="email"
-              id="email"
+              name="loginId"
+              id="loginId"
               type="text"
-              label="Email"
+              label="Email or Username"
               autoFocus={true}
               required={false}
               component={RenderTextField}
