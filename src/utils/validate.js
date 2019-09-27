@@ -49,3 +49,49 @@ export const validateChangePasswordInput = values => {
   }
   return errors;
 };
+
+export const validateAddAdminInput = values => {
+  const errors = {};
+  const {
+    username,
+    firstname,
+    lastname,
+    email,
+    role,
+    status,
+    password,
+    confPassword
+  } = values;
+
+  if (!username || username.trim().length < 1) {
+    errors.username = "Username is required";
+  }
+  if (!firstname || firstname.trim().length < 1) {
+    errors.firstname = "First Name is required";
+  }
+  if (!lastname || lastname.trim().length < 1) {
+    errors.lastname = "Last Name is required";
+  }
+  if (!email || email.trim().length < 1) {
+    errors.email = "Email is required";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+    errors.email = "Email is invalid";
+  }
+
+  if (role === undefined) {
+    errors.role = " Role is required";
+  }
+  if (status === undefined) {
+    errors.status = "Status is required";
+  }
+  if (!password) {
+    errors.password = "Password is required";
+  }
+  if (!confPassword) {
+    errors.confPassword = "Confirmation password is required";
+  } else if (confPassword !== password) {
+    errors.confPassword = "Two passwords are different";
+  }
+
+  return errors;
+};

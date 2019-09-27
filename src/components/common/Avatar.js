@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 
 export default ({ loginUser, color, size }) => {
   const classes = useStyles();
-  const avatarSrc = loginUser.avatar;
+  const avatarSrc = loginUser ? loginUser.avatar : "";
   return (
     <Tooltip title={loginUser.username || loginUser.email} placement="right">
       {avatarSrc ? (

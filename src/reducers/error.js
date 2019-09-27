@@ -4,6 +4,7 @@ import {
   OPER_TAG_ERR,
   OPER_COMMENT_ERR,
   OPER_PROFILE_ERR,
+  OPER_ADMIN_ERR,
   CLEAR_ERR
 } from "../actions/types";
 
@@ -42,6 +43,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...INITIAL_STATE,
         type: "profile",
+        errorMsg: action.payload.message
+      };
+    case OPER_ADMIN_ERR:
+      return {
+        ...INITIAL_STATE,
+        type: "admin",
         errorMsg: action.payload.message
       };
     case CLEAR_ERR:
