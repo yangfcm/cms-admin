@@ -8,6 +8,8 @@ import DashboardOutlinedIcon from "@material-ui/icons/DashboardOutlined";
 import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
 import CommentOutlinedIcon from "@material-ui/icons/CommentOutlined";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import SupervisorAccountOutlinedIcon from "@material-ui/icons/SupervisorAccountOutlined";
+import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 
 import ListItemLink from "../common/ListItemLink";
 
@@ -73,6 +75,16 @@ const Sidebar = props => {
           <CommentOutlinedIcon />
         </ListItemIcon>
         <ListItemText primary="Comments" />
+      </ListItemLink>
+      <ListItemLink
+        button
+        to="/admins"
+        activeClassName={classes["active-link"]}
+      >
+        <ListItemIcon>
+          <GroupAddOutlinedIcon />
+        </ListItemIcon>
+        <ListItemText primary="Admins" />
       </ListItemLink>
       <ListItemLink
         button

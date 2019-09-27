@@ -154,7 +154,9 @@ class Comments extends React.Component {
       }
     ], // Comments for censored
     trashData: null, // Censored comments data
-    value: 0
+    value: 0,
+    openConfirmDeleteModal: false, // Confirm the deletion of a comment
+    commentIdToDelete: null // id of the comment to delete
   };
 
   setData = () => {
@@ -211,12 +213,16 @@ class Comments extends React.Component {
   };
 
   /** Delete a comment permanently */
-  handleDeleteForever = async (ev, rowData) => {
-    await this.props.deleteComment(rowData._id);
-    if (this.props.error.type === "comment") {
-      return;
+  handleDeletePermanently = async () => {
+    await this.props.deleteComment(this.state.commentIdToDelete);
+    if (this.props.error.type === "comment" && this.props.error.errorMsg) {
+      return; // Fail to delete comment
     }
     this.setData();
+    this.setState({
+      openConfirmDeleteModal: false,
+      commentIdToDelete: null
+    });
   };
 
   /** Uncensor a comment(move comment from trash to published) */
@@ -394,7 +400,12 @@ class Comments extends React.Component {
                 {
                   icon: tableIcons.DeleteForever,
                   tooltip: "Delete permanently",
-                  onClick: this.handleDeleteForever
+                  onClick: (ev, rowData) => {
+                    this.setState({
+                      openConfirmDeleteModal: true,
+                      commentIdToDelete: rowData._id
+                    });
+                  }
                 },
                 {
                   icon: tableIcons.Restore,
@@ -415,6 +426,18 @@ class Comments extends React.Component {
           isOpen={error.type === "comment"}
           message={error.errorMsg || "Operation failed!"}
           onCloseAlert={this.props.clearError}
+        />
+
+        <Confirm
+          isOpen={this.state.openConfirmDeleteModal}
+          message="Are you sure to delete the comment permanently?"
+          onCloseConfirm={() => {
+            this.setState({
+              openConfirmDeleteModal: false,
+              commentIdToDelete: null
+            });
+          }}
+          onConfirm={this.handleDeletePermanently}
         />
       </React.Fragment>
     );
