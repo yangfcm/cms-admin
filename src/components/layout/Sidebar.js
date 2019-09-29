@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+
 import { Drawer, List, ListItemText, ListItemIcon } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CreateOutlinedIcon from "@material-ui/icons/CreateOutlined";
@@ -24,7 +26,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sidebar = props => {
+  let adminRole;
   const classes = useStyles();
+  if (props.auth) {
+    adminRole = props.auth.data.admin.role;
+    console.log(adminRole);
+  }
 
   const drawer = (
     <List>
@@ -76,16 +83,18 @@ const Sidebar = props => {
         </ListItemIcon>
         <ListItemText primary="Comments" />
       </ListItemLink>
-      <ListItemLink
-        button
-        to="/admins"
-        activeClassName={classes["active-link"]}
-      >
-        <ListItemIcon>
-          <GroupAddOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Admins" />
-      </ListItemLink>
+      {adminRole === 1 && (
+        <ListItemLink
+          button
+          to="/admins"
+          activeClassName={classes["active-link"]}
+        >
+          <ListItemIcon>
+            <GroupAddOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Admins" />
+        </ListItemLink>
+      )}
       <ListItemLink
         button
         to="/profile"
@@ -110,4 +119,10 @@ const Sidebar = props => {
   );
 };
 
-export default Sidebar;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth.auth
+  };
+};
+
+export default connect(mapStateToProps)(Sidebar);

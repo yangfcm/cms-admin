@@ -19,6 +19,7 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import Censor from "@material-ui/icons/HighlightOffOutlined";
 import SetTop from "@material-ui/icons/GradeOutlined";
+import ResetPassword from "@material-ui/icons/LockOutlined";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -48,10 +49,11 @@ const tableIcons = {
   SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-
   Censor: forwardRef((props, ref) => <Censor {...props} ref={ref} />),
-
-  SetTop: forwardRef((props, ref) => <SetTop {...props} ref={ref} />)
+  SetTop: forwardRef((props, ref) => <SetTop {...props} ref={ref} />),
+  ResetPassword: forwardRef((props, ref) => (
+    <ResetPassword {...props} ref={ref} />
+  ))
 };
 
 export default tableIcons;

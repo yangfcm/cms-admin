@@ -65,7 +65,8 @@ class Admins extends React.Component {
       }
     ],
     data: null,
-    openAddAdminForm: false
+    openAddAdminForm: false,
+    openResetPasswordForm: false
   };
 
   componentDidMount = async () => {
@@ -87,6 +88,8 @@ class Admins extends React.Component {
   };
 
   handleUpdateAdmin = (newData, oldData) => {
+    console.log(this.props.auth.auth.data.admin._id);
+    console.log(oldData);
     return new Promise(async (resolve, reject) => {
       const data = this.state.data;
       const index = data.indexOf(oldData);
@@ -122,7 +125,7 @@ class Admins extends React.Component {
     if (!this.state.data) {
       return <Loading />;
     }
-    console.log(this.state.data);
+    // console.log(this.state.data);
     return (
       <React.Fragment>
         <PageTitle>Admins Management</PageTitle>
@@ -133,6 +136,10 @@ class Admins extends React.Component {
             columns={this.state.columns}
             data={this.state.data}
             editable={{
+              isEditable: rowData =>
+                rowData._id !== this.props.auth.auth.data.admin._id,
+              isDeletable: rowData =>
+                rowData._id !== this.props.auth.auth.data.admin._id,
               onRowUpdate: this.handleUpdateAdmin,
               onRowDelete: this.handleDeleteAdmin
             }}
@@ -144,7 +151,15 @@ class Admins extends React.Component {
                 onClick: () => {
                   this.setState({ openAddAdminForm: true });
                 }
-              }
+              },
+              rowData => ({
+                icon: tableIcons.ResetPassword,
+                tooltip: "Reset Password",
+                onClick: () => {
+                  // TODO: Reset password
+                },
+                disabled: rowData._id === this.props.auth.auth.data.admin._id
+              })
             ]}
           />
         </Container>
