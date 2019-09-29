@@ -78,11 +78,44 @@ class Admins extends React.Component {
   handleAddAdmin = async formValues => {
     console.log(formValues);
     await this.props.createAdmin(formValues);
+    if (!this.props.error.errorMsg) {
+      this.setState({
+        openAddAdminForm: false,
+        data: this.props.admin
+      });
+    }
   };
 
-  handleUpdateAdmin = async (oldData, newData) => {};
+  handleUpdateAdmin = (newData, oldData) => {
+    return new Promise(async (resolve, reject) => {
+      const data = this.state.data;
+      const index = data.indexOf(oldData);
+      data[index] = newData;
+      await this.props.updateAdmin(oldData._id, newData);
+      if (this.props.error.errorMsg) {
+        reject();
+      } else {
+        this.setState({
+          data: this.props.admin
+        });
+        resolve();
+      }
+    });
+  };
 
-  handleDeleteAdmin = async oldData => {};
+  handleDeleteAdmin = oldData => {
+    return new Promise(async (resolve, reject) => {
+      await this.props.deleteAdmin(oldData._id);
+      if (this.props.error.errorMsg) {
+        reject();
+      } else {
+        this.setState({
+          data: this.props.admin
+        });
+        resolve();
+      }
+    });
+  };
 
   render() {
     const { error } = this.props;
