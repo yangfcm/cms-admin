@@ -10,13 +10,8 @@ import { connect } from "react-redux";
 import {
   Container,
   Typography,
-  Box,
-  Grid,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle
 } from "@material-ui/core";
 import MaterialTable from "material-table";
@@ -26,7 +21,8 @@ import {
   readAdmins,
   createAdmin,
   updateAdmin,
-  deleteAdmin
+  deleteAdmin,
+  resetPassword
 } from "../../actions/admin";
 import { clearError } from "../../actions/error";
 import PageTitle from "../common/PageTitle";
@@ -35,6 +31,7 @@ import Avatar from "../common/Avatar";
 import Alert from "../modals/Alert";
 import tableIcons from "../common/TableIcons";
 import AdminForm from "../modules/AdminForm";
+import ResetPassword from "../modules/ResetPassword";
 
 class Admins extends React.Component {
   state = {
@@ -66,7 +63,9 @@ class Admins extends React.Component {
     ],
     data: null,
     openAddAdminForm: false,
-    openResetPasswordForm: false
+    openResetPasswordForm: false,
+    adminIdToResetPassword: null,
+    isSuccess: false // Indicate if form operation is successful
   };
 
   componentDidMount = async () => {
@@ -76,17 +75,43 @@ class Admins extends React.Component {
     });
   };
 
+  /** Add an admin */
   handleAddAdmin = async formValues => {
-    console.log(formValues);
+    // console.log(formValues);
     await this.props.createAdmin(formValues);
     if (!this.props.error.errorMsg) {
       this.setState({
-        openAddAdminForm: false,
+        isSuccess: true,
         data: this.props.admin
       });
+      setTimeout(() => {
+        this.setState({
+          isSuccess: false,
+          openAddAdminForm: false
+        });
+      }, 800);
     }
   };
 
+  /** Reset password */
+  handleResetPassword = async formValues => {
+    const id = this.state.adminIdToResetPassword;
+    const { password } = formValues;
+    await this.props.resetPassword({ id, password });
+    if (!this.props.error.errorMsg) {
+      this.setState({
+        isSuccess: true
+      });
+      setTimeout(() => {
+        this.setState({
+          isSuccess: false,
+          openResetPasswordForm: false
+        });
+      }, 800);
+    }
+  };
+
+  /** Update admin */
   handleUpdateAdmin = (newData, oldData) => {
     console.log(this.props.auth.auth.data.admin._id);
     console.log(oldData);
@@ -106,6 +131,7 @@ class Admins extends React.Component {
     });
   };
 
+  /** Delete admin */
   handleDeleteAdmin = oldData => {
     return new Promise(async (resolve, reject) => {
       await this.props.deleteAdmin(oldData._id);
@@ -156,7 +182,10 @@ class Admins extends React.Component {
                 icon: tableIcons.ResetPassword,
                 tooltip: "Reset Password",
                 onClick: () => {
-                  // TODO: Reset password
+                  this.setState({
+                    openResetPasswordForm: true,
+                    adminIdToResetPassword: rowData._id
+                  });
                 },
                 disabled: rowData._id === this.props.auth.auth.data.admin._id
               })
@@ -171,11 +200,7 @@ class Admins extends React.Component {
         />
 
         <Dialog fullScreen open={this.state.openAddAdminForm}>
-          <br />
-          <br />
-          <br />
-          <br />
-          <Container maxWidth="sm">
+          <Container maxWidth="sm" style={{ paddingTop: "6rem" }}>
             <Typography variant="h5">Add Admin</Typography>
             <AdminForm
               onAddAdmin={this.handleAddAdmin}
@@ -184,7 +209,27 @@ class Admins extends React.Component {
                   openAddAdminForm: false
                 });
               }}
+              isSuccess={this.state.isSuccess}
             />
+          </Container>
+        </Dialog>
+
+        <Dialog fullScreen open={this.state.openResetPasswordForm}>
+          <Container maxWidth="sm" style={{ paddingTop: "6rem" }}>
+            <DialogTitle>
+              <Typography variant="h5">Reset Password</Typography>
+            </DialogTitle>
+            <DialogContent>
+              <ResetPassword
+                onResetPassword={this.handleResetPassword}
+                onCancel={() => {
+                  this.setState({
+                    openResetPasswordForm: false
+                  });
+                }}
+                isSuccess={this.state.isSuccess}
+              />
+            </DialogContent>
           </Container>
         </Dialog>
       </React.Fragment>
@@ -207,6 +252,7 @@ export default connect(
     createAdmin,
     updateAdmin,
     deleteAdmin,
+    resetPassword,
     clearError
   }
 )(Admins);

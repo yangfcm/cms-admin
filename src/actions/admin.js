@@ -131,7 +131,7 @@ export const resetPassword = data => {
   return async dispatch => {
     try {
       const token = Cookies.get("admin_token");
-      const response = await axios.patch(
+      const response = await axios.post(
         `/api/admins/resetPassword`,
         { id, password },
         {

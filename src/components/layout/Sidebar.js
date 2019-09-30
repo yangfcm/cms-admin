@@ -30,7 +30,6 @@ const Sidebar = props => {
   const classes = useStyles();
   if (props.auth) {
     adminRole = props.auth.data.admin.role;
-    console.log(adminRole);
   }
 
   const drawer = (

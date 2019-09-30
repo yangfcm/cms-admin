@@ -1,8 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
 import { reduxForm, Field } from "redux-form";
-import { Button, Grid, FormHelperText } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import { RenderTextField, RenderSimpleSelect } from "../form/Fields";
 import {
   validateAddAdminInput,
@@ -10,12 +8,21 @@ import {
 } from "../../utils/validate";
 
 class AdminForm extends React.Component {
-  formSubmit = formValues => {
-    this.props.onAddAdmin(formValues);
+  state = { isSubmitting: false };
+
+  formSubmit = async formValues => {
+    this.setState({
+      isSubmitting: true
+    });
+    await this.props.onAddAdmin(formValues);
+    this.setState({
+      isSubmitting: false
+    });
   };
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, pristine } = this.props;
+    const { isSubmitting } = this.state;
     // console.log(this.props.error);
     return (
       <React.Fragment>
@@ -85,7 +92,12 @@ class AdminForm extends React.Component {
           <br />
           <br />
           <Grid container justify="space-around">
-            <Button variant="outlined" color="primary" type="submit">
+            <Button
+              variant="outlined"
+              color="primary"
+              type="submit"
+              disabled={pristine || isSubmitting}
+            >
               Create
             </Button>
             <Button
@@ -98,11 +110,14 @@ class AdminForm extends React.Component {
             </Button>
           </Grid>
         </form>
-        {/* error.type === "admin" && error.errorMsg && (
-          <FormHelperText error style={{ marginTop: "0" }}>
-            {error.errorMsg}
-          </FormHelperText>
-				) */}
+        <br />
+        <Grid container justify="center">
+          {this.props.isSuccess && (
+            <Typography color="secondary">
+              Admin is created successfully!
+            </Typography>
+          )}
+        </Grid>
         <br />
       </React.Fragment>
     );

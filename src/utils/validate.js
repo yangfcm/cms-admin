@@ -36,7 +36,7 @@ export const validatePostInput = values => {
 
 export const validateChangePasswordInput = values => {
   const errors = {};
-  const { oldPassword, newPassword, confPassword } = values;
+  const { oldPassword, newPassword, confPassword, password } = values;
   if (!oldPassword) {
     errors.oldPassword = "Old password is required";
   }
@@ -49,6 +49,13 @@ export const validateChangePasswordInput = values => {
   if (newPassword && confPassword && newPassword !== confPassword) {
     errors.confPassword = "Two passwords are different";
     errors.newPassword = "   ";
+  }
+  if (!password) {
+    errors.password = "Password is required";
+  }
+  if (password && confPassword && password !== confPassword) {
+    errors.confPassword = "Two passwords are different";
+    errors.password = "   ";
   }
   return errors;
 };
