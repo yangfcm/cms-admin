@@ -406,6 +406,7 @@ class Posts extends React.Component {
     // console.log(this.state);
     const { error, classes } = this.props;
     const adminId = this.props.auth.auth.data.admin._id;
+    const adminRole = this.props.auth.auth.data.admin.role;
     if (!this.state.postsData) {
       // Is fetching data
       return <Loading />;
@@ -466,13 +467,13 @@ class Posts extends React.Component {
                   icon: tableIcons.Edit,
                   tooltip: "Edit",
                   onClick: this.handleEdit,
-                  disabled: rowData.author._id !== adminId
+                  disabled: rowData.author._id !== adminId && adminRole !== 1
                 }),
                 rowData => ({
                   icon: tableIcons.Delete,
                   tooltip: "Move to Trash",
                   onClick: this.handleMoveToTrash,
-                  disabled: rowData.author._id !== adminId
+                  disabled: rowData.author._id !== adminId && adminRole !== 1
                 })
               ]}
               detailPanel={this.renderPostDetailPanel}
@@ -501,13 +502,13 @@ class Posts extends React.Component {
                       postIdToDelete: rowData._id
                     });
                   },
-                  disabled: rowData.author._id !== adminId
+                  disabled: rowData.author._id !== adminId && adminRole !== 1
                 }),
                 rowData => ({
                   icon: tableIcons.Restore,
                   tooltip: "Restore",
                   onClick: this.handleRestoreFromTrash,
-                  disabled: rowData.author._id !== adminId
+                  disabled: rowData.author._id !== adminId && adminRole !== 1
                 })
               ]}
               detailPanel={this.renderPostDetailPanel}
