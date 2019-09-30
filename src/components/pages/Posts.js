@@ -405,6 +405,7 @@ class Posts extends React.Component {
   render() {
     // console.log(this.state);
     const { error, classes } = this.props;
+    const adminId = this.props.auth.auth.data.admin._id;
     if (!this.state.postsData) {
       // Is fetching data
       return <Loading />;
@@ -461,16 +462,18 @@ class Posts extends React.Component {
               columns={this.state.postsColumns}
               data={this.state.postsData}
               actions={[
-                {
+                rowData => ({
                   icon: tableIcons.Edit,
                   tooltip: "Edit",
-                  onClick: this.handleEdit
-                },
-                {
+                  onClick: this.handleEdit,
+                  disabled: rowData.author._id !== adminId
+                }),
+                rowData => ({
                   icon: tableIcons.Delete,
                   tooltip: "Move to Trash",
-                  onClick: this.handleMoveToTrash
-                }
+                  onClick: this.handleMoveToTrash,
+                  disabled: rowData.author._id !== adminId
+                })
               ]}
               detailPanel={this.renderPostDetailPanel}
               onRowClick={(ev, rowData, togglePanel) => {
@@ -489,7 +492,7 @@ class Posts extends React.Component {
               columns={this.state.trashColumns}
               data={this.state.trashData}
               actions={[
-                {
+                rowData => ({
                   icon: tableIcons.DeleteForever,
                   tooltip: "Delete Permanently",
                   onClick: (ev, rowData) => {
@@ -497,13 +500,15 @@ class Posts extends React.Component {
                       openConfirmDeleteModal: true,
                       postIdToDelete: rowData._id
                     });
-                  }
-                },
-                {
+                  },
+                  disabled: rowData.author._id !== adminId
+                }),
+                rowData => ({
                   icon: tableIcons.Restore,
                   tooltip: "Restore",
-                  onClick: this.handleRestoreFromTrash
-                }
+                  onClick: this.handleRestoreFromTrash,
+                  disabled: rowData.author._id !== adminId
+                })
               ]}
               detailPanel={this.renderPostDetailPanel}
               onRowClick={(ev, rowData, togglePanel) => {
@@ -540,6 +545,7 @@ class Posts extends React.Component {
 const mapStateToProps = state => {
   return {
     post: state.post,
+    auth: state.auth,
     error: state.error
   };
 };
