@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, withRouter } from "react-router-dom";
 
 import Header from "../components/layout/Header";
 import Sidebar from "../components/layout/Sidebar";
@@ -8,7 +8,8 @@ import Body from "../components/layout/Body";
 import Footer from "../components/layout/Footer";
 import { checkAuth } from "../actions/auth";
 
-class PrivateRoute extends React.Component {
+/** The route only super admin can access */
+class SuperAdminRoute extends React.Component {
   componentDidMount = () => {
     // console.log('check auth,', this.props);
     this.props.checkAuth();
@@ -31,6 +32,13 @@ class PrivateRoute extends React.Component {
       // Auth failed
       // console.log(auth);
       return <Redirect to="/login" />;
+    }
+
+    if (auth.data.admin.role !== 1) {
+      console.log(this.props.history);
+      // Check if it is super admin, If not go back to previous page
+      return <Redirect to="/dashboard" />;
+      // this.props.history.push("/dashboard");
     }
 
     return (
@@ -60,4 +68,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { checkAuth }
-)(PrivateRoute);
+)(SuperAdminRoute);

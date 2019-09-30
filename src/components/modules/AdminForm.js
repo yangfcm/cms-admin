@@ -4,7 +4,10 @@ import { compose } from "redux";
 import { reduxForm, Field } from "redux-form";
 import { Button, Grid, FormHelperText } from "@material-ui/core";
 import { RenderTextField, RenderSimpleSelect } from "../form/Fields";
-import { validateAddAdminInput } from "../../utils/validate";
+import {
+  validateAddAdminInput,
+  asyncValidateAddAdminInput
+} from "../../utils/validate";
 
 class AdminForm extends React.Component {
   formSubmit = formValues => {
@@ -110,5 +113,7 @@ export default reduxForm({
   form: "addAdmin",
   touchOnBlur: false,
   touchOnChange: false,
-  validate: validateAddAdminInput
+  validate: validateAddAdminInput,
+  asyncValidate: asyncValidateAddAdminInput,
+  asyncChangeFields: ["username", "email"]
 })(AdminForm);

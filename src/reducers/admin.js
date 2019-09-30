@@ -2,7 +2,9 @@ import {
   READ_ADMINS,
   CREATE_ADMIN,
   UPDATE_ADMIN,
-  DELETE_ADMIN
+  DELETE_ADMIN,
+  FIND_ADMIN,
+  RESET_PASSWORD
 } from "../actions/types";
 
 export default (state = [], action) => {
@@ -24,6 +26,10 @@ export default (state = [], action) => {
           };
         }
       });
+    case FIND_ADMIN:
+      return [action.payload.data];
+    case RESET_PASSWORD:
+      return [action.payload.data];
     case DELETE_ADMIN:
       return state.filter(admin => {
         return admin._id !== action.payload.data._id;

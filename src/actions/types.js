@@ -41,5 +41,7 @@ export const CREATE_ADMIN = "CREATE_ADMIN";
 export const UPDATE_ADMIN = "UPDATE_ADMIN";
 export const DELETE_ADMIN = "DELETE_ADMIN";
 export const OPER_ADMIN_ERR = "OPER_ADMIN_ERR";
+export const FIND_ADMIN = "FIND_ADMIN";
+export const RESET_PASSWORD = "RESET_PASSWORD";
 
 export const CLEAR_ERR = "CLEAR_ERR";

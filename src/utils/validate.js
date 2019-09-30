@@ -1,3 +1,6 @@
+import axios from "../settings";
+import Cookies from "js-cookie";
+
 export const validateLoginInput = values => {
   const errors = {};
   const { loginId, password } = values;
@@ -94,4 +97,26 @@ export const validateAddAdminInput = values => {
   }
 
   return errors;
+};
+
+/** When adding admin, validate with server to see if username and email is taken */
+export const asyncValidateAddAdminInput = async values => {
+  const { username, email } = values;
+  const token = Cookies.get("admin_token");
+  if (username) {
+    const response = await axios.get(`/api/admins/find?username=${username}`, {
+      headers: { "x-auth": `Bearer ${token}` }
+    });
+    if (response.data.data) {
+      throw { username: `The username ${username} is taken` };
+    }
+  }
+  if (email) {
+    const response = await axios.get(`/api/admins/find?email=${email}`, {
+      headers: { "x-auth": `Bearer ${token}` }
+    });
+    if (response.data.data) {
+      throw { email: `The Email ${email} is taken` };
+    }
+  }
 };

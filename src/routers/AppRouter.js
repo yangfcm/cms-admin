@@ -2,6 +2,7 @@ import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import PrivateRoute from "./PrivateRoute";
+import SuperAdminRoute from "./SuperAdminRoute";
 
 import Login from "../components/pages/Login";
 import Dashboard from "../components/pages/Dashboard";
@@ -22,7 +23,7 @@ const AppRouter = () => {
       <Switch>
         <Route path="/login" component={Login} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
-        <PrivateRoute path="/admins" component={Admins} />
+        <SuperAdminRoute path="/admins" component={Admins} />
         <PrivateRoute path="/categories" component={Categories} />
         <PrivateRoute path="/comments" component={Comments} />
         <PrivateRoute path="/new" component={NewPost} />
