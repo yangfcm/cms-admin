@@ -313,8 +313,8 @@ class Comments extends React.Component {
   };
 
   render() {
-    console.log(this.props.comment);
-    console.log(this.state);
+    // console.log(this.props.comment);
+    // console.log(this.state);
     const { error, classes } = this.props;
     if (!this.state.commentsData || !this.state.trashData) {
       return <Loading />;
