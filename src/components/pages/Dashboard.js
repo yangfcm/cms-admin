@@ -9,7 +9,7 @@ class Dashboard extends React.Component {
       <div style={{ height: "100%" }}>
         <Greeting />
         <Grid container justify="center">
-          <img src={coverPic} style={{ maxWidth: "80%" }} />
+          <img src={coverPic} style={{ maxWidth: "80%" }} alt="cover" />
         </Grid>
       </div>
     );

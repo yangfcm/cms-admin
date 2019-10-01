@@ -125,7 +125,6 @@ export const RenderCreatableSelect = ({
           isMulti={isMulti || false}
           defaultValue={defaultValue || []}
           onChange={onChange}
-          options={options}
           onCreateOption={handleCreateOption}
           value={value}
         />

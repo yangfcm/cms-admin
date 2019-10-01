@@ -191,9 +191,6 @@ class PostForm extends React.Component {
   }
 
   render() {
-    {
-      /* Render function*/
-    }
     const {
       handleSubmit,
       postStatus,
@@ -280,14 +277,14 @@ class PostForm extends React.Component {
           {croppedImageUrl && (
             <img
               src={croppedImageUrl}
-              alt="cropped image url"
+              alt="cropped url"
               style={{ maxHeight: 250 + "px" }}
             />
           )}
           {this.props.featuredImageValue && (
             <img
               src={this.props.featuredImageValue}
-              alt="cropped image url"
+              alt="cropped url"
               style={{ maxHeight: 250 + "px" }}
             />
           )}
@@ -387,7 +384,7 @@ class PostForm extends React.Component {
                   </Grid>
                 </Grid>
               )}
-              {postStatus == "failed" && (
+              {postStatus === "failed" && (
                 <Grid container justify="center" alignItems="center">
                   <Grid item>
                     <Button

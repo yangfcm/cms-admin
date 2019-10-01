@@ -8,11 +8,31 @@ CMS project is made up of three parts:
 - Admin system
 - Client
 
-This project is 'Admin system'. It is developed upon React, along with Redux, React router and Material-UI etc.
+This project is 'Admin system' part. It is developed upon React, along with Redux, React router and Material-UI etc.
 
 ## Run on development mode
 
-This system is a front end based on CMS API. Before running it, make sure API get started.
+This system is a front end based on CMS API. Before running it, make sure API is running.
+
+- System requirements: Node.js, NPM
+- Install dependencies: `yarn`
+- Create file `.env.local` under project directory to specify API URL, as below:
+
+```
+REACT_APP_API_URL=http://localhost:3005
+```
+
+- Open browser and visit `http://localhost:3001` and you can use the account and password you created to login system
+
+## Functionalities and Features
+
+- Write a new post
+- Edit, delete, trash and delete post
+- Create, edit, delete and update categories
+- Create, edit, delete and update tags
+- Censor, delete and set top comments
+- Support multiple admins and super admin can create, update, delete, inactivate, activate admins and reset password for other admins.
+- Change password
 
 ## Available Scripts
 
