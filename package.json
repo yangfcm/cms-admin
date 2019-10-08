@@ -1,6 +1,9 @@
 {
   "name": "admin",
   "version": "0.1.0",
+  "engines": {
+    "node": "10.13.0"
+  },
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.3.2",
@@ -23,7 +26,8 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "cross-env PORT=3001 react-scripts start",
+    "dev": "cross-env PORT=3001 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },
