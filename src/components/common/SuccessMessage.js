@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   }
 });
 
-const ErrorMessage = props => {
+const SuccessMessage = props => {
   const classes = useStyles();
   return (
     <Grid container justify="space-around" alignItems="center" direction="row">
@@ -26,4 +26,4 @@ const ErrorMessage = props => {
   );
 };
 
-export default ErrorMessage;
+export default SuccessMessage;
