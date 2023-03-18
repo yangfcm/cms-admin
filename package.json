@@ -1,53 +1,34 @@
 {
-  "name": "admin",
-  "version": "0.1.0",
-  "engines": {
-    "node": "10.13.0"
-  },
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.3.2",
-    "@material-ui/icons": "^4.2.1",
-    "axios": "^0.19.0",
-    "js-cookie": "^2.2.1",
-    "material-table": "^1.50.0",
-    "moment": "^2.24.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-image-crop": "^8.2.2",
-    "react-modal": "^3.10.1",
-    "react-quill": "^1.3.3",
-    "react-redux": "^7.1.0",
-    "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.1",
-    "react-select": "^3.0.4",
-    "redux": "^4.0.4",
-    "redux-form": "8.1.0",
-    "redux-thunk": "^2.3.0"
-  },
+  "name": "cms-admin",
+  "version": "1.0.0",
+  "description": "## Intro",
+  "main": "index.js",
   "scripts": {
-    "dev": "cross-env PORT=3001 react-scripts start",
-    "start": "serve -s build",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "heroku-prebuild": "npm install -g serve"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yangfcm/CMS-Admin.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yangfcm/CMS-Admin/issues"
+  },
+  "homepage": "https://github.com/yangfcm/CMS-Admin#readme",
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
-    "cross-env": "^6.0.0"
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.0"
   }
 }
