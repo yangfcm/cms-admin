@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
@@ -29,7 +29,7 @@ function AuthForm({ mode }: AuthFormProps) {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<AuthFormData>({
     mode: "onSubmit",
     defaultValues: {
       email: "",
@@ -37,9 +37,9 @@ function AuthForm({ mode }: AuthFormProps) {
     },
   });
 
-  const onSubmit = (formData: AuthFormData) => {
-    console.log(formData);
-  };
+  const onSubmit = useCallback((formData: AuthFormData) => {
+    console.log("submit!", formData);
+  }, []);
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -53,7 +53,7 @@ function AuthForm({ mode }: AuthFormProps) {
           rules={{
             required: "Email is required",
             validate: (value) =>
-              isValidEmail(value) ? "" : "Email you input is invalid.",
+              isValidEmail(value) ? true : "The email you input is invalid.",
           }}
           render={({ field }) => (
             <>
