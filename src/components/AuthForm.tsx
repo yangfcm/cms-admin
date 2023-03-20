@@ -14,6 +14,13 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
 import { isValidEmail } from "../utils/validators";
+import {
+  EMAIL_REQUIRED,
+  INVALID_EMAIL,
+  PASSWORD_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_REQUIRED,
+} from "../settings/constants";
 
 type AuthFormProps = {
   mode: "signin" | "signup";
@@ -51,9 +58,8 @@ function AuthForm({ mode }: AuthFormProps) {
           name="email"
           control={control}
           rules={{
-            required: "Email is required",
-            validate: (value) =>
-              isValidEmail(value) ? true : "The email you input is invalid.",
+            required: EMAIL_REQUIRED,
+            validate: (value) => (isValidEmail(value) ? true : INVALID_EMAIL),
           }}
           render={({ field }) => (
             <>
@@ -80,12 +86,12 @@ function AuthForm({ mode }: AuthFormProps) {
           name="password"
           control={control}
           rules={{
-            required: "Password is required",
+            required: PASSWORD_REQUIRED,
             minLength:
               mode === "signup"
                 ? {
-                    value: 6,
-                    message: "Password should be at least 6 characters.",
+                    value: PASSWORD_MIN_LENGTH,
+                    message: PASSWORD_LENGTH,
                   }
                 : 0,
           }}
