@@ -1,3 +1,5 @@
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@mui/material/Link";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -18,6 +20,11 @@ function SignIn() {
           Sign In
         </Typography>
         <AuthForm mode="signin" />
+        <Box sx={{ mt: 2 }}>
+          <Link component={RouterLink} to="/signup" variant="body2">
+            Do not have an account? Sign Up.
+          </Link>
+        </Box>
       </Box>
     </Container>
   );
