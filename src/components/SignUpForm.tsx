@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  FormProvider,
+  SubmitHandler,
+  FormProviderProps,
+} from "react-hook-form";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
@@ -30,7 +35,7 @@ type SignUpFormData = {
 };
 
 function SignUpForm() {
-  const { ...methods } = useForm<SignUpFormData>({
+  const methods = useForm<SignUpFormData>({
     mode: "onSubmit",
     defaultValues: {
       email: "",
@@ -44,7 +49,9 @@ function SignUpForm() {
   };
 
   return (
-    <FormProvider {...methods}>
+    <FormProvider {...(methods as any)}>
+      {/* Bypass the TS warning: Type instantiation is excessively deep and
+      possibly infinite. ts(2589) */}
       <TextInput name="email" label="Email" rules={{ required: true }} />
       <TextInput name="username" label="Username" rules={{ required: true }} />
       <TextInput

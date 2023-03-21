@@ -26,13 +26,14 @@ function TextInput(props: TextInputProps) {
   const {
     formState: { errors },
   } = formContext;
+  // console.log(errors);
 
   if (!name || !formContext) return null;
 
   return (
     <div>
       {label && <label>{label}</label>}
-      <input type={type} {...field} />
+      <input {...field} type={type} />
     </div>
   );
 }
