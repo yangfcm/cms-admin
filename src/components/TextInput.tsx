@@ -18,6 +18,7 @@ type TextInputProps = UseControllerProps & {
   defaultValue?: string;
   variant?: "filled" | "outlined" | "standard";
   fullWidth?: boolean;
+  startIcon?: JSX.Element;
 };
 
 function TextInput(props: TextInputProps) {
@@ -26,24 +27,24 @@ function TextInput(props: TextInputProps) {
     label,
     name,
     rules,
-    defaultValue,
     type = "text",
     variant = "standard",
     fullWidth = true,
-    ...inputProps
+    startIcon = null,
+    // ...inputProps
   } = props;
   // const { field } = useController({ name, rules, defaultValue });
   const formContext = useFormContext();
   const {
     control,
-    formState: { errors },
+    formState: { errors = {} },
   } = formContext;
   // console.log(errors);
 
   if (!name || !formContext) return null;
 
   return (
-    <FormControl variant={variant} fullWidth={fullWidth}>
+    <FormControl variant={variant} fullWidth={fullWidth} margin="dense">
       {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
       <Controller
         name={name}
@@ -51,7 +52,15 @@ function TextInput(props: TextInputProps) {
         rules={rules}
         render={({ field }) => (
           <>
-            <Input {...field} id={id} type={type} />
+            <Input
+              {...field}
+              id={id}
+              type={type}
+              error={!!errors[name]}
+              startAdornment={
+                <InputAdornment position="start">{startIcon}</InputAdornment>
+              }
+            />
             <FormHelperText error>
               <>{errors && errors[name] ? errors[name]!.message : ""}</>
             </FormHelperText>
