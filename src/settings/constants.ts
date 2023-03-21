@@ -7,3 +7,4 @@ export const USERNAME_REQUIRED = 'Username is required.';
 export const INVALID_USERNAME = 'Username contains invalid characters.';
 export const USERNAME_MAX_LENGTH = 20;
 export const USERNAME_TOO_LONG = `Username cannot exceed ${USERNAME_MAX_LENGTH} characters`;
+export const USERNAME_OR_EMAIL_REQUIRED = 'Username or email is required.'

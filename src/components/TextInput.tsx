@@ -16,6 +16,7 @@ type TextInputProps = UseControllerProps & {
   type?: string;
   label?: string;
   defaultValue?: string;
+  placeholder?: string;
   variant?: "filled" | "outlined" | "standard";
   fullWidth?: boolean;
   startIcon?: JSX.Element;
@@ -31,6 +32,7 @@ function TextInput(props: TextInputProps) {
     variant = "standard",
     fullWidth = true,
     startIcon = null,
+    placeholder,
     // ...inputProps
   } = props;
   // const { field } = useController({ name, rules, defaultValue });
@@ -61,6 +63,7 @@ function TextInput(props: TextInputProps) {
               id={id}
               type={type}
               error={!!errors[name]}
+              placeholder={placeholder}
               startAdornment={
                 <InputAdornment position="start">{startIcon}</InputAdornment>
               }

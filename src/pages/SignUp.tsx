@@ -3,7 +3,6 @@ import Link from "@mui/material/Link";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import AuthForm from "../components/AuthForm";
 import SignUpForm from "../components/SignUpForm";
 
 function SignUp() {

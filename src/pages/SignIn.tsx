@@ -3,7 +3,7 @@ import Link from "@mui/material/Link";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import AuthForm from "../components/AuthForm";
+import SignInForm from "../components/SignInForm";
 
 function SignIn() {
   return (
@@ -19,7 +19,7 @@ function SignIn() {
         <Typography component="h1" variant="h4">
           Sign In
         </Typography>
-        <AuthForm mode="signin" />
+        <SignInForm />
         <Box sx={{ mt: 2 }}>
           <Link component={RouterLink} to="/signup" variant="body2">
             Do not have an account? Sign Up.

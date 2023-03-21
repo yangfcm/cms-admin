@@ -49,6 +49,7 @@ function SignUpForm() {
           name="email"
           id="signup-email-input"
           label="Email"
+          placeholder="Your email"
           startIcon={<MailOutlineIcon />}
           rules={{
             required: EMAIL_REQUIRED,
@@ -59,6 +60,7 @@ function SignUpForm() {
           name="username"
           id="signup-username-input"
           label="Username"
+          placeholder="Your username"
           startIcon={<AccountCircle />}
           rules={{
             required: USERNAME_REQUIRED,
@@ -75,6 +77,7 @@ function SignUpForm() {
           id="signup-password-input"
           type="password"
           label="Password"
+          placeholder="Your password"
           startIcon={<PasswordIcon />}
           rules={{
             required: PASSWORD_REQUIRED,
