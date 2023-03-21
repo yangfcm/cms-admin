@@ -10,6 +10,7 @@ import {
   USERNAME_OR_EMAIL_REQUIRED,
 } from "../settings/constants";
 import TextInput from "./TextInput";
+import { useSigninMutation } from "../features/user/services";
 
 type SignInFormData = {
   usernameOrEmail: string;
@@ -17,6 +18,8 @@ type SignInFormData = {
 };
 
 function SignInForm() {
+  const [signin] = useSigninMutation();
+
   const methods = useForm<SignInFormData>({
     mode: "onSubmit",
     defaultValues: {
@@ -25,9 +28,18 @@ function SignInForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<SignInFormData> = (data) => {
-    console.log(data);
-  };
+  const onSubmit: SubmitHandler<SignInFormData> = useCallback(
+    async (data) => {
+      console.log(data);
+      try {
+        const resData = await signin(data).unwrap();
+        console.log(resData);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [signin]
+  );
 
   return (
     <FormProvider {...(methods as any)}>
