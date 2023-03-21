@@ -32,8 +32,8 @@ function SignInForm() {
     async (data) => {
       console.log(data);
       try {
-        const resData = await signin(data).unwrap();
-        console.log(resData);
+        const { user, token } = await signin(data).unwrap();
+        console.log(user, token);
       } catch (err) {
         console.log(err);
       }

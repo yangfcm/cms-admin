@@ -15,7 +15,6 @@ const api = createApi({
         method: 'POST',
         body: { identity: signinUser.usernameOrEmail, password: signinUser.password }
       }),
-      invalidatesTags: ['User']
     })
   })
 });
