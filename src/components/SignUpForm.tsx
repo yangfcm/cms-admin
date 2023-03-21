@@ -25,6 +25,7 @@ import {
   PASSWORD_LENGTH,
   PASSWORD_MIN_LENGTH,
   PASSWORD_REQUIRED,
+  USERNAME_REQUIRED,
 } from "../settings/constants";
 import TextInput from "./TextInput";
 
@@ -52,13 +53,30 @@ function SignUpForm() {
     <FormProvider {...(methods as any)}>
       {/* Bypass the TS warning: Type instantiation is excessively deep and
       possibly infinite. ts(2589) */}
-      <TextInput name="email" label="Email" rules={{ required: true }} />
-      <TextInput name="username" label="Username" rules={{ required: true }} />
+      <TextInput
+        name="email"
+        id="signup-email-input"
+        label="Email"
+        rules={{
+          required: EMAIL_REQUIRED,
+          validate: (value) => (isValidEmail(value) ? true : INVALID_EMAIL),
+        }}
+      />
+      <TextInput
+        name="username"
+        id="signup-username-input"
+        label="Username"
+        rules={{ required: USERNAME_REQUIRED }}
+      />
       <TextInput
         name="password"
+        id="signup-password-input"
         type="password"
         label="Password"
-        rules={{ required: true }}
+        rules={{
+          required: PASSWORD_REQUIRED,
+          minLength: { value: PASSWORD_MIN_LENGTH, message: PASSWORD_LENGTH },
+        }}
       />
       <button onClick={methods.handleSubmit(onSubmit)}>Sign Up</button>
     </FormProvider>
