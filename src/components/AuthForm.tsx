@@ -17,7 +17,7 @@ import { isValidEmail } from "../utils/validators";
 import {
   EMAIL_REQUIRED,
   INVALID_EMAIL,
-  PASSWORD_LENGTH,
+  PASSWORD_TOO_SHORT,
   PASSWORD_MIN_LENGTH,
   PASSWORD_REQUIRED,
 } from "../settings/constants";
@@ -91,7 +91,7 @@ function AuthForm({ mode }: AuthFormProps) {
               mode === "signup"
                 ? {
                     value: PASSWORD_MIN_LENGTH,
-                    message: PASSWORD_LENGTH,
+                    message: PASSWORD_TOO_SHORT,
                   }
                 : 0,
           }}

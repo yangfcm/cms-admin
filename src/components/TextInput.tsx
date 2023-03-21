@@ -45,7 +45,11 @@ function TextInput(props: TextInputProps) {
 
   return (
     <FormControl variant={variant} fullWidth={fullWidth} margin="dense">
-      {label && <InputLabel htmlFor={id}>{label}</InputLabel>}
+      {label && (
+        <InputLabel htmlFor={id} shrink>
+          {label}
+        </InputLabel>
+      )}
       <Controller
         name={name}
         control={control}
@@ -61,7 +65,7 @@ function TextInput(props: TextInputProps) {
                 <InputAdornment position="start">{startIcon}</InputAdornment>
               }
             />
-            <FormHelperText error>
+            <FormHelperText error sx={{ height: "20px" }}>
               <>{errors && errors[name] ? errors[name]!.message : ""}</>
             </FormHelperText>
           </>
