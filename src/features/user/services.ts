@@ -7,7 +7,7 @@ const api = createApi({
     baseUrl: apiBaseUrl,
   }),
   tagTypes: ['User'],
-  reducerPath: 'user',
+  reducerPath: 'userApi',
   endpoints: (builder) => ({
     signin: builder.mutation<UserResponse, SignInUser>({
       query: (signinUser) => ({

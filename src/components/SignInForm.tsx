@@ -11,6 +11,7 @@ import {
 } from "../settings/constants";
 import TextInput from "./TextInput";
 import { useSigninMutation } from "../features/user/services";
+import useAuth from "../features/user/useAuth";
 
 type SignInFormData = {
   usernameOrEmail: string;
@@ -18,7 +19,21 @@ type SignInFormData = {
 };
 
 function SignInForm() {
-  const [signin] = useSigninMutation();
+  // const [signin] = useSigninMutation();
+  const { signin, isError, isLoading, isSuccess, error, isSignedIn } =
+    useAuth();
+  console.log(
+    "isError:",
+    isError,
+    "| isLoading:",
+    isLoading,
+    "| isSuccess:",
+    isSuccess,
+    "| error:",
+    error,
+    "| isSignedIn:",
+    isSignedIn
+  );
 
   const methods = useForm<SignInFormData>({
     mode: "onSubmit",
@@ -29,15 +44,7 @@ function SignInForm() {
   });
 
   const onSubmit: SubmitHandler<SignInFormData> = useCallback(
-    async (data) => {
-      console.log(data);
-      try {
-        const { user, token, expiresAt } = await signin(data).unwrap();
-        console.log(user, token);
-      } catch (err) {
-        console.log(err);
-      }
-    },
+    async (data) => await signin(data),
     [signin]
   );
 

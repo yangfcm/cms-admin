@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import userApi from '../features/user/services';
+import userReducer from '../features/user/userSlice';
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -12,7 +13,8 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 
 const store = configureStore({
   reducer: {
-    [userApi.reducerPath]: userApi.reducer
+    user: userReducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(userApi.middleware)
 });
