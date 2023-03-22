@@ -4,17 +4,14 @@ import { signin, signout } from "../features/user/userSlice";
 import { useTokenQuery } from "../features/user/services";
 import useAuth from "../features/user/useAuth";
 
-function AuthProvider({ children }: { children: React.ReactNode }) {
+function AuthProvider({ children }: { children: JSX.Element }) {
   const dispatch = useAppDispatch();
   const token = useRef<string>("");
   const expiresAt = useRef<number>(0);
   const [skip, setSkip] = useState(true);
-  const { data, isLoading, isSuccess, isUninitialized } = useTokenQuery(
-    token.current,
-    {
-      skip,
-    }
-  );
+  const { data, isSuccess, isError } = useTokenQuery(token.current, {
+    skip,
+  });
   const { isSignedIn } = useAuth();
 
   useEffect(() => {
@@ -31,7 +28,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (token.current) setSkip(false); // Read user profile by token.
+    if (token.current) setSkip(false); // Read user data by token.
   }, [token.current]);
 
   useEffect(() => {
@@ -43,12 +40,13 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
           expiresAt: expiresAt.current,
         })
       );
-    } else {
+    }
+    if (isError) {
       dispatch(signout());
     }
-  }, [data?.user, isSuccess]);
+  }, [data?.user, isSuccess, isError]);
 
-  if (isLoading || isUninitialized) return <>Loading...</>;
+  if (isSignedIn === null) return <>Loading</>;
 
   return <>{children}</>;
 }

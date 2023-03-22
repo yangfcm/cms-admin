@@ -16,12 +16,6 @@ const api = createApi({
         body: { identity: signinUser.usernameOrEmail, password: signinUser.password }
       }),
     }),
-    // token: builder.mutation<Pick<UserResponse, 'user'>, string>({
-    //   query: (token) => ({
-    //     url: 'auth/token',
-    //     headers: { 'x-auth': token }
-    //   }),
-    // }),
     token: builder.query<Pick<UserResponse, 'user'>, string>({
       query: (token) => ({
         url: 'auth/token',

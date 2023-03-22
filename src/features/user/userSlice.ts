@@ -5,16 +5,12 @@ import {
 import { User } from './types';
 
 type UserState = {
-  authUser: User | null,
-  token: string;
-  expiresAt: number;
+  authUser?: User | null,
+  token?: string;
+  expiresAt?: number;
 };
 
-const initialState: UserState = {
-  authUser: null,
-  token: '',
-  expiresAt: 0,
-}
+const initialState: UserState = {};
 
 const userSlice = createSlice({
   name: 'user',

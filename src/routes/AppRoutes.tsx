@@ -6,6 +6,7 @@ import AuthProvider from "../components/AuthProvider";
 import Home from "../pages/Home";
 import Articles from "../pages/Articles";
 import PersonalSettings from "../pages/PersonalSettings";
+import RequireAuth from "../components/RequireAuth";
 
 function AppRoutes() {
   return (
@@ -14,7 +15,14 @@ function AppRoutes() {
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/" element={<Root />}>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Root />
+              </RequireAuth>
+            }
+          >
             <Route path="" element={<Home />} />
             <Route path="articles" element={<Articles />} />
             <Route path="personalsettings" element={<PersonalSettings />} />

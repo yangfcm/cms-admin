@@ -11,7 +11,9 @@ function useAuth() {
   const [signinMutation, { isError, isLoading, isSuccess, error }] = useSigninMutation();
 
   const isSignedIn = useSelector(({ user }: RootState) => {
-    const isExpired = Date.now() > user.expiresAt;
+    const { authUser, token, expiresAt } = user;
+    if (authUser === undefined || token === undefined || expiresAt === undefined) return null; // If user is signed in or not is unknown initially.
+    const isExpired = Date.now() > expiresAt;
     return !!(user.authUser && user.token && !isExpired);
   });
 
