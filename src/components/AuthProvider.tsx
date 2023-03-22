@@ -1,5 +1,4 @@
-// import useToken from "../features/user/useToken";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAppDispatch } from "../app/hooks";
 import { signin, signout } from "../features/user/userSlice";
 import { useTokenQuery } from "../features/user/services";
@@ -10,9 +9,12 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const token = useRef<string>("");
   const expiresAt = useRef<number>(0);
   const [skip, setSkip] = useState(true);
-  const { data, isLoading, isSuccess } = useTokenQuery(token.current, {
-    skip,
-  });
+  const { data, isLoading, isSuccess, isUninitialized } = useTokenQuery(
+    token.current,
+    {
+      skip,
+    }
+  );
   const { isSignedIn } = useAuth();
 
   useEffect(() => {
@@ -45,9 +47,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       dispatch(signout());
     }
   }, [data?.user, isSuccess]);
-  console.log(isSignedIn);
 
-  if (isLoading) return <>Loading...</>;
+  if (isLoading || isUninitialized) return <>Loading...</>;
 
   return <>{children}</>;
 }
