@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
-import Home from "../pages/Home";
+import Root from "../pages/Root";
 import AuthProvider from "../components/AuthProvider";
+import Home from "../pages/Home";
 import Articles from "../pages/Articles";
 import PersonalSettings from "../pages/PersonalSettings";
 
@@ -13,7 +14,8 @@ function AppRoutes() {
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/" element={<Home />}>
+          <Route path="/" element={<Root />}>
+            <Route path="" element={<Home />} />
             <Route path="articles" element={<Articles />} />
             <Route path="personalsettings" element={<PersonalSettings />} />
           </Route>
