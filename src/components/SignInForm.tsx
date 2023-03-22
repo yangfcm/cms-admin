@@ -10,7 +10,6 @@ import {
   USERNAME_OR_EMAIL_REQUIRED,
 } from "../settings/constants";
 import TextInput from "./TextInput";
-import { useSigninMutation } from "../features/user/services";
 import useAuth from "../features/user/useAuth";
 
 type SignInFormData = {
@@ -19,21 +18,20 @@ type SignInFormData = {
 };
 
 function SignInForm() {
-  // const [signin] = useSigninMutation();
   const { signin, isError, isLoading, isSuccess, error, isSignedIn } =
     useAuth();
-  console.log(
-    "isError:",
-    isError,
-    "| isLoading:",
-    isLoading,
-    "| isSuccess:",
-    isSuccess,
-    "| error:",
-    error,
-    "| isSignedIn:",
-    isSignedIn
-  );
+  // console.log(
+  //   "isError:",
+  //   isError,
+  //   "| isLoading:",
+  //   isLoading,
+  //   "| isSuccess:",
+  //   isSuccess,
+  //   "| error:",
+  //   error,
+  //   "| isSignedIn:",
+  //   isSignedIn
+  // );
 
   const methods = useForm<SignInFormData>({
     mode: "onSubmit",

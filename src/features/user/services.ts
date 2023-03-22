@@ -15,10 +15,22 @@ const api = createApi({
         method: 'POST',
         body: { identity: signinUser.usernameOrEmail, password: signinUser.password }
       }),
+    }),
+    // token: builder.mutation<Pick<UserResponse, 'user'>, string>({
+    //   query: (token) => ({
+    //     url: 'auth/token',
+    //     headers: { 'x-auth': token }
+    //   }),
+    // }),
+    token: builder.query<Pick<UserResponse, 'user'>, string>({
+      query: (token) => ({
+        url: 'auth/token',
+        headers: { 'x-auth': token }
+      }),
     })
   })
 });
 
 export default api;
 
-export const { useSigninMutation } = api;
+export const { useSigninMutation, useTokenQuery } = api;

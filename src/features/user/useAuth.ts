@@ -12,21 +12,22 @@ function useAuth() {
 
   const isSignedIn = useSelector(({ user }: RootState) => {
     const isExpired = Date.now() > user.expiresAt;
-    return user.authUser && user.token && !isExpired;
+    return !!(user.authUser && user.token && !isExpired);
   });
 
   const signin = useCallback(async (signinUser: SignInUser) => {
     const { user, token, expiresAt } = await signinMutation(signinUser).unwrap();
     localStorage.setItem("token", token);
+    localStorage.setItem("expiresAt", expiresAt.toString());
     dispatch(signinAction({ user, token, expiresAt }));
   }, [dispatch, signinMutation]);
 
   const signout = useCallback(() => {
     localStorage.removeItem("token");
+    localStorage.removeItem("expiresAt");
     dispatch(signoutAction());
   }, [dispatch]);
   return { signin, signout, isError, isLoading, isSuccess, error, isSignedIn };
-
 }
 
 export default useAuth;
