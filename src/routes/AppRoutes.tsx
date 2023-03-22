@@ -20,6 +20,7 @@ function AppRoutes() {
             element={
               <RequireAuth>
                 <Root />
+                {/** All nested routes are protected (required auth) */}
               </RequireAuth>
             }
           >
