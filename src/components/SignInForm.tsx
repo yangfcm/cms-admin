@@ -32,7 +32,7 @@ function SignInForm() {
     async (data) => {
       console.log(data);
       try {
-        const { user, token } = await signin(data).unwrap();
+        const { user, token, expiresAt } = await signin(data).unwrap();
         console.log(user, token);
       } catch (err) {
         console.log(err);

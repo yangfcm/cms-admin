@@ -21,4 +21,5 @@ export type User = {
 export type UserResponse = {
   user: User;
   token: string;
+  expiresAt: number;
 };
