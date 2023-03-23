@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
@@ -11,6 +11,8 @@ import {
 } from "../settings/constants";
 import TextInput from "./TextInput";
 import useAuth from "../features/user/useAuth";
+import ErrorMessage from "./ErrorMessage";
+import displayError from "../utils/displayError";
 
 type SignInFormData = {
   usernameOrEmail: string;
@@ -18,20 +20,7 @@ type SignInFormData = {
 };
 
 function SignInForm() {
-  const { signin, isError, isLoading, isSuccess, error, isSignedIn } =
-    useAuth();
-  // console.log(
-  //   "isError:",
-  //   isError,
-  //   "| isLoading:",
-  //   isLoading,
-  //   "| isSuccess:",
-  //   isSuccess,
-  //   "| error:",
-  //   error,
-  //   "| isSignedIn:",
-  //   isSignedIn
-  // );
+  const { signin, isError, isLoading, error } = useAuth();
 
   const methods = useForm<SignInFormData>({
     mode: "onSubmit",
@@ -41,16 +30,14 @@ function SignInForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<SignInFormData> = useCallback(
-    async (data) => await signin(data),
-    [signin]
-  );
+  const onSubmit: SubmitHandler<SignInFormData> = useCallback(signin, [signin]);
 
   return (
     <FormProvider {...(methods as any)}>
       {/* Bypass the TS warning: Type instantiation is excessively deep and
       possibly infinite. ts(2589) */}
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
+        <ErrorMessage open={isError}>{displayError(error)}</ErrorMessage>
         <TextInput
           name="usernameOrEmail"
           id="signin-username-input"
@@ -79,7 +66,7 @@ function SignInForm() {
           sx={{ mt: 2 }}
           loadingPosition="start"
           startIcon={<LoginIcon />}
-          // loading={authStatus.isLoading}
+          loading={isLoading}
         >
           Sign in
         </LoadingButton>
