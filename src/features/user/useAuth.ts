@@ -1,14 +1,15 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
+import parseError from "../../utils/parseError";
 import { useSigninMutation } from "./services";
 import { SignInUser } from "./types";
 import { signin as signinAction, signout as signoutAction } from './userSlice';
 
 function useAuth() {
   const dispatch = useAppDispatch();
-  const [signinMutation, { isError, isLoading, isSuccess, error }] = useSigninMutation();
+  const [signinMutation, { isError, isLoading, isSuccess, error: signinError }] = useSigninMutation();
 
   const isSignedIn = useSelector(({ user }: RootState) => {
     const { authUser, token, expiresAt } = user;
@@ -17,6 +18,10 @@ function useAuth() {
     return !!(user.authUser && user.token && !isExpired);
   });
 
+  const error = useMemo(() => {
+    if (!signinError) return '';
+    return parseError(signinError);
+  }, [signinError])
 
   const signin = useCallback(async (signinUser: SignInUser) => {
     try {
@@ -34,6 +39,7 @@ function useAuth() {
     localStorage.removeItem("expiresAt");
     dispatch(signoutAction());
   }, [dispatch]);
+
   return { signin, signout, isError, isLoading, isSuccess, isSignedIn, error };
 }
 
