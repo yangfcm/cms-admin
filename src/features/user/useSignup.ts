@@ -1,9 +1,9 @@
-import { useCallback, useMemo } from "react";
-import { useAppDispatch } from "../../app/hooks";
-import parseError from "../../utils/parseError";
-import { useSignupMutation } from "./services";
-import { SignUpUser } from "./types";
-import { signin as signinAction, signout as signoutAction } from "./userSlice";
+import { useCallback, useMemo } from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import parseError from '../../utils/parseError';
+import { useSignupMutation } from './services';
+import { SignUpUser } from './types';
+import { signin as signinAction, signout as signoutAction } from './userSlice';
 
 function useSignup() {
   const dispatch = useAppDispatch();

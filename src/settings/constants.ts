@@ -10,3 +10,4 @@ export const USERNAME_TOO_LONG = `Username cannot exceed ${USERNAME_MAX_LENGTH} 
 export const USERNAME_OR_EMAIL_REQUIRED = 'Username or email is required.'
 export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL + '/api';
 export const DEFAULT_ERROR_MESSAGE = 'Something bad happend.';
+export const SIDEBAR_WIDTH = 220
