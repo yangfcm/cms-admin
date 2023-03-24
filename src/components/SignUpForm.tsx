@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
@@ -6,6 +6,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import PasswordIcon from "@mui/icons-material/Password";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import useSignup from "../features/user/useSignup";
 import { isValidEmail, isValidCharacters } from "../utils/validators";
 import {
   EMAIL_REQUIRED,
@@ -19,6 +20,7 @@ import {
   USERNAME_TOO_LONG,
 } from "../settings/constants";
 import TextInput from "./TextInput";
+import ErrorMessage from "./ErrorMessage";
 
 type SignUpFormData = {
   email: string;
@@ -35,16 +37,16 @@ function SignUpForm() {
       password: "",
     },
   });
+  const { signup, isError, isLoading, error } = useSignup();
 
-  const onSubmit: SubmitHandler<SignUpFormData> = (data) => {
-    console.log(data);
-  };
+  const onSubmit: SubmitHandler<SignUpFormData> = useCallback(signup, [signup]);
 
   return (
     <FormProvider {...(methods as any)}>
       {/* Bypass the TS warning: Type instantiation is excessively deep and
       possibly infinite. ts(2589) */}
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
+        <ErrorMessage open={isError} messages={error} />
         <TextInput
           name="email"
           id="signup-email-input"
@@ -94,7 +96,7 @@ function SignUpForm() {
           sx={{ mt: 2 }}
           loadingPosition="start"
           startIcon={<PersonAddAlt1Icon />}
-          // loading={authStatus.isLoading}
+          loading={isLoading}
         >
           Sign up
         </LoadingButton>

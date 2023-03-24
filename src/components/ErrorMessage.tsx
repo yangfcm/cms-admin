@@ -1,6 +1,8 @@
 import { forwardRef, useState, useEffect } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import CircleIcon from "@mui/icons-material/Circle";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -11,10 +13,10 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function ErrorMessage({
   open,
-  children,
+  messages,
 }: {
   open: boolean;
-  children: React.ReactNode;
+  messages: string[] | string;
 }) {
   const [openAlert, setOpenAlert] = useState(false);
   useEffect(() => {
@@ -33,7 +35,22 @@ function ErrorMessage({
         sx={{ width: "100%" }}
         onClose={() => setOpenAlert(false)}
       >
-        {children}
+        {typeof messages === "string" ? (
+          <>{messages}</>
+        ) : messages.length === 1 ? (
+          <>{messages[0]}</>
+        ) : (
+          <>
+            <AlertTitle>Error</AlertTitle>
+            <>
+              {messages.map((message) => (
+                <div key={message}>
+                  <CircleIcon sx={{ fontSize: 8 }} /> {message}
+                </div>
+              ))}
+            </>
+          </>
+        )}
       </Alert>
     </Snackbar>
   );

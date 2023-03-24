@@ -17,7 +17,11 @@ type APIError = {
 function parseError(error: any) {
   if (!error) return '';
   if ('data' in error) {
-    return (error.data as APIError).message
+    const errorData = error.data as APIError;
+    if (errorData.errors) {
+      return errorData.errors.map(err => err.message);
+    }
+    return errorData.message
   }
   if ('message' in error) {
     return error.message;

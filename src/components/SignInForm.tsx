@@ -12,6 +12,7 @@ import {
 import TextInput from "./TextInput";
 import useAuth from "../features/user/useAuth";
 import ErrorMessage from "./ErrorMessage";
+import parseError from "../utils/parseError";
 
 type SignInFormData = {
   usernameOrEmail: string;
@@ -19,7 +20,7 @@ type SignInFormData = {
 };
 
 function SignInForm() {
-  const { signin, isError, isLoading, signinError } = useAuth();
+  const { signin, isError, isLoading, error } = useAuth();
 
   const methods = useForm<SignInFormData>({
     mode: "onSubmit",
@@ -36,7 +37,7 @@ function SignInForm() {
       {/* Bypass the TS warning: Type instantiation is excessively deep and
       possibly infinite. ts(2589) */}
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
-        <ErrorMessage open={isError}>{signinError}</ErrorMessage>
+        <ErrorMessage open={isError} messages={parseError(error)} />
         <TextInput
           name="usernameOrEmail"
           id="signin-username-input"

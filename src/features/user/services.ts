@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { apiBaseUrl } from '../../settings/constants';
-import { UserResponse, SignInUser } from './types';
+import { UserResponse, SignInUser, SignUpUser } from './types';
 
 const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -16,6 +16,13 @@ const api = createApi({
         body: { identity: signinUser.usernameOrEmail, password: signinUser.password }
       }),
     }),
+    signup: builder.mutation<UserResponse, SignUpUser>({
+      query: (signupUser) => ({
+        url: 'auth/signup',
+        method: 'POST',
+        body: signupUser,
+      })
+    }),
     token: builder.query<Pick<UserResponse, 'user'>, string>({
       query: (token) => ({
         url: 'auth/token',
@@ -27,4 +34,4 @@ const api = createApi({
 
 export default api;
 
-export const { useSigninMutation, useTokenQuery } = api;
+export const { useSigninMutation, useSignupMutation, useTokenQuery } = api;
