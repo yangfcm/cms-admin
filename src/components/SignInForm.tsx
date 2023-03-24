@@ -61,7 +61,7 @@ function SignInForm() {
         <LoadingButton
           type="submit"
           fullWidth
-          variant="outlined"
+          variant="contained"
           sx={{ mt: 2 }}
           loadingPosition="start"
           startIcon={<LoginIcon />}

@@ -92,7 +92,7 @@ function SignUpForm() {
         <LoadingButton
           type="submit"
           fullWidth
-          variant="outlined"
+          variant="contained"
           sx={{ mt: 2 }}
           loadingPosition="start"
           startIcon={<PersonAddAlt1Icon />}
