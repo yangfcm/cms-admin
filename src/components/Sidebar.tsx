@@ -1,6 +1,6 @@
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
-// import { SidebarMenu } from "./SidebarMenu";
+import SidebarMenu from "./SidebarMenu";
 import { SIDEBAR_WIDTH } from "../settings/constants";
 import { useToggleSidebar } from "../features/preference/useToggleSidebar";
 
@@ -42,7 +42,7 @@ function Sidebar() {
         }}
       >
         <Toolbar />
-        {/* <SidebarMenu /> */}
+        <SidebarMenu />
       </Drawer>
     </>
   );

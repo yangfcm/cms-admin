@@ -9,7 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import CreateIcon from "@mui/icons-material/Create";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useToggleSidebar } from "../features/preference/useToggleSidebar";
-// import { HeaderMenu } from "./HeaderMenu";
+import HeaderMenu from "./HeaderMenu";
 
 function Header() {
   const theme = useTheme();
@@ -73,7 +73,7 @@ function Header() {
             </Typography>
           </MuiLink>
         </Box>
-        {/* <HeaderMenu /> */}
+        <HeaderMenu />
       </Toolbar>
     </AppBar>
   );

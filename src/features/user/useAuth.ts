@@ -18,6 +18,10 @@ function useAuth() {
     return !!(user.authUser && user.token && !isExpired);
   });
 
+  const authUser = useSelector(({ user }: RootState) => {
+    return user.authUser;
+  });
+
   const error = useMemo(() => {
     if (!signinError) return '';
     return parseError(signinError);
@@ -40,7 +44,7 @@ function useAuth() {
     dispatch(signoutAction());
   }, [dispatch]);
 
-  return { signin, signout, isError, isLoading, isSuccess, isSignedIn, error };
+  return { signin, signout, isError, isLoading, isSuccess, isSignedIn, error, authUser };
 }
 
 export default useAuth;
