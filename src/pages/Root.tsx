@@ -16,7 +16,7 @@ function Root() {
           <Toolbar />
           <Box id="app__position-anchor" sx={{ location: "relative" }}>
             <Box id="app__router-container" sx={{ p: 2 }}>
-              <h1>Rootpage</h1>
+              <div>Rootpage</div>
               <Outlet />
             </Box>
           </Box>
