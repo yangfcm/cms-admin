@@ -1,12 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
-import useAuth from "../features/user/useAuth";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 
 function Root() {
-  const { signout } = useAuth();
   return (
     <>
       <Header />
