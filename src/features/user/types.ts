@@ -1,3 +1,5 @@
+import { Blog } from "../blog/types";
+
 export type SignUpUser = {
   email: string;
   username: string;
@@ -16,6 +18,7 @@ export type User = {
   nickname?: string;
   biography?: string;
   avatar?: string;
+  blogs?: Blog[]
 };
 
 export type UserResponse = {

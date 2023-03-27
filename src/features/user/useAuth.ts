@@ -4,8 +4,9 @@ import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import parseError from "../../utils/parseError";
 import { useSigninMutation } from "./services";
-import { SignInUser } from "./types";
+import { SignInUser, UserResponse } from "./types";
 import { signin as signinAction, signout as signoutAction } from './userSlice';
+import { setBlogs, resetBlog } from "../blog/blogSlice";
 
 function useAuth() {
   const dispatch = useAppDispatch();
@@ -25,24 +26,33 @@ function useAuth() {
   const error = useMemo(() => {
     if (!signinError) return '';
     return parseError(signinError);
-  }, [signinError])
+  }, [signinError]);
 
-  const signin = useCallback(async (signinUser: SignInUser) => {
+  const signin = useCallback(async (signinData: SignInUser | UserResponse) => {
     try {
-      const { user, token, expiresAt } = await signinMutation(signinUser).unwrap();
+      let { user, token, expiresAt } = signinData as UserResponse;
+      if ((signinData as SignInUser).usernameOrEmail && (signinData as SignInUser).password && (!user || !token || !expiresAt)) {
+        const signinResponse = await signinMutation(signinData as SignInUser).unwrap();
+        user = signinResponse.user;
+        token = signinResponse.token;
+        expiresAt = signinResponse.expiresAt;
+      }
       localStorage.setItem("token", token);
       localStorage.setItem("expiresAt", expiresAt.toString());
       dispatch(signinAction({ user, token, expiresAt }));
+      dispatch(setBlogs({ blogs: user.blogs || [] }));
     } catch (err: any) {
       dispatch(signoutAction());
+      dispatch(resetBlog());
     }
-  }, [dispatch, signinMutation]);
+  }, [dispatch, signinMutation, signoutAction, resetBlog]);
 
   const signout = useCallback(() => {
     localStorage.removeItem("token");
     localStorage.removeItem("expiresAt");
     dispatch(signoutAction());
-  }, [dispatch]);
+    dispatch(resetBlog())
+  }, [dispatch, signoutAction, resetBlog]);
 
   return { signin, signout, isError, isLoading, isSuccess, isSignedIn, error, authUser };
 }

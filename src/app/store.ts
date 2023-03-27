@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import userApi from '../features/user/services';
 import userReducer from '../features/user/userSlice';
 import preferenceReducer from '../features/preference/preferenceSlice';
+import blogReducer from '../features/blog/blogSlice';
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -16,6 +17,7 @@ const store = configureStore({
   reducer: {
     user: userReducer,
     preference: preferenceReducer,
+    blog: blogReducer,
     [userApi.reducerPath]: userApi.reducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(userApi.middleware)

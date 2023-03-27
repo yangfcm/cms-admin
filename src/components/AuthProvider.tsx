@@ -1,18 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useAppDispatch } from "../app/hooks";
-import { signin, signout } from "../features/user/userSlice";
 import { useTokenQuery } from "../features/user/services";
 import useAuth from "../features/user/useAuth";
 
 function AuthProvider({ children }: { children: JSX.Element }) {
-  const dispatch = useAppDispatch();
   const token = useRef<string>("");
   const expiresAt = useRef<number>(0);
   const [skip, setSkip] = useState(true);
   const { data, isSuccess, isError } = useTokenQuery(token.current, {
     skip,
   });
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, signin, signout } = useAuth();
 
   useEffect(() => {
     // Get token and expiresAt from local storage.
@@ -23,7 +21,7 @@ function AuthProvider({ children }: { children: JSX.Element }) {
       token.current = localToken;
       expiresAt.current = localExpiresAt;
     } else {
-      dispatch(signout());
+      signout();
     }
   }, []);
 
@@ -33,16 +31,14 @@ function AuthProvider({ children }: { children: JSX.Element }) {
 
   useEffect(() => {
     if (isSuccess && data?.user) {
-      dispatch(
-        signin({
-          user: data.user,
-          token: token.current,
-          expiresAt: expiresAt.current,
-        })
-      );
+      signin({
+        user: data.user,
+        token: token.current,
+        expiresAt: expiresAt.current,
+      });
     }
     if (isError) {
-      dispatch(signout());
+      signout();
     }
   }, [data?.user, isSuccess, isError]);
 
