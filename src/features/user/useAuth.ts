@@ -28,6 +28,22 @@ function useAuth() {
     return parseError(signinError);
   }, [signinError]);
 
+  const handleSignin = useCallback(({ user, token, expiresAt }: UserResponse) => {
+    // Actions to do when user successfully signed in.
+    localStorage.setItem("token", token);
+    localStorage.setItem("expiresAt", expiresAt.toString());
+    dispatch(signinAction({ user, token, expiresAt }));
+    dispatch(setBlogs({ blogs: user.blogs || [] }));
+  }, [dispatch, signinAction, setBlogs]);
+
+  const handleSignout = useCallback(() => {
+    // Actions to do when user signed out.
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiresAt");
+    dispatch(signoutAction());
+    dispatch(resetBlog());
+  }, [dispatch, signoutAction, resetBlog]);
+
   const signin = useCallback(async (signinData: SignInUser | UserResponse) => {
     try {
       let { user, token, expiresAt } = signinData as UserResponse;
@@ -37,22 +53,17 @@ function useAuth() {
         token = signinResponse.token;
         expiresAt = signinResponse.expiresAt;
       }
-      localStorage.setItem("token", token);
-      localStorage.setItem("expiresAt", expiresAt.toString());
-      dispatch(signinAction({ user, token, expiresAt }));
-      dispatch(setBlogs({ blogs: user.blogs || [] }));
+      handleSignin({
+        user, token, expiresAt
+      });
     } catch (err: any) {
-      dispatch(signoutAction());
-      dispatch(resetBlog());
+      handleSignout();
     }
-  }, [dispatch, signinMutation, signoutAction, resetBlog]);
+  }, [dispatch, handleSignin, handleSignout]);
 
   const signout = useCallback(() => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("expiresAt");
-    dispatch(signoutAction());
-    dispatch(resetBlog())
-  }, [dispatch, signoutAction, resetBlog]);
+    handleSignout();
+  }, [dispatch, handleSignout]);
 
   return { signin, signout, isError, isLoading, isSuccess, isSignedIn, error, authUser };
 }
