@@ -57,7 +57,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="/"
+            path="/blog/:id"
             element={
               <RequireAuth>
                 <Root />

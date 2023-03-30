@@ -5,9 +5,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MuiLink from "@mui/material/Link";
-import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
-import ViewListIcon from "@mui/icons-material/ViewList";
 import HomeIcon from "@mui/icons-material/Home";
+import ArticleIcon from "@mui/icons-material/Article";
 import Divider from "@mui/material/Divider";
 import BlogsMenu from "./BlogsMenu";
 
@@ -18,7 +17,7 @@ function SidebarMenu() {
         <BlogsMenu />
       </ListItem>
       <Divider />
-      <MuiLink component={Link} to="/" underline="none">
+      <MuiLink component={Link} to="." underline="none">
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
@@ -28,26 +27,16 @@ function SidebarMenu() {
           </ListItemButton>
         </ListItem>
       </MuiLink>
-      {/* <MuiLink component={Link} to="/subscriptions" underline="none">
+      <MuiLink component={Link} to="./articles" underline="none">
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
-              <SubscriptionsIcon />
+              <ArticleIcon />
             </ListItemIcon>
-            <ListItemText primary="Subscriptions" />
+            <ListItemText primary="Articles" />
           </ListItemButton>
         </ListItem>
       </MuiLink>
-      <MuiLink component={Link} to="/playlists" underline="none">
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <ViewListIcon />
-            </ListItemIcon>
-            <ListItemText primary="Play List" />
-          </ListItemButton>
-        </ListItem>
-      </MuiLink> */}
     </List>
   );
 }
