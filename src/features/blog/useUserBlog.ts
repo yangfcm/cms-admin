@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { setActiveBlogId as setActiveBlogIdAction } from './blogSlice';
 
-function useBlog() {
+function useUserBlog() {
   const dispatch = useAppDispatch();
   const blogs = useSelector(({ blog }: RootState) => {
     return blog.blogs;
@@ -22,4 +22,4 @@ function useBlog() {
   return { blogs, activeBlog, setActiveBlog }
 }
 
-export default useBlog;
+export default useUserBlog;

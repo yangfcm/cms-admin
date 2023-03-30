@@ -8,10 +8,16 @@ import MuiLink from "@mui/material/Link";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import HomeIcon from "@mui/icons-material/Home";
+import Divider from "@mui/material/Divider";
+import BlogsMenu from "./BlogsMenu";
 
 function SidebarMenu() {
   return (
     <List>
+      <ListItem>
+        <BlogsMenu />
+      </ListItem>
+      <Divider />
       <MuiLink component={Link} to="/" underline="none">
         <ListItem disablePadding>
           <ListItemButton>
