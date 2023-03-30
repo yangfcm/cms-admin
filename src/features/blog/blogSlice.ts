@@ -24,7 +24,7 @@ const blogSlice = createSlice({
       }
     },
     setActiveBlog: (state, { payload }: PayloadAction<string>) => {
-      if (!state.blogs) {
+      if (!state.blogs || state.blogs.length === 0) {
         state.activeBlogAddress = undefined;
       } else if (state.blogs.findIndex((b) => b.address === payload) < 0) {
         state.activeBlogAddress = state.blogs[0].address;

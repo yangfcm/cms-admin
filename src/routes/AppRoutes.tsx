@@ -77,6 +77,14 @@ function AppRoutes() {
             <Route path="" element={<Home />} />
             <Route path="articles" element={<Articles />} />
           </Route>
+          <Route
+            path="/"
+            element={
+              <NavigateOnAuth>
+                <SignIn />
+              </NavigateOnAuth>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
