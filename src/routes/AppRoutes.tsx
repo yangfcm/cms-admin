@@ -8,18 +8,18 @@ import {
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Root from "../pages/Root";
+import useAuth from "../features/user/useAuth";
 import AuthProvider from "../components/AuthProvider";
 import Home from "../pages/Home";
 import Articles from "../pages/Articles";
-import PersonalSettings from "../pages/PersonalSettings";
-import useAuth from "../features/user/useAuth";
+import Onboarding from "../pages/Onboarding";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const location = useLocation();
   const { isSignedIn } = useAuth();
   if (isSignedIn === null) return null;
   if (isSignedIn === false) {
-    return <Navigate to="signin" state={{ from: location }} replace />;
+    return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
   return children;
@@ -57,7 +57,15 @@ function AppRoutes() {
             }
           />
           <Route
-            path="/blog/:id"
+            path="/onboarding"
+            element={
+              <RequireAuth>
+                <Onboarding />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/blog/:address"
             element={
               <RequireAuth>
                 <Root />
@@ -67,7 +75,6 @@ function AppRoutes() {
           >
             <Route path="" element={<Home />} />
             <Route path="articles" element={<Articles />} />
-            <Route path="personalsettings" element={<PersonalSettings />} />
           </Route>
         </Routes>
       </BrowserRouter>

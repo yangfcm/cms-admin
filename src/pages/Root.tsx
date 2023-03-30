@@ -1,10 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
+import useUserBlog from "../features/blog/useUserBlog";
 
 function Root() {
+  const { blogs, activeBlog } = useUserBlog();
+
+  if (!blogs || blogs.length === 0) {
+    return <Navigate to="/onboarding" replace />;
+  }
+
   return (
     <>
       <Header />

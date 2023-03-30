@@ -52,9 +52,9 @@ function BlogsMenu() {
             to={`/blog/${blog.address}`}
             underline="none"
             color={grey["900"]}
+            key={blog.id}
           >
             <MenuItem
-              key={blog.id}
               selected={activeBlog?.id === blog.id}
               onClick={() => {
                 setActiveBlog(blog.id);
