@@ -46,7 +46,7 @@ function BlogsMenu() {
         }}
       >
         <MenuItem disabled>Your Blogs</MenuItem>
-        {blogs.map((blog, index) => (
+        {blogs.map((blog) => (
           <MuiLink
             component={Link}
             to={`/blog/${blog.address}`}
@@ -55,9 +55,9 @@ function BlogsMenu() {
             key={blog.id}
           >
             <MenuItem
-              selected={activeBlog?.id === blog.id}
+              selected={activeBlog?.address === blog.address}
               onClick={() => {
-                setActiveBlog(blog.id);
+                setActiveBlog(blog.address);
               }}
             >
               {blog.title}

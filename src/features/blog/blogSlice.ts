@@ -6,7 +6,7 @@ import { Blog } from './types';
 
 type BlogState = {
   blogs?: Blog[];
-  activeBlogId?: string;
+  activeBlogAddress?: string;
 };
 
 const initialState: BlogState = {};
@@ -18,26 +18,26 @@ const blogSlice = createSlice({
     setBlogs: (state, { payload: { blogs } }: PayloadAction<{ blogs: Blog[] }>) => {
       state.blogs = blogs;
       if (blogs.length > 0) {
-        state.activeBlogId = blogs[0].id;
+        state.activeBlogAddress = blogs[0].address;
       } else {
-        state.activeBlogId = undefined;
+        state.activeBlogAddress = undefined;
       }
     },
-    setActiveBlogId: (state, { payload: { activeBlogId } }: PayloadAction<{ activeBlogId: string }>) => {
+    setActiveBlog: (state, { payload }: PayloadAction<string>) => {
       if (!state.blogs) {
-        state.activeBlogId = undefined;
-      } else if (state.blogs.findIndex((b) => b.id === activeBlogId) < 0) {
-        state.activeBlogId = state.blogs[0].id;
+        state.activeBlogAddress = undefined;
+      } else if (state.blogs.findIndex((b) => b.address === payload) < 0) {
+        state.activeBlogAddress = state.blogs[0].address;
       } else {
-        state.activeBlogId = activeBlogId;
+        state.activeBlogAddress = payload;
       }
     },
     resetBlog: (state) => {
-      state.activeBlogId = undefined;
+      state.activeBlogAddress = undefined;
       state.blogs = undefined;
     }
   },
 });
 
-export const { setBlogs, setActiveBlogId, resetBlog } = blogSlice.actions;
+export const { setBlogs, setActiveBlog, resetBlog } = blogSlice.actions;
 export default blogSlice.reducer;
