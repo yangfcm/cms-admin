@@ -5,14 +5,15 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import useAuth from "../features/user/useAuth";
+import useUserBlog from "../features/blog/useUserBlog";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Root from "../pages/Root";
-import useAuth from "../features/user/useAuth";
-import AuthProvider from "../components/AuthProvider";
 import Home from "../pages/Home";
 import Articles from "../pages/Articles";
 import Onboarding from "../pages/Onboarding";
+import AuthProvider from "../components/AuthProvider";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const location = useLocation();
@@ -26,10 +27,10 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 }
 
 function NavigateOnAuth({ children }: { children: JSX.Element }) {
-  const location = useLocation();
   const { isSignedIn } = useAuth();
-  const from = location.state?.from?.pathname || "/";
+  const { activeBlog } = useUserBlog();
   if (isSignedIn) {
+    const from = activeBlog ? "/blog/" + activeBlog.address : "/onboarding";
     return <Navigate to={from} replace />;
   }
   return children;

@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import useUserBlog from "../features/blog/useUserBlog";
 
 function Root() {
-  const { blogs, activeBlog } = useUserBlog();
+  const { blogs } = useUserBlog();
 
   if (!blogs || blogs.length === 0) {
     return <Navigate to="/onboarding" replace />;

@@ -24,7 +24,13 @@ const blogSlice = createSlice({
       }
     },
     setActiveBlogId: (state, { payload: { activeBlogId } }: PayloadAction<{ activeBlogId: string }>) => {
-      state.activeBlogId = activeBlogId;
+      if (!state.blogs) {
+        state.activeBlogId = undefined;
+      } else if (state.blogs.findIndex((b) => b.id === activeBlogId) < 0) {
+        state.activeBlogId = state.blogs[0].id;
+      } else {
+        state.activeBlogId = activeBlogId;
+      }
     },
     resetBlog: (state) => {
       state.activeBlogId = undefined;
