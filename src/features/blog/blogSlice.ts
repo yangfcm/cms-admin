@@ -35,7 +35,10 @@ const blogSlice = createSlice({
     resetBlog: (state) => {
       state.activeBlogAddress = undefined;
       state.blogs = undefined;
-    }
+    },
+    createBlogSuccess: (state, { payload: { blog } }: PayloadAction<{ blog: Blog }>) => {
+      state.blogs = [...(state.blogs || []), blog];
+    },
   },
 });
 
