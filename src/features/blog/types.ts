@@ -3,3 +3,9 @@ export type Blog = {
   title: string;
   address: string;
 }
+
+export type PostBlog = Pick<Blog, 'title' | 'address'>;
+
+export type BlogResponse = {
+  blog: Blog;
+}

@@ -3,6 +3,7 @@ import userApi from '../features/user/services';
 import userReducer from '../features/user/userSlice';
 import preferenceReducer from '../features/preference/preferenceSlice';
 import blogReducer from '../features/blog/blogSlice';
+import blogApi from '../features/blog/services';
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -19,8 +20,9 @@ const store = configureStore({
     preference: preferenceReducer,
     blog: blogReducer,
     [userApi.reducerPath]: userApi.reducer,
+    [blogApi.reducerPath]: blogApi.reducer,
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(userApi.middleware)
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([userApi.middleware])
 });
 
 export default store;
