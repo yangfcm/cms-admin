@@ -65,7 +65,9 @@ function TextInput(props: TextInputProps) {
               error={!!errors[name]}
               placeholder={placeholder}
               startAdornment={
-                <InputAdornment position="start">{startIcon}</InputAdornment>
+                startIcon && (
+                  <InputAdornment position="start">{startIcon}</InputAdornment>
+                )
               }
             />
             <FormHelperText error sx={{ height: "20px" }}>
