@@ -3,6 +3,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import CircleIcon from "@mui/icons-material/Circle";
+import parseError from "../utils/parseError";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -11,17 +12,13 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function ErrorMessage({
-  open,
-  messages,
-}: {
-  open: boolean;
-  messages: string[] | string;
-}) {
+function ErrorMessage({ open, messages }: { open: boolean; messages: any }) {
   const [openAlert, setOpenAlert] = useState(false);
   useEffect(() => {
     setOpenAlert(open);
   }, [open]);
+
+  const parsedErrorMessages = parseError(messages);
 
   return (
     <Snackbar
@@ -35,15 +32,15 @@ function ErrorMessage({
         sx={{ width: "100%" }}
         onClose={() => setOpenAlert(false)}
       >
-        {typeof messages === "string" ? (
-          <>{messages}</>
-        ) : messages.length === 1 ? (
-          <>{messages[0]}</>
+        {typeof parsedErrorMessages === "string" ? (
+          <>{parsedErrorMessages}</>
+        ) : parsedErrorMessages.length === 1 ? (
+          <>{parsedErrorMessages[0]}</>
         ) : (
           <>
             <AlertTitle>Error</AlertTitle>
             <>
-              {messages.map((message) => (
+              {parsedErrorMessages.map((message) => (
                 <div key={message}>
                   <CircleIcon sx={{ fontSize: 8 }} /> {message}
                 </div>

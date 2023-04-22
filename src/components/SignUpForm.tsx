@@ -6,7 +6,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import PasswordIcon from "@mui/icons-material/Password";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import useSignup from "../features/user/useSignup";
+import { useSignupMutation } from "../features/user/services";
 import { isValidEmail, isValidCharacters } from "../utils/validators";
 import {
   EMAIL_REQUIRED,
@@ -37,9 +37,11 @@ function SignUpForm() {
       password: "",
     },
   });
-  const { signup, isError, isLoading, error } = useSignup();
+  const [signupMutation, { isError, isLoading, error }] = useSignupMutation();
 
-  const onSubmit: SubmitHandler<SignUpFormData> = useCallback(signup, [signup]);
+  const onSubmit: SubmitHandler<SignUpFormData> = useCallback(signupMutation, [
+    signupMutation,
+  ]);
 
   return (
     <FormProvider {...(methods as any)}>

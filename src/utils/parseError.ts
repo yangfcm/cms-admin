@@ -14,7 +14,7 @@ type APIError = {
   }[];
 };
 
-function parseError(error: any) {
+function parseError(error: any): string | string[] {
   if (!error) return '';
   if ('data' in error) {
     const errorData = error.data as APIError;

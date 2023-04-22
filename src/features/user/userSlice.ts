@@ -1,8 +1,10 @@
 import {
   createSlice,
   PayloadAction,
+  isAnyOf,
 } from '@reduxjs/toolkit';
 import { User } from './types';
+import api from './services';
 
 type UserState = {
   authUser?: User | null,
@@ -27,6 +29,19 @@ const userSlice = createSlice({
       state.expiresAt = 0;
     }
   },
+  extraReducers: builder => {
+    builder.addMatcher(
+      isAnyOf(api.endpoints.signin.matchFulfilled, api.endpoints.signup.matchFulfilled),
+      (state, { payload }) => {
+        const { user, token, expiresAt } = payload;
+        localStorage.setItem("token", token);
+        localStorage.setItem("expiresAt", expiresAt.toString());
+        state.authUser = user;
+        state.token = token;
+        state.expiresAt = expiresAt;
+      }
+    )
+  }
 });
 
 export const { signin, signout } = userSlice.actions;
