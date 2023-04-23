@@ -1,11 +1,10 @@
 import { Navigate } from "react-router";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Toolbar from "@mui/material/Toolbar";
 import useUserBlog from "../features/blog/useUserBlog";
 import Header from "../components/Header";
-import OnboardingForm from "../components/OnboardingForm";
+import NewBlogForm from "../components/NewBlogForm";
 
 function Onboarding() {
   const { activeBlog } = useUserBlog();
@@ -27,7 +26,7 @@ function Onboarding() {
               alignItems: "center",
             }}
           >
-            <OnboardingForm />
+            <NewBlogForm />
           </Box>
         </Container>
       </Box>

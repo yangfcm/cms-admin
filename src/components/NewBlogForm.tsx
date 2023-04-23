@@ -11,13 +11,13 @@ import {
   BLOG_TITLE_TOO_LONG,
 } from "../settings/constants";
 
-type OnboardingFormData = {
+type NewBlogData = {
   title: string;
   address: string;
 };
 
-function OnboardingForm() {
-  const methods = useForm<OnboardingFormData>({
+function NewBlogForm() {
+  const methods = useForm<NewBlogData>({
     mode: "onSubmit",
     defaultValues: {
       title: "",
@@ -25,7 +25,7 @@ function OnboardingForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<OnboardingFormData> = useCallback((data) => {
+  const onSubmit: SubmitHandler<NewBlogData> = useCallback((data) => {
     console.log(data);
   }, []);
 
@@ -69,4 +69,4 @@ function OnboardingForm() {
   );
 }
 
-export default OnboardingForm;
+export default NewBlogForm;
