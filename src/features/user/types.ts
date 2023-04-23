@@ -15,10 +15,10 @@ export type User = {
   id: string;
   email: string;
   username: string;
-  nickname?: string;
-  biography?: string;
-  avatar?: string;
-  blogs?: Blog[]
+  nickname: string;
+  biography: string;
+  avatar: string;
+  blogs: Blog[]
 };
 
 export type UserResponse = {

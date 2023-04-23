@@ -1,8 +1,10 @@
 import {
   createSlice,
   PayloadAction,
+  isAnyOf,
 } from '@reduxjs/toolkit';
 import { Blog } from './types';
+import userApi from '../user/services';
 
 type BlogState = {
   blogs?: Blog[];
@@ -40,6 +42,18 @@ const blogSlice = createSlice({
       state.blogs = [...(state.blogs || []), blog];
     },
   },
+  extraReducers: builder => {
+    builder.addMatcher(
+      isAnyOf(userApi.endpoints.signin.matchFulfilled, userApi.endpoints.signup.matchFulfilled),
+      (state, { payload }) => {
+        const { user } = payload;
+        state.blogs = user.blogs;
+        if (user.blogs.length > 0) {
+          state.activeBlogAddress = user.blogs[0].address;
+        }
+      }
+    )
+  }
 });
 
 export const { setBlogs, setActiveBlog, resetBlog } = blogSlice.actions;
