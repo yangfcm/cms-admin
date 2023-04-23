@@ -2,15 +2,12 @@ import { useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
-import parseError from "../../utils/parseError";
-import { useSigninMutation } from "./services";
-import { SignInUser, UserResponse } from "./types";
+import { UserResponse } from "./types";
 import { signin as signinAction, signout as signoutAction } from './userSlice';
 import { setBlogs, resetBlog } from "../blog/blogSlice";
 
 function useAuth() {
   const dispatch = useAppDispatch();
-  const [signinMutation, { isError, isLoading, isSuccess, error: signinError }] = useSigninMutation();
 
   const isSignedIn = useSelector(({ user }: RootState) => {
     const { authUser, token, expiresAt } = user;
@@ -23,12 +20,7 @@ function useAuth() {
     return user.authUser;
   });
 
-  const error = useMemo(() => {
-    if (!signinError) return '';
-    return parseError(signinError);
-  }, [signinError]);
-
-  const handleSignin = useCallback(({ user, token, expiresAt }: UserResponse) => {
+  const signin = useCallback(({ user, token, expiresAt }: UserResponse) => {
     // Actions to do when user successfully signed in.
     localStorage.setItem("token", token);
     localStorage.setItem("expiresAt", expiresAt.toString());
@@ -36,7 +28,7 @@ function useAuth() {
     dispatch(setBlogs({ blogs: user.blogs || [] }));
   }, [dispatch, signinAction, setBlogs]);
 
-  const handleSignout = useCallback(() => {
+  const signout = useCallback(() => {
     // Actions to do when user signed out.
     localStorage.removeItem("token");
     localStorage.removeItem("expiresAt");
@@ -44,28 +36,7 @@ function useAuth() {
     dispatch(resetBlog());
   }, [dispatch, signoutAction, resetBlog]);
 
-  const signin = useCallback(async (signinData: SignInUser | UserResponse) => {
-    try {
-      let { user, token, expiresAt } = signinData as UserResponse;
-      if ((signinData as SignInUser).usernameOrEmail && (signinData as SignInUser).password && (!user || !token || !expiresAt)) {
-        const signinResponse = await signinMutation(signinData as SignInUser).unwrap();
-        user = signinResponse.user;
-        token = signinResponse.token;
-        expiresAt = signinResponse.expiresAt;
-      }
-      handleSignin({
-        user, token, expiresAt
-      });
-    } catch (err: any) {
-      handleSignout();
-    }
-  }, [dispatch, handleSignin, handleSignout]);
-
-  const signout = useCallback(() => {
-    handleSignout();
-  }, [dispatch, handleSignout]);
-
-  return { signin, signout, isError, isLoading, isSuccess, isSignedIn, error, authUser };
+  return { signin, signout, isSignedIn, authUser };
 }
 
 export default useAuth;

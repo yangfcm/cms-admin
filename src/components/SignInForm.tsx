@@ -10,7 +10,7 @@ import {
   USERNAME_OR_EMAIL_REQUIRED,
 } from "../settings/constants";
 import TextInput from "./TextInput";
-import useAuth from "../features/user/useAuth";
+import { useSigninMutation } from "../features/user/services";
 import ErrorMessage from "./ErrorMessage";
 
 type SignInFormData = {
@@ -19,7 +19,7 @@ type SignInFormData = {
 };
 
 function SignInForm() {
-  const { signin, isError, isLoading, error } = useAuth();
+  const [signin, { isError, isLoading, error }] = useSigninMutation();
 
   const methods = useForm<SignInFormData>({
     mode: "onSubmit",

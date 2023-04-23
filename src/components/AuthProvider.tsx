@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { useAppDispatch } from "../app/hooks";
 import { useTokenQuery } from "../features/user/services";
 import useAuth from "../features/user/useAuth";
 
