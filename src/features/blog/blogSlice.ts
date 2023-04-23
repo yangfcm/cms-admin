@@ -5,13 +5,16 @@ import {
 } from '@reduxjs/toolkit';
 import { Blog } from './types';
 import userApi from '../user/services';
+import api from './services';
 
 type BlogState = {
-  blogs?: Blog[];
+  blogs: Blog[];
   activeBlogAddress?: string;
 };
 
-const initialState: BlogState = {};
+const initialState: BlogState = {
+  blogs: []
+};
 
 const blogSlice = createSlice({
   name: 'blog',
@@ -36,7 +39,7 @@ const blogSlice = createSlice({
     },
     resetBlog: (state) => {
       state.activeBlogAddress = undefined;
-      state.blogs = undefined;
+      state.blogs = [];
     },
     createBlogSuccess: (state, { payload: { blog } }: PayloadAction<{ blog: Blog }>) => {
       state.blogs = [...(state.blogs || []), blog];
@@ -51,6 +54,11 @@ const blogSlice = createSlice({
         if (user.blogs.length > 0) {
           state.activeBlogAddress = user.blogs[0].address;
         }
+      }
+    ).addMatcher(
+      api.endpoints.createBlog.matchFulfilled,
+      (state, { payload }) => {
+        console.log(payload);
       }
     )
   }

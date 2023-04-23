@@ -8,6 +8,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Divider from "@mui/material/Divider";
 import { grey } from "@mui/material/colors";
 import useUserBlog from "../features/blog/useUserBlog";
+import NewBlogDialog from "./NewBlogDialog";
 
 function BlogsMenu() {
   const { blogs = [], activeBlog, setActiveBlog } = useUserBlog();
@@ -65,7 +66,7 @@ function BlogsMenu() {
           </MuiLink>
         ))}
         <Divider />
-        <MenuItem>Create a blog...</MenuItem>
+        <NewBlogDialog />
       </Menu>
     </>
   );
