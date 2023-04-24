@@ -13,7 +13,6 @@ import Root from "../pages/Root";
 import Home from "../pages/Home";
 import Articles from "../pages/Articles";
 import Onboarding from "../pages/Onboarding";
-import NewBlog from "../pages/NewBlog";
 import AuthProvider from "../components/AuthProvider";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
