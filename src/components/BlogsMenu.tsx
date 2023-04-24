@@ -8,14 +8,12 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Divider from "@mui/material/Divider";
 import { grey } from "@mui/material/colors";
 import useUserBlog from "../features/blog/useUserBlog";
-import NewBlogDialog from "./NewBlogDialog";
 
 function BlogsMenu() {
   const { blogs = [], activeBlog } = useUserBlog();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [openNewBlogDialog, setOpenNewBlogDialog] = useState(false);
 
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -65,22 +63,10 @@ function BlogsMenu() {
           </MuiLink>
         ))}
         <Divider />
-        <Button
-          onClick={(e) => {
-            e.stopPropagation();
-            setOpenNewBlogDialog(true);
-          }}
-        >
-          Create a Blog
-        </Button>
+        <MuiLink component={Link} to="/new-blog">
+          <Button>Create a blog</Button>
+        </MuiLink>
       </Menu>
-      <NewBlogDialog
-        open={openNewBlogDialog}
-        onClose={() => {
-          setOpenNewBlogDialog(false);
-          handleClose();
-        }}
-      />
     </>
   );
 }

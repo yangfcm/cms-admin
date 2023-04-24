@@ -30,7 +30,7 @@ function NavigateOnAuth({ children }: { children: JSX.Element }) {
   const { isSignedIn } = useAuth();
   const { activeBlog } = useUserBlog();
   if (isSignedIn) {
-    const from = activeBlog ? "/blog/" + activeBlog.address : "/onboarding";
+    const from = activeBlog ? "/blog/" + activeBlog.address : "/new-blog";
     return <Navigate to={from} replace />;
   }
   return children;
@@ -58,7 +58,7 @@ function AppRoutes() {
             }
           />
           <Route
-            path="/onboarding"
+            path="/new-blog"
             element={
               <RequireAuth>
                 <Onboarding />
