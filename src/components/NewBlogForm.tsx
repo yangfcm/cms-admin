@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -19,7 +19,12 @@ type NewBlogData = {
   address: string;
 };
 
-function NewBlogForm() {
+type NewBlogFormProps = {
+  onSuccess?: (newBlogData: NewBlogData) => void;
+};
+
+function NewBlogForm(props: NewBlogFormProps) {
+  const { onSuccess } = props;
   const methods = useForm<NewBlogData>({
     mode: "onSubmit",
     defaultValues: {
@@ -28,7 +33,15 @@ function NewBlogForm() {
     },
   });
 
-  const [createBlog, { isError, isLoading, error }] = useCreateBlogMutation();
+  const [createBlog, { isError, isLoading, error, isSuccess }] =
+    useCreateBlogMutation();
+
+  useEffect(() => {
+    const values = methods.getValues();
+    if (onSuccess && isSuccess) {
+      onSuccess(values);
+    }
+  }, [isSuccess]);
 
   const onSubmit: SubmitHandler<NewBlogData> = useCallback(
     (data) => {

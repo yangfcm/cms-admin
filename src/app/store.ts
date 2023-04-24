@@ -22,7 +22,7 @@ const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [blogApi.reducerPath]: blogApi.reducer,
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([userApi.middleware])
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([userApi.middleware, blogApi.middleware])
 });
 
 export default store;
