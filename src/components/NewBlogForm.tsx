@@ -8,11 +8,13 @@ import TextInput from "./TextInput";
 import ErrorMessage from "./ErrorMessage";
 import {
   BLOG_ADDRESS_REQUIRED,
+  BLOG_ADDRESS_INVALID,
   BLOG_TITLE_MAX_LENGTH,
   BLOG_TITLE_REQUIRED,
   BLOG_TITLE_TOO_LONG,
 } from "../settings/constants";
 import { useCreateBlogMutation } from "../features/blog/services";
+import { isValidCharacters } from "../utils/validators";
 
 type NewBlogData = {
   title: string;
@@ -78,7 +80,12 @@ function NewBlogForm(props: NewBlogFormProps) {
           startIcon={<>https://domain.com/blog/</>}
           rules={{
             required: BLOG_ADDRESS_REQUIRED,
-            validate: (value) => (value.trim() ? true : BLOG_TITLE_REQUIRED),
+            validate: (value) =>
+              !value.trim()
+                ? BLOG_TITLE_REQUIRED
+                : !isValidCharacters(value)
+                ? BLOG_ADDRESS_INVALID
+                : true,
           }}
         />
         <LoadingButton

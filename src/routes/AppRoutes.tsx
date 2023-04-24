@@ -38,8 +38,8 @@ function NavigateOnAuth({ children }: { children: JSX.Element }) {
 
 function AppRoutes() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           <Route
             path="/signup"
@@ -86,8 +86,8 @@ function AppRoutes() {
             }
           />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
