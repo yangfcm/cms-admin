@@ -76,7 +76,10 @@ function BlogsMenu() {
       </Menu>
       <NewBlogDialog
         open={openNewBlogDialog}
-        onClose={() => setOpenNewBlogDialog(false)}
+        onClose={() => {
+          setOpenNewBlogDialog(false);
+          handleClose();
+        }}
       />
     </>
   );
