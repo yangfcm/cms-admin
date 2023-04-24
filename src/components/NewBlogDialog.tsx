@@ -8,16 +8,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import { grey } from "@mui/material/colors";
 import NewBlogForm from "./NewBlogForm";
 
-function NewBlogDialog() {
-  const [open, setOpen] = useState(false);
+type NewBlogDialogProps = {
+  open: boolean;
+  onClose?: () => void;
+};
+
+function NewBlogDialog(props: NewBlogDialogProps) {
+  const { open, onClose } = props;
 
   return (
-    <>
-      <Button onClick={() => setOpen(true)}>Create a Blog</Button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>
+    <Dialog open={open}>
+      <DialogTitle>
+        {onClose && (
           <IconButton
-            onClick={() => setOpen(false)}
+            onClick={onClose}
             sx={{
               position: "absolute",
               right: 10,
@@ -27,12 +31,12 @@ function NewBlogDialog() {
           >
             <CloseIcon />
           </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <NewBlogForm />
-        </DialogContent>
-      </Dialog>
-    </>
+        )}
+      </DialogTitle>
+      <DialogContent>
+        <NewBlogForm />
+      </DialogContent>
+    </Dialog>
   );
 }
 

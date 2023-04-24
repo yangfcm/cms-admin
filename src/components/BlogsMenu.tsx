@@ -15,6 +15,8 @@ function BlogsMenu() {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [openNewBlogDialog, setOpenNewBlogDialog] = useState(false);
+
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -38,6 +40,7 @@ function BlogsMenu() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        onClick={handleClose}
         MenuListProps={{
           "aria-labelledby": "lock-button",
           role: "listbox",
@@ -66,8 +69,14 @@ function BlogsMenu() {
           </MuiLink>
         ))}
         <Divider />
-        <NewBlogDialog />
+        <Button onClick={() => setOpenNewBlogDialog(true)}>
+          Create a Blog
+        </Button>
       </Menu>
+      <NewBlogDialog
+        open={openNewBlogDialog}
+        onClose={() => setOpenNewBlogDialog(false)}
+      />
     </>
   );
 }

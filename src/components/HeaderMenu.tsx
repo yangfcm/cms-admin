@@ -65,12 +65,7 @@ function HeaderMenu() {
           {authUser?.username}
         </MenuItem>
         <Divider />
-        <MenuItem
-          onClick={(e: React.MouseEvent<HTMLElement>) => {
-            e.stopPropagation();
-            setConfirmSignout(true);
-          }}
-        >
+        <MenuItem onClick={() => setConfirmSignout(true)}>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
@@ -80,10 +75,7 @@ function HeaderMenu() {
       <ConfirmDialog
         open={confirmSignout}
         onConfirm={signout}
-        onCancel={(e: React.MouseEvent<HTMLElement>) => {
-          e.stopPropagation();
-          setConfirmSignout(false);
-        }}
+        onCancel={() => setConfirmSignout(false)}
         title="Are you sure to log out?"
       />
     </>

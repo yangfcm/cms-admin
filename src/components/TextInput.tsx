@@ -70,7 +70,7 @@ function TextInput(props: TextInputProps) {
                 )
               }
               autoFocus={autoFocus}
-              key={`key-${name}`}
+              key={name}
             />
             <FormHelperText error sx={{ height: "20px" }}>
               <>{errors && errors[name] ? errors[name]!.message : ""}</>
