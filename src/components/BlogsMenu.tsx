@@ -11,7 +11,7 @@ import useUserBlog from "../features/blog/useUserBlog";
 import NewBlogDialog from "./NewBlogDialog";
 
 function BlogsMenu() {
-  const { blogs = [], activeBlog, setActiveBlog } = useUserBlog();
+  const { blogs = [], activeBlog } = useUserBlog();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -59,12 +59,7 @@ function BlogsMenu() {
             color={grey["900"]}
             key={blog.id}
           >
-            <MenuItem
-              selected={activeBlog?.address === blog.address}
-              onClick={() => {
-                setActiveBlog(blog.address);
-              }}
-            >
+            <MenuItem selected={activeBlog?.address === blog.address}>
               {blog.title}
             </MenuItem>
           </MuiLink>

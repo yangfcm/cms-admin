@@ -1,19 +1,11 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router';
 import { useAppDispatch } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { setActiveBlog as setActiveBlogAction } from './blogSlice';
 
 function useUserBlog() {
-  const { address } = useParams();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (address) {
-      dispatch(setActiveBlogAction(address));
-    }
-  }, [address]);
 
   const blogs = useSelector(({ blog }: RootState) => {
     return blog.blogs;
