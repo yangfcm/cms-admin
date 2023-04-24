@@ -58,7 +58,10 @@ const blogSlice = createSlice({
     ).addMatcher(
       api.endpoints.createBlog.matchFulfilled,
       (state, { payload }) => {
-        console.log(payload);
+        const { blog: { id, title, address } } = payload;
+        state.blogs.push({
+          id, title, address
+        });
       }
     )
   }

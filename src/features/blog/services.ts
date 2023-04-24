@@ -19,7 +19,7 @@ const api = createApi({
       query: (postBlog) => ({
         url: 'blogs',
         method: 'POST',
-        body: postBlog
+        body: { blog: postBlog }
       }),
     }),
   }),

@@ -2,14 +2,17 @@ import { useCallback } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import CreateIcon from "@mui/icons-material/Create";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextInput from "./TextInput";
+import ErrorMessage from "./ErrorMessage";
 import {
   BLOG_ADDRESS_REQUIRED,
   BLOG_TITLE_MAX_LENGTH,
   BLOG_TITLE_REQUIRED,
   BLOG_TITLE_TOO_LONG,
 } from "../settings/constants";
+import { useCreateBlogMutation } from "../features/blog/services";
 
 type NewBlogData = {
   title: string;
@@ -25,9 +28,14 @@ function NewBlogForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<NewBlogData> = useCallback((data) => {
-    console.log(data);
-  }, []);
+  const [createBlog, { isError, isLoading, error }] = useCreateBlogMutation();
+
+  const onSubmit: SubmitHandler<NewBlogData> = useCallback(
+    (data) => {
+      createBlog(data);
+    },
+    [createBlog]
+  );
 
   return (
     <FormProvider {...(methods as any)}>
@@ -35,6 +43,7 @@ function NewBlogForm() {
         Create a blog
       </Typography>
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
+        <ErrorMessage open={isError} messages={error} />
         <TextInput
           name="title"
           id="onboarding-title-input"
@@ -64,6 +73,9 @@ function NewBlogForm() {
           fullWidth
           variant="contained"
           sx={{ mt: 2 }}
+          loadingPosition="start"
+          startIcon={<CreateIcon />}
+          loading={isLoading}
         >
           Create
         </LoadingButton>
