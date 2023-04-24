@@ -1,7 +1,7 @@
-import { useState } from "react";
-import Button from "@mui/material/Button";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import Container from "@mui/material/Container";
 import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,10 +14,12 @@ type NewBlogDialogProps = {
 };
 
 function NewBlogDialog(props: NewBlogDialogProps) {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { open, onClose } = props;
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} fullScreen={fullScreen}>
       <DialogTitle>
         {onClose && (
           <IconButton
@@ -33,9 +35,9 @@ function NewBlogDialog(props: NewBlogDialogProps) {
           </IconButton>
         )}
       </DialogTitle>
-      <DialogContent>
+      <Container maxWidth="xs" sx={{ paddingBottom: 5 }}>
         <NewBlogForm />
-      </DialogContent>
+      </Container>
     </Dialog>
   );
 }
