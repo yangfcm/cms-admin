@@ -41,11 +41,13 @@ function NewBlogForm() {
           label="Blog Name (The title that will be displayed on top of your blog.)"
           rules={{
             required: BLOG_TITLE_REQUIRED,
+            validate: (value) => (value.trim() ? true : BLOG_TITLE_REQUIRED),
             maxLength: {
               value: BLOG_TITLE_MAX_LENGTH,
               message: BLOG_TITLE_TOO_LONG,
             },
           }}
+          autoFocus
         />
         <TextInput
           name="address"
@@ -54,6 +56,7 @@ function NewBlogForm() {
           startIcon={<>https://domain.com/blog/</>}
           rules={{
             required: BLOG_ADDRESS_REQUIRED,
+            validate: (value) => (value.trim() ? true : BLOG_TITLE_REQUIRED),
           }}
         />
         <LoadingButton

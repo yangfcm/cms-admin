@@ -1,7 +1,5 @@
 import {
-  useController,
   useFormContext,
-  ControllerProps,
   UseControllerProps,
   Controller,
 } from "react-hook-form";
@@ -20,6 +18,7 @@ type TextInputProps = UseControllerProps & {
   variant?: "filled" | "outlined" | "standard";
   fullWidth?: boolean;
   startIcon?: JSX.Element;
+  autoFocus?: boolean;
 };
 
 function TextInput(props: TextInputProps) {
@@ -33,6 +32,7 @@ function TextInput(props: TextInputProps) {
     fullWidth = true,
     startIcon = null,
     placeholder,
+    autoFocus,
     // ...inputProps
   } = props;
   // const { field } = useController({ name, rules, defaultValue });
@@ -69,6 +69,8 @@ function TextInput(props: TextInputProps) {
                   <InputAdornment position="start">{startIcon}</InputAdornment>
                 )
               }
+              autoFocus={autoFocus}
+              key={`key-${name}`}
             />
             <FormHelperText error sx={{ height: "20px" }}>
               <>{errors && errors[name] ? errors[name]!.message : ""}</>
