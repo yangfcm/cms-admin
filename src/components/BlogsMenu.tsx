@@ -18,6 +18,7 @@ function BlogsMenu() {
   const [openNewBlogDialog, setOpenNewBlogDialog] = useState(false);
 
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
@@ -69,7 +70,12 @@ function BlogsMenu() {
           </MuiLink>
         ))}
         <Divider />
-        <Button onClick={() => setOpenNewBlogDialog(true)}>
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenNewBlogDialog(true);
+          }}
+        >
           Create a Blog
         </Button>
       </Menu>

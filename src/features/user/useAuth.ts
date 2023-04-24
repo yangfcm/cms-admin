@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { UserResponse } from "./types";
 import { signin as signinAction, signout as signoutAction } from './userSlice';
-import { setBlogs, resetBlog } from "../blog/blogSlice";
+import { setBlogs } from "../blog/blogSlice";
 
 function useAuth() {
   const dispatch = useAppDispatch();
@@ -33,8 +33,7 @@ function useAuth() {
     localStorage.removeItem("token");
     localStorage.removeItem("expiresAt");
     dispatch(signoutAction());
-    dispatch(resetBlog());
-  }, [dispatch, signoutAction, resetBlog]);
+  }, [dispatch, signoutAction]);
 
   return { signin, signout, isSignedIn, authUser };
 }

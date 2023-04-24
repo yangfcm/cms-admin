@@ -24,7 +24,7 @@ function Sidebar() {
           },
         }}
       >
-        {/* <SidebarMenu /> */}
+        <SidebarMenu />
       </Drawer>
       <Drawer // Sidebar on large screen.
         variant="permanent"
