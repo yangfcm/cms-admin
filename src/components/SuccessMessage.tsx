@@ -9,7 +9,13 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function SuccessMessage({ open, message }: { open: boolean; message: string }) {
+type SuccessMessageProps = {
+  open: boolean;
+  message: string;
+  onClose?: () => void;
+};
+
+function SuccessMessage({ open, message, onClose }: SuccessMessageProps) {
   const [openAlert, setOpenAlert] = useState(false);
   useEffect(() => {
     setOpenAlert(open);
@@ -20,12 +26,19 @@ function SuccessMessage({ open, message }: { open: boolean; message: string }) {
       open={openAlert}
       autoHideDuration={6000}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      onClose={() => setOpenAlert(false)}
+      onClose={() => {
+        setOpenAlert(false);
+      }}
     >
       <Alert
         severity="success"
         sx={{ width: "100%" }}
-        onClose={() => setOpenAlert(false)}
+        onClose={() => {
+          setOpenAlert(false);
+          if (onClose) {
+            onClose();
+          }
+        }}
       >
         {message}
       </Alert>

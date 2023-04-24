@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,6 +8,7 @@ import NewBlogForm from "../components/NewBlogForm";
 
 function Onboarding() {
   const { activeBlog } = useUserBlog();
+  const navigate = useNavigate();
 
   if (activeBlog) {
     return <Navigate to={`/blog/${activeBlog.address}`} replace />;
@@ -26,7 +27,11 @@ function Onboarding() {
               alignItems: "center",
             }}
           >
-            <NewBlogForm />
+            <NewBlogForm
+              onSuccess={(blog) => {
+                return navigate(`/blog/${blog.address}`, { replace: true });
+              }}
+            />
           </Box>
         </Container>
       </Box>
