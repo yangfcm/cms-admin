@@ -12,6 +12,7 @@ import {
   BLOG_TITLE_MAX_LENGTH,
   BLOG_TITLE_REQUIRED,
   BLOG_TITLE_TOO_LONG,
+  CREATE_BLOG_CACHE_KEY,
 } from "../settings/constants";
 import { useCreateBlogMutation } from "../features/blog/services";
 import { isValidCharacters } from "../utils/validators";
@@ -36,7 +37,9 @@ function NewBlogForm(props: NewBlogFormProps) {
   });
 
   const [createBlog, { isError, isLoading, error, isSuccess }] =
-    useCreateBlogMutation();
+    useCreateBlogMutation({
+      fixedCacheKey: CREATE_BLOG_CACHE_KEY,
+    });
 
   useEffect(() => {
     const values = methods.getValues();

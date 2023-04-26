@@ -17,3 +17,4 @@ export const BLOG_ADDRESS_INVALID = "Address contains  invalid characters.";
 export const BLOG_TITLE_MAX_LENGTH = 50;
 export const BLOG_TITLE_TOO_LONG = `Blog name cannot exceed ${BLOG_TITLE_MAX_LENGTH} characters.`;
 export const BLOG_CREATED = `Blog is created.`;
+export const CREATE_BLOG_CACHE_KEY = 'CREATE_BLOG_CACHE_KEY';

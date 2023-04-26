@@ -28,6 +28,9 @@ function SuccessMessage({ open, message, onClose }: SuccessMessageProps) {
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       onClose={() => {
         setOpenAlert(false);
+        if (onClose) {
+          onClose();
+        }
       }}
     >
       <Alert
