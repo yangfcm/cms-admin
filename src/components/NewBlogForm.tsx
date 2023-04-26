@@ -67,7 +67,6 @@ function NewBlogForm(props: NewBlogFormProps) {
           id="onboarding-title-input"
           label="Blog Name (The title that will be displayed on top of your blog.)"
           rules={{
-            required: BLOG_TITLE_REQUIRED,
             validate: (value) => (value.trim() ? true : BLOG_TITLE_REQUIRED),
             maxLength: {
               value: BLOG_TITLE_MAX_LENGTH,
@@ -82,10 +81,9 @@ function NewBlogForm(props: NewBlogFormProps) {
           label="Blog Address (People can find your blog via the below URL.)"
           startIcon={<>https://domain.com/blog/</>}
           rules={{
-            required: BLOG_ADDRESS_REQUIRED,
             validate: (value) =>
               !value.trim()
-                ? BLOG_TITLE_REQUIRED
+                ? BLOG_ADDRESS_REQUIRED
                 : !isValidCharacters(value)
                 ? BLOG_ADDRESS_INVALID
                 : true,
