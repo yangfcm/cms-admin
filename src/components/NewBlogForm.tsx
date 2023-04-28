@@ -13,7 +13,10 @@ import {
   BLOG_TITLE_TOO_LONG,
   CREATE_BLOG_CACHE_KEY,
 } from "../settings/constants";
-import { useCreateBlogMutation } from "../features/blog/services";
+import {
+  useCreateBlogMutation,
+  useUpdateBlogMutation,
+} from "../features/blog/services";
 import { isValidCharacters } from "../utils/validators";
 import { Blog, PostBlog } from "../features/blog/types";
 
@@ -37,6 +40,10 @@ function NewBlogForm(props: NewBlogFormProps) {
       fixedCacheKey: CREATE_BLOG_CACHE_KEY,
     });
 
+  const [updateBlog, state] = useUpdateBlogMutation({
+    fixedCacheKey: CREATE_BLOG_CACHE_KEY,
+  });
+
   useEffect(() => {
     const values = methods.getValues();
     if (onSuccess && isSuccess) {
@@ -46,7 +53,11 @@ function NewBlogForm(props: NewBlogFormProps) {
 
   const onSubmit: SubmitHandler<PostBlog> = useCallback(
     (data) => {
-      createBlog(data);
+      if (blog) {
+        updateBlog({ id: blog.id, ...data });
+      } else {
+        createBlog(data);
+      }
     },
     [createBlog]
   );

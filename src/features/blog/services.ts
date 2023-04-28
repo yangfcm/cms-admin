@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery, } from "@reduxjs/toolkit/query/react";
 import { apiBaseUrl } from "../../settings/constants";
-import { PostBlog, BlogResponse } from "./types";
+import { PostBlog, Blog, BlogResponse } from "./types";
 import { RootState } from '../../app/store';
 
 const api = createApi({
@@ -22,9 +22,16 @@ const api = createApi({
         body: { blog: postBlog }
       }),
     }),
+    updateBlog: builder.mutation<BlogResponse, Pick<Blog, 'id'> & Partial<PostBlog>>({
+      query: ({ id, ...patch }) => ({
+        url: `blogs/${id}`,
+        method: 'PUT',
+        body: { blog: patch }
+      })
+    })
   }),
 });
 
 export default api;
 
-export const { useCreateBlogMutation } = api;
+export const { useCreateBlogMutation, useUpdateBlogMutation, } = api;
