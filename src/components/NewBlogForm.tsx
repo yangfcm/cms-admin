@@ -35,21 +35,37 @@ function NewBlogForm(props: NewBlogFormProps) {
     },
   });
 
-  const [createBlog, { isError, isLoading, error, isSuccess }] =
-    useCreateBlogMutation({
-      fixedCacheKey: CREATE_BLOG_CACHE_KEY,
-    });
-
-  const [updateBlog, state] = useUpdateBlogMutation({
+  const [
+    createBlog,
+    {
+      isError: hasCreateError,
+      isLoading: isCreating,
+      error: createError,
+      isSuccess: isCreateSuccess,
+    },
+  ] = useCreateBlogMutation({
     fixedCacheKey: CREATE_BLOG_CACHE_KEY,
   });
 
+  const [
+    updateBlog,
+    {
+      isError: hasUpdateError,
+      isLoading: isUpdating,
+      error: updateError,
+      isSuccess: isUpdateSuccess,
+    },
+  ] = useUpdateBlogMutation({
+    fixedCacheKey: CREATE_BLOG_CACHE_KEY,
+  });
+  const isLoading = isCreating || isUpdating;
+
   useEffect(() => {
     const values = methods.getValues();
-    if (onSuccess && isSuccess) {
+    if (onSuccess && (isCreateSuccess || isUpdateSuccess)) {
       onSuccess(values);
     }
-  }, [isSuccess]);
+  }, [isCreateSuccess]);
 
   const onSubmit: SubmitHandler<PostBlog> = useCallback(
     (data) => {
@@ -65,7 +81,10 @@ function NewBlogForm(props: NewBlogFormProps) {
   return (
     <FormProvider {...(methods as any)}>
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
-        <ErrorMessage open={isError} messages={error} />
+        <ErrorMessage
+          open={hasCreateError || hasUpdateError}
+          messages={createError || updateError}
+        />
         <TextInput
           name="title"
           id="onboarding-title-input"

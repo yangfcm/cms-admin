@@ -14,7 +14,7 @@ function Onboarding() {
       <Header />
       <Box id="app__main">
         <Toolbar />
-        <Container maxWidth="xs">
+        <Container maxWidth="sm">
           <Box
             sx={{
               marginTop: 10,
