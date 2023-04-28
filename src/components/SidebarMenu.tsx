@@ -7,8 +7,28 @@ import ListItemText from "@mui/material/ListItemText";
 import MuiLink from "@mui/material/Link";
 import HomeIcon from "@mui/icons-material/Home";
 import ArticleIcon from "@mui/icons-material/Article";
+import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import Divider from "@mui/material/Divider";
 import BlogsMenu from "./BlogsMenu";
+
+type MenuLinkProps = {
+  to: string;
+  icon: JSX.Element;
+  text: string;
+};
+function MenuLink(props: MenuLinkProps) {
+  const { to, icon, text } = props;
+  return (
+    <MuiLink component={Link} to={to} underline="none">
+      <ListItem disablePadding>
+        <ListItemButton>
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItemButton>
+      </ListItem>
+    </MuiLink>
+  );
+}
 
 function SidebarMenu() {
   return (
@@ -17,26 +37,13 @@ function SidebarMenu() {
         <BlogsMenu />
       </ListItem>
       <Divider />
-      <MuiLink component={Link} to="." underline="none">
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItemButton>
-        </ListItem>
-      </MuiLink>
-      <MuiLink component={Link} to="./articles" underline="none">
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              <ArticleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Articles" />
-          </ListItemButton>
-        </ListItem>
-      </MuiLink>
+      <MenuLink to="." text="Home" icon={<HomeIcon />} />
+      <MenuLink to="./articles" text="Articles" icon={<ArticleIcon />} />
+      <MenuLink
+        to="./blog-settings"
+        text="Blog Settings"
+        icon={<RoomPreferencesIcon />}
+      />
     </List>
   );
 }

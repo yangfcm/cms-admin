@@ -14,6 +14,7 @@ import Home from "../pages/Home";
 import Articles from "../pages/Articles";
 import Onboarding from "../pages/Onboarding";
 import AuthProvider from "../components/AuthProvider";
+import BlogSettings from "../pages/BlogSettings";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const location = useLocation();
@@ -76,6 +77,7 @@ function AppRoutes() {
           >
             <Route path="" element={<Home />} />
             <Route path="articles" element={<Articles />} />
+            <Route path="blog-settings" element={<BlogSettings />} />
           </Route>
           <Route
             path="/"
