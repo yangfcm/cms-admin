@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import CreateIcon from "@mui/icons-material/Create";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextInput from "./TextInput";
@@ -54,9 +53,6 @@ function NewBlogForm(props: NewBlogFormProps) {
 
   return (
     <FormProvider {...(methods as any)}>
-      <Typography variant="h4" sx={{ marginBottom: 4 }}>
-        Create a blog
-      </Typography>
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
         <ErrorMessage open={isError} messages={error} />
         <TextInput
@@ -95,7 +91,7 @@ function NewBlogForm(props: NewBlogFormProps) {
           startIcon={<CreateIcon />}
           loading={isLoading}
         >
-          Create
+          {blog ? "Save" : "Create Blog"}
         </LoadingButton>
       </Box>
     </FormProvider>

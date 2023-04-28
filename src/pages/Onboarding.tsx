@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,6 +23,9 @@ function Onboarding() {
               alignItems: "center",
             }}
           >
+            <Typography variant="h4" sx={{ marginBottom: 4 }}>
+              Create a blog
+            </Typography>
             <NewBlogForm
               onSuccess={(blog) => {
                 return navigate(`/blog/${blog.address}`, { replace: true });
