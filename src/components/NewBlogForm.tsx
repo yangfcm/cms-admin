@@ -5,6 +5,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextInput from "./TextInput";
 import ErrorMessage from "./ErrorMessage";
+import SuccessMessage from "./SuccessMessage";
 import {
   BLOG_ADDRESS_REQUIRED,
   BLOG_ADDRESS_INVALID,
@@ -55,9 +56,7 @@ function NewBlogForm(props: NewBlogFormProps) {
       error: updateError,
       isSuccess: isUpdateSuccess,
     },
-  ] = useUpdateBlogMutation({
-    fixedCacheKey: CREATE_BLOG_CACHE_KEY,
-  });
+  ] = useUpdateBlogMutation();
   const isLoading = isCreating || isUpdating;
 
   useEffect(() => {
@@ -65,18 +64,30 @@ function NewBlogForm(props: NewBlogFormProps) {
     if (onSuccess && (isCreateSuccess || isUpdateSuccess)) {
       onSuccess(values);
     }
-  }, [isCreateSuccess]);
+    if (isUpdateSuccess)
+      // Reset form with new values on updating success.
+      methods.reset({
+        ...blog,
+        ...methods.getValues(),
+      });
+  }, [isCreateSuccess, isUpdateSuccess]);
 
   const onSubmit: SubmitHandler<PostBlog> = useCallback(
     (data) => {
       if (blog) {
-        updateBlog({ id: blog.id, ...data });
+        const patchedBlog: Partial<PostBlog> = {};
+        if (data.title.trim() !== blog.title) patchedBlog.title = data.title;
+        if (data.address.trim().toLowerCase() !== blog.address)
+          patchedBlog.address = data.address;
+        if (Object.keys(patchedBlog).length === 0) return;
+        updateBlog({ id: blog.id, ...patchedBlog });
       } else {
         createBlog(data);
       }
     },
     [createBlog]
   );
+  const { isValid, isDirty } = methods.formState;
 
   return (
     <FormProvider {...(methods as any)}>
@@ -84,6 +95,10 @@ function NewBlogForm(props: NewBlogFormProps) {
         <ErrorMessage
           open={hasCreateError || hasUpdateError}
           messages={createError || updateError}
+        />
+        <SuccessMessage
+          open={isUpdateSuccess}
+          message={"Blog basic settings are saved."}
         />
         <TextInput
           name="title"
@@ -120,6 +135,7 @@ function NewBlogForm(props: NewBlogFormProps) {
           loadingPosition="start"
           startIcon={<CreateIcon />}
           loading={isLoading}
+          disabled={!isValid || !isDirty}
         >
           {blog ? "Save" : "Create Blog"}
         </LoadingButton>
