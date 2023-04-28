@@ -16,23 +16,20 @@ import {
 } from "../settings/constants";
 import { useCreateBlogMutation } from "../features/blog/services";
 import { isValidCharacters } from "../utils/validators";
-
-type NewBlogData = {
-  title: string;
-  address: string;
-};
+import { Blog, PostBlog } from "../features/blog/types";
 
 type NewBlogFormProps = {
-  onSuccess?: (newBlogData: NewBlogData) => void;
+  blog?: Blog;
+  onSuccess?: (postBlogData: PostBlog) => void;
 };
 
 function NewBlogForm(props: NewBlogFormProps) {
-  const { onSuccess } = props;
-  const methods = useForm<NewBlogData>({
+  const { blog, onSuccess } = props;
+  const methods = useForm<PostBlog>({
     mode: "onSubmit",
     defaultValues: {
-      title: "",
-      address: "",
+      title: blog ? blog.title : "",
+      address: blog ? blog.address : "",
     },
   });
 
@@ -48,7 +45,7 @@ function NewBlogForm(props: NewBlogFormProps) {
     }
   }, [isSuccess]);
 
-  const onSubmit: SubmitHandler<NewBlogData> = useCallback(
+  const onSubmit: SubmitHandler<PostBlog> = useCallback(
     (data) => {
       createBlog(data);
     },
