@@ -13,12 +13,7 @@ function BlogSettings() {
         <Typography variant="h6" sx={{ marginBottom: 1 }}>
           Basic Settings
         </Typography>
-        <NewBlogForm
-          blog={activeBlog}
-          onSuccess={(blog) => {
-            console.log(blog);
-          }}
-        />
+        <NewBlogForm blog={activeBlog} />
       </Container>
     </>
   );

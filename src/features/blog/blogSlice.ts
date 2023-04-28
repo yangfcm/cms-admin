@@ -63,6 +63,19 @@ const blogSlice = createSlice({
           id, title, address
         });
       }
+    ).addMatcher(
+      api.endpoints.updateBlog.matchFulfilled,
+      (state, { payload }) => {
+        const { blog: { id, title, address } } = payload;
+        const foundBlog = state.blogs.find(b => b.id === id);
+        if (foundBlog) {
+          foundBlog.title = title;
+          if (foundBlog.address === state.activeBlogAddress) {
+            state.activeBlogAddress = address;
+          }
+          foundBlog.address = address;
+        }
+      }
     )
   }
 });
