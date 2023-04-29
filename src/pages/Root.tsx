@@ -1,5 +1,11 @@
 import { useEffect } from "react";
-import { Outlet, Navigate, useParams } from "react-router-dom";
+import {
+  Outlet,
+  Navigate,
+  useParams,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import { useAppDispatch } from "../app/hooks";
@@ -10,13 +16,25 @@ import useUserBlog from "../features/blog/useUserBlog";
 import blogApi, { useCreateBlogMutation } from "../features/blog/services";
 import { BLOG_CREATED, CREATE_BLOG_CACHE_KEY } from "../settings/constants";
 
+const pathPattern = /^\/blog\/([\w_-]+)(?:\/([\w_-]+))?\/?$/;
+
 function BlogProvider({ children }: { children: JSX.Element }) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { address } = useParams();
-  const [createBlog, { isSuccess: blogIsCreated }] = useCreateBlogMutation({
+  const [, { isSuccess: blogIsCreated }] = useCreateBlogMutation({
     fixedCacheKey: CREATE_BLOG_CACHE_KEY,
   });
-  const { setActiveBlog, blogs } = useUserBlog();
+  const { setActiveBlog, blogs, activeBlog } = useUserBlog();
+
+  useEffect(() => {
+    if (activeBlog) {
+      const match = pathname.match(pathPattern);
+      if (!match) return;
+      navigate(`/blog/${activeBlog.address}/${match[2] || ""}`);
+    }
+  }, [activeBlog]);
 
   if (!blogs || blogs.length === 0) {
     return <Navigate to="/new-blog" replace />;

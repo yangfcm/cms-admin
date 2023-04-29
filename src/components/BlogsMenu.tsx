@@ -6,11 +6,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Divider from "@mui/material/Divider";
-import { grey } from "@mui/material/colors";
 import useUserBlog from "../features/blog/useUserBlog";
 
 function BlogsMenu() {
-  const { blogs = [], activeBlog } = useUserBlog();
+  const { blogs = [], activeBlog, setActiveBlog } = useUserBlog();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -50,17 +49,13 @@ function BlogsMenu() {
       >
         <MenuItem disabled>Your Blogs</MenuItem>
         {blogs.map((blog) => (
-          <MuiLink
-            component={Link}
-            to={`/blog/${blog.address}`}
-            underline="none"
-            color={grey["900"]}
+          <MenuItem
             key={blog.id}
+            onClick={() => setActiveBlog(blog.address)}
+            selected={activeBlog?.address === blog.address}
           >
-            <MenuItem selected={activeBlog?.address === blog.address}>
-              {blog.title}
-            </MenuItem>
-          </MuiLink>
+            {blog.title}
+          </MenuItem>
         ))}
         <Divider />
         <MuiLink component={Link} to="/new-blog">
