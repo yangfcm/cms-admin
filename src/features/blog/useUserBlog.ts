@@ -11,7 +11,7 @@ function useUserBlog() {
     return blog.blogs;
   });
   const activeBlog = useSelector(({ blog }: RootState) => {
-    const activeBlogAddress = blog.activeBlogAddress;
+    const { activeBlogAddress } = blog;
     if (!activeBlogAddress || !blog.blogs) return null;
     return blog.blogs.find(b => b.address === activeBlogAddress);
   });

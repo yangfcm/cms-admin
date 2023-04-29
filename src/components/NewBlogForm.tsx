@@ -31,10 +31,19 @@ function NewBlogForm(props: NewBlogFormProps) {
   const methods = useForm<PostBlog>({
     mode: "onSubmit",
     defaultValues: {
-      title: blog ? blog.title : "",
-      address: blog ? blog.address : "",
+      title: "",
+      address: "",
     },
   });
+
+  useEffect(() => {
+    if (blog) {
+      methods.reset({
+        title: blog.title,
+        address: blog.address,
+      });
+    }
+  }, [blog]);
 
   const [
     createBlog,
