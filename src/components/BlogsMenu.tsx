@@ -59,7 +59,7 @@ function BlogsMenu() {
         ))}
         <Divider />
         <MuiLink component={Link} to="/new-blog">
-          <Button>Create a blog</Button>
+          <Button fullWidth>Create a blog</Button>
         </MuiLink>
       </Menu>
     </>

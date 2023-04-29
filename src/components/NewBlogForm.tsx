@@ -1,8 +1,10 @@
 import { useEffect, useCallback } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import CreateIcon from "@mui/icons-material/Create";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
 import TextInput from "./TextInput";
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
@@ -20,6 +22,7 @@ import {
 } from "../features/blog/services";
 import { isValidCharacters } from "../utils/validators";
 import { Blog, PostBlog } from "../features/blog/types";
+import UndoIcon from "@mui/icons-material/Undo";
 
 type NewBlogFormProps = {
   blog?: Blog;
@@ -136,18 +139,29 @@ function NewBlogForm(props: NewBlogFormProps) {
                 : true,
           }}
         />
-        <LoadingButton
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 2 }}
-          loadingPosition="start"
-          startIcon={<CreateIcon />}
-          loading={isLoading}
-          disabled={!isValid || !isDirty}
-        >
-          {blog ? "Save" : "Create Blog"}
-        </LoadingButton>
+        <Stack direction="row" justifyContent="center" spacing={2}>
+          {blog && (
+            <Button
+              variant="contained"
+              color="inherit"
+              disabled={!isDirty}
+              startIcon={<UndoIcon />}
+              onClick={() => methods.reset()}
+            >
+              Reset
+            </Button>
+          )}
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            loadingPosition="start"
+            startIcon={<CreateIcon />}
+            loading={isLoading}
+            disabled={!isValid || !isDirty}
+          >
+            {blog ? "Save" : "Create Blog"}
+          </LoadingButton>
+        </Stack>
       </Box>
     </FormProvider>
   );
