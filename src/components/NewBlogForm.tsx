@@ -97,9 +97,9 @@ function NewBlogForm(props: NewBlogFormProps) {
         createBlog(data);
       }
     },
-    [createBlog]
+    [createBlog, blog]
   );
-  const { isValid, isDirty } = methods.formState;
+  const { isDirty } = methods.formState;
 
   return (
     <FormProvider {...(methods as any)}>
@@ -157,7 +157,7 @@ function NewBlogForm(props: NewBlogFormProps) {
             loadingPosition="start"
             startIcon={<CreateIcon />}
             loading={isLoading}
-            disabled={!isValid || !isDirty}
+            disabled={!isDirty}
           >
             {blog ? "Save" : "Create Blog"}
           </LoadingButton>

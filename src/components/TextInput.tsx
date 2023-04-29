@@ -41,7 +41,6 @@ function TextInput(props: TextInputProps) {
     control,
     formState: { errors = {} },
   } = formContext;
-  // console.log(errors);
 
   if (!name || !formContext) return null;
 
