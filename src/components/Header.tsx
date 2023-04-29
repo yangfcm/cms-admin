@@ -10,10 +10,12 @@ import CreateIcon from "@mui/icons-material/Create";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useToggleSidebar } from "../features/preference/useToggleSidebar";
 import HeaderMenu from "./HeaderMenu";
+import useUserBlog from "../features/blog/useUserBlog";
 
 function Header() {
   const theme = useTheme();
   const { setOpenSidebar } = useToggleSidebar();
+  const { activeBlog } = useUserBlog();
 
   return (
     <AppBar
@@ -47,7 +49,11 @@ function Header() {
           >
             <MenuIcon />
           </IconButton>
-          <MuiLink component={Link} to="/" underline="none">
+          <MuiLink
+            component={Link}
+            to={activeBlog ? `/blog/${activeBlog.address}` : "/new-blog"}
+            underline="none"
+          >
             <Typography
               component="h1"
               variant="h6"
