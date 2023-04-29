@@ -16,7 +16,11 @@ function BlogProvider({ children }: { children: JSX.Element }) {
   const [createBlog, { isSuccess: blogIsCreated }] = useCreateBlogMutation({
     fixedCacheKey: CREATE_BLOG_CACHE_KEY,
   });
-  const { setActiveBlog } = useUserBlog();
+  const { setActiveBlog, blogs } = useUserBlog();
+
+  if (!blogs || blogs.length === 0) {
+    return <Navigate to="/new-blog" replace />;
+  }
 
   useEffect(() => {
     if (address) {
@@ -39,12 +43,6 @@ function BlogProvider({ children }: { children: JSX.Element }) {
 }
 
 function Root() {
-  const { blogs } = useUserBlog();
-
-  if (!blogs || blogs.length === 0) {
-    return <Navigate to="/onboarding" replace />;
-  }
-
   return (
     <BlogProvider>
       <>
