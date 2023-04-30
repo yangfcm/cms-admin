@@ -40,24 +40,27 @@ function BlogProvider({ children }: { children: JSX.Element }) {
   const { setActiveBlog, blogs, activeBlog } = useUserBlog();
 
   useEffect(() => {
-    if (!activeBlog) return;
-    const match = pathname.match(pathPattern);
-    if (!match) return;
-    if (blogIsDeleted) {
+    if (blogIsDeleted && activeBlog) {
+      // When blog is deleted, navigate to the home page of next active blog.
       return navigate(`/blog/${activeBlog.address}`);
     }
-    navigate(`/blog/${activeBlog.address}/${match[2] || ""}`);
-  }, [activeBlog]);
-
-  if (!blogs || blogs.length === 0) {
-    return <Navigate to="/new-blog" replace />;
-  }
+    const match = pathname.match(pathPattern);
+    if (activeBlog && match) {
+      navigate(`/blog/${activeBlog.address}/${match[2] || ""}`);
+    } else {
+      navigate("/new-blog");
+    }
+  }, [activeBlog, blogIsDeleted]);
 
   useEffect(() => {
     if (address) {
       setActiveBlog(address);
     }
   }, [address]);
+
+  if (!blogs || blogs.length === 0) {
+    return <Navigate to="/new-blog" replace />;
+  }
 
   return (
     <>
