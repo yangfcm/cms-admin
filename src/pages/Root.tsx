@@ -13,8 +13,16 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import SuccessMessage from "../components/SuccessMessage";
 import useUserBlog from "../features/blog/useUserBlog";
-import blogApi, { useCreateBlogMutation } from "../features/blog/services";
-import { BLOG_CREATED, CREATE_BLOG_CACHE_KEY } from "../settings/constants";
+import blogApi, {
+  useCreateBlogMutation,
+  useDeleteBlogMutation,
+} from "../features/blog/services";
+import {
+  BLOG_CREATED,
+  BLOG_DELETED,
+  CREATE_BLOG_CACHE_KEY,
+  DELETE_BLOG_CACHE_KEY,
+} from "../settings/constants";
 
 const pathPattern = /^\/blog\/([\w_-]+)(?:\/([\w_-]+))?\/?$/;
 
@@ -26,14 +34,19 @@ function BlogProvider({ children }: { children: JSX.Element }) {
   const [, { isSuccess: blogIsCreated }] = useCreateBlogMutation({
     fixedCacheKey: CREATE_BLOG_CACHE_KEY,
   });
+  const [, { isSuccess: blogIsDeleted }] = useDeleteBlogMutation({
+    fixedCacheKey: DELETE_BLOG_CACHE_KEY,
+  });
   const { setActiveBlog, blogs, activeBlog } = useUserBlog();
 
   useEffect(() => {
-    if (activeBlog) {
-      const match = pathname.match(pathPattern);
-      if (!match) return;
-      navigate(`/blog/${activeBlog.address}/${match[2] || ""}`);
+    if (!activeBlog) return;
+    const match = pathname.match(pathPattern);
+    if (!match) return;
+    if (blogIsDeleted) {
+      return navigate(`/blog/${activeBlog.address}`);
     }
+    navigate(`/blog/${activeBlog.address}/${match[2] || ""}`);
   }, [activeBlog]);
 
   if (!blogs || blogs.length === 0) {
@@ -51,6 +64,13 @@ function BlogProvider({ children }: { children: JSX.Element }) {
       <SuccessMessage
         message={BLOG_CREATED}
         open={blogIsCreated}
+        onClose={() => {
+          dispatch(blogApi.util.resetApiState());
+        }}
+      />
+      <SuccessMessage
+        message={BLOG_DELETED}
+        open={blogIsDeleted}
         onClose={() => {
           dispatch(blogApi.util.resetApiState());
         }}

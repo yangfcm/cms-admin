@@ -76,6 +76,17 @@ const blogSlice = createSlice({
           foundBlog.address = address;
         }
       }
+    ).addMatcher(
+      api.endpoints.deleteBlog.matchFulfilled,
+      (state, { payload }) => {
+        const { blog: { id } } = payload;
+        state.blogs = state.blogs.filter(b => b.id !== id);
+        if (state.blogs.length > 0) {
+          state.activeBlogAddress = state.blogs[0].address;
+        } else {
+          state.activeBlogAddress = undefined;
+        }
+      }
     )
   }
 });

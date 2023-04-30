@@ -28,10 +28,16 @@ const api = createApi({
         method: 'PUT',
         body: { blog: patch }
       })
+    }),
+    deleteBlog: builder.mutation<BlogResponse, string>({
+      query: (id) => ({
+        url: `/blogs/${id}`,
+        method: 'DELETE'
+      })
     })
   }),
 });
 
 export default api;
 
-export const { useCreateBlogMutation, useUpdateBlogMutation, } = api;
+export const { useCreateBlogMutation, useUpdateBlogMutation, useDeleteBlogMutation } = api;

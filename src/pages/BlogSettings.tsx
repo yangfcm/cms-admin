@@ -1,11 +1,56 @@
+import { useState, useCallback, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
+import { red } from "@mui/material/colors";
 import useUserBlog from "../features/blog/useUserBlog";
 import NewBlogForm from "../components/NewBlogForm";
-import { red } from "@mui/material/colors";
+import ConfirmDialog from "../components/ConfirmDialog";
+import ErrorMessage from "../components/ErrorMessage";
+import { Blog } from "../features/blog/types";
+import { useDeleteBlogMutation } from "../features/blog/services";
+import { DELETE_BLOG_CACHE_KEY } from "../settings/constants";
+
+type DeleteBlogButtonProps = {
+  blog: Blog;
+  onSuccess?: () => void;
+};
+
+function DeleteBlogButton({ blog, onSuccess }: DeleteBlogButtonProps) {
+  const [open, setOpen] = useState(false);
+  const [deleteBlog, { isError, isLoading, error, isSuccess }] =
+    useDeleteBlogMutation({
+      fixedCacheKey: DELETE_BLOG_CACHE_KEY,
+    });
+
+  const handleDeleteDialog = useCallback(() => {
+    deleteBlog(blog.id);
+  }, [blog]);
+
+  useEffect(() => {
+    if (isSuccess && onSuccess) {
+      onSuccess();
+    }
+  }, [isSuccess]);
+
+  return (
+    <>
+      <ErrorMessage open={isError} messages={error} />
+      <Button variant="contained" color="error" onClick={() => setOpen(true)}>
+        Delete Blog
+      </Button>
+      <ConfirmDialog
+        open={open}
+        title="Are you sure the delete the blog?"
+        onCancel={() => setOpen(false)}
+        onConfirm={handleDeleteDialog}
+        isLoading={isLoading}
+      />
+    </>
+  );
+}
 
 function BlogSettings() {
   const { activeBlog } = useUserBlog();
@@ -13,7 +58,7 @@ function BlogSettings() {
 
   return (
     <>
-      <Container maxWidth="sm" sx={{ marginLeft: "inherit" }}>
+      <Container maxWidth="md" sx={{ marginLeft: "inherit" }}>
         <Typography variant="h5" sx={{ marginBottom: 1 }}>
           Basic Settings
         </Typography>
@@ -36,9 +81,7 @@ function BlogSettings() {
               <strong>{activeBlog.title}</strong> permanently
             </Typography>
           </div>
-          <Button variant="contained" color="error">
-            Delete Blog
-          </Button>
+          <DeleteBlogButton blog={activeBlog} />
         </Stack>
       </Container>
     </>

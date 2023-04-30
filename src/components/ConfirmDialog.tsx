@@ -1,9 +1,9 @@
-import { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import LoadingButton from "@mui/lab/LoadingButton";
 import DialogTitle from "@mui/material/DialogTitle";
 import CheckIcon from "@mui/icons-material/Check";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -17,6 +17,7 @@ type ConfirmDialogProps = {
   onConfirm: (e: React.MouseEvent<HTMLElement>) => void;
   onCancel: (e: React.MouseEvent<HTMLElement>) => void;
   open: boolean;
+  isLoading?: boolean;
 };
 
 function ConfirmDialog(props: ConfirmDialogProps) {
@@ -28,6 +29,7 @@ function ConfirmDialog(props: ConfirmDialogProps) {
     cancelText = "Cancel",
     onConfirm,
     onCancel,
+    isLoading = false,
   } = props;
 
   return (
@@ -43,12 +45,20 @@ function ConfirmDialog(props: ConfirmDialogProps) {
           onClick={onCancel}
           startIcon={<CancelIcon />}
           style={{ color: grey[600] }}
+          disabled={isLoading}
         >
           {cancelText}
         </Button>
-        <Button onClick={onConfirm} startIcon={<CheckIcon />}>
+        <LoadingButton
+          type="button"
+          loadingPosition="start"
+          loading={isLoading}
+          disabled={isLoading}
+          onClick={onConfirm}
+          startIcon={<CheckIcon />}
+        >
           {confirmText}
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );
