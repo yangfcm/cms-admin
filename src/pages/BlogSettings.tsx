@@ -43,7 +43,7 @@ function DeleteBlogButton({ blog, onSuccess }: DeleteBlogButtonProps) {
       </Button>
       <ConfirmDialog
         open={open}
-        title="Are you sure the delete the blog?"
+        title="Are you sure to delete the blog?"
         onCancel={() => setOpen(false)}
         onConfirm={handleDeleteDialog}
         isLoading={isLoading}
