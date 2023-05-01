@@ -7,6 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MuiLink from "@mui/material/Link";
 import HomeIcon from "@mui/icons-material/Home";
 import ArticleIcon from "@mui/icons-material/Article";
+import CategoryIcon from "@mui/icons-material/Category";
 import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import Divider from "@mui/material/Divider";
 import BlogsMenu from "./BlogsMenu";
@@ -39,6 +40,7 @@ function SidebarMenu() {
       <Divider />
       <MenuLink to="." text="Home" icon={<HomeIcon />} />
       <MenuLink to="./articles" text="Articles" icon={<ArticleIcon />} />
+      <MenuLink to="./categories" text="Categories" icon={<CategoryIcon />} />
       <MenuLink
         to="./blog-settings"
         text="Blog Settings"

@@ -12,6 +12,7 @@ import SignUp from "../pages/SignUp";
 import Root from "../pages/Root";
 import Home from "../pages/Home";
 import Articles from "../pages/Articles";
+import Categories from "../pages/Categories";
 import Onboarding from "../pages/Onboarding";
 import AuthProvider from "../components/AuthProvider";
 import BlogSettings from "../pages/BlogSettings";
@@ -77,6 +78,7 @@ function AppRoutes() {
           >
             <Route path="" element={<Home />} />
             <Route path="articles" element={<Articles />} />
+            <Route path="categories" element={<Categories />} />
             <Route path="blog-settings" element={<BlogSettings />} />
           </Route>
           <Route
