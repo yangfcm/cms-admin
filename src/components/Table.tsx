@@ -7,6 +7,10 @@ import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ClearIcon from "@mui/icons-material/Clear";
+import SaveIcon from "@mui/icons-material/Save";
 
 const NEW_KEY = "_NEW_KEY";
 
@@ -65,8 +69,46 @@ function useTable<T extends Record<string, any>>(
             );
           }}
           enableEditing
+          editingMode="row"
           renderRowActions={({ row, table }) => {
-            return <Box sx={{ display: "flex", gap: "1rem" }}>action</Box>;
+            if (row.original.id === NEW_KEY) {
+              setTimeout(() => {
+                table.setEditingRow(row);
+              }, 1);
+              return (
+                <Box>
+                  <Tooltip arrow placement="left" title="Cancel">
+                    <IconButton onClick={() => setAdding(false)}>
+                      <ClearIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip arrow placement="right" title="Save">
+                    <IconButton
+                    // onClick={() => handleDeleteRow(row)}
+                    >
+                      <SaveIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              );
+            }
+            return (
+              <Box>
+                <Tooltip arrow placement="left" title="Edit">
+                  <IconButton onClick={() => table.setEditingRow(row)}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip arrow placement="right" title="Delete">
+                  <IconButton
+                    color="error"
+                    // onClick={() => handleDeleteRow(row)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            );
           }}
           {...others}
         />

@@ -9,29 +9,21 @@ import { Category } from "../features/category/types";
 
 function Categories() {
   const { activeBlog } = useUserBlog();
-  const [addingData, setAddingData] = useState(false);
-  const [categoriesData, setCategoriesData] = useState<Category[]>([]);
   const { data, isSuccess, isError, isLoading } = useReadCategoriesQuery(
     activeBlog?.address || ""
   );
-
-  useEffect(() => {
-    if (data) {
-      setCategoriesData(data.categories);
-    }
-  }, [data]);
 
   const Table = useTable<Category>(
     [
       {
         accessorKey: "name",
         header: "Name",
-        accessorFn: (row) => {},
+        // accessorFn: (row) => {},
       },
       {
         accessorKey: "description",
         header: "Description",
-        accessorFn: (row) => {},
+        // accessorFn: (row) => {},
       },
     ],
     data?.categories || []
