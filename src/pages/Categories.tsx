@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -8,9 +9,17 @@ import { Category } from "../features/category/types";
 
 function Categories() {
   const { activeBlog } = useUserBlog();
+  const [addingData, setAddingData] = useState(false);
+  const [categoriesData, setCategoriesData] = useState<Category[]>([]);
   const { data, isSuccess, isError, isLoading } = useReadCategoriesQuery(
     activeBlog?.address || ""
   );
+
+  useEffect(() => {
+    if (data) {
+      setCategoriesData(data.categories);
+    }
+  }, [data]);
 
   const Table = useTable<Category>(
     [
@@ -39,6 +48,8 @@ function Categories() {
         state={{
           isLoading,
         }}
+        enableAdding
+        addingText="Add category"
       />
     </Container>
   );
