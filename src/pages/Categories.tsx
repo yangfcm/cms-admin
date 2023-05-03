@@ -1,7 +1,7 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Table from "../components/Table";
+import useTable from "../components/Table";
 import { useReadCategoriesQuery } from "../features/category/services";
 import useUserBlog from "../features/blog/useUserBlog";
 
@@ -11,6 +11,20 @@ function Categories() {
     activeBlog?.address || ""
   );
 
+  const Table = useTable(
+    [
+      {
+        accessorKey: "name",
+        header: "Name",
+      },
+      {
+        accessorKey: "description",
+        header: "Description",
+      },
+    ],
+    data?.categories || []
+  );
+
   return (
     <Container>
       <Typography variant="h5" sx={{ marginBottom: 1 }}>
@@ -18,22 +32,7 @@ function Categories() {
       </Typography>
       <Divider />
       <br />
-      <Table
-        data={data?.categories || []}
-        columns={[
-          {
-            accessorKey: "name",
-            header: "Name",
-          },
-          {
-            accessorKey: "description",
-            header: "Description",
-          },
-        ]}
-        state={{
-          isLoading,
-        }}
-      />
+      <Table />
     </Container>
   );
 }
