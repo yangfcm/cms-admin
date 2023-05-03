@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import MaterialReactTable, {
   MaterialReactTableProps,
   MRT_ColumnDef,
 } from "material-react-table";
+import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -19,9 +20,13 @@ type TableColumnDef<T> = Omit<MRT_ColumnDef<T>, "accessorKey"> & {
 };
 
 function useTable<T extends Record<string, any>>(
-  columns: TableColumnDef<T>[],
+  columnsProps: TableColumnDef<T>[],
   tableData: T[]
 ) {
+  const columns = useMemo(
+    () => columnsProps as TableColumnDef<Record<string, any>>[],
+    [columnsProps]
+  );
   const [data, setData] = useState<Record<string, any>[]>(tableData);
   const [adding, setAdding] = useState<boolean>(false);
   useEffect(() => {
@@ -44,7 +49,7 @@ function useTable<T extends Record<string, any>>(
       return (
         <MaterialReactTable
           data={data}
-          columns={columns as MRT_ColumnDef<Record<string, any>>[]}
+          columns={columns}
           enableDensityToggle={false}
           enableFullScreenToggle={false}
           initialState={{ density: "compact" }}
@@ -60,6 +65,9 @@ function useTable<T extends Record<string, any>>(
             );
           }}
           enableEditing
+          renderRowActions={({ row, table }) => {
+            return <Box sx={{ display: "flex", gap: "1rem" }}>action</Box>;
+          }}
           {...others}
         />
       );
