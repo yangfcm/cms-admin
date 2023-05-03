@@ -4,6 +4,7 @@ import Divider from "@mui/material/Divider";
 import useTable from "../components/Table";
 import { useReadCategoriesQuery } from "../features/category/services";
 import useUserBlog from "../features/blog/useUserBlog";
+import { Category } from "../features/category/types";
 
 function Categories() {
   const { activeBlog } = useUserBlog();
@@ -11,15 +12,17 @@ function Categories() {
     activeBlog?.address || ""
   );
 
-  const Table = useTable(
+  const Table = useTable<Category>(
     [
       {
         accessorKey: "name",
         header: "Name",
+        accessorFn: (row) => {},
       },
       {
         accessorKey: "description",
         header: "Description",
+        accessorFn: (row) => {},
       },
     ],
     data?.categories || []
@@ -32,7 +35,11 @@ function Categories() {
       </Typography>
       <Divider />
       <br />
-      <Table />
+      <Table
+        state={{
+          isLoading,
+        }}
+      />
     </Container>
   );
 }

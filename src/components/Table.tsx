@@ -4,29 +4,18 @@ import MaterialReactTable, {
   MRT_ColumnDef,
 } from "material-react-table";
 
-function Table(props: MaterialReactTableProps) {
-  const { data, columns, ...other } = props;
-  return (
-    <MaterialReactTable
-      data={data}
-      columns={columns}
-      enableDensityToggle={false}
-      enableFullScreenToggle={false}
-      initialState={{ density: "compact" }}
-      {...other}
-    />
-  );
-}
+type TableProps = Omit<MaterialReactTableProps, "columns" | "data">;
 
-function useTable(columns: MRT_ColumnDef<any>[], data: any[]) {
+function useTable<T>(columns: MRT_ColumnDef<T>[], data: T[]) {
   const Table = useCallback(
-    () => (
+    (props: TableProps) => (
       <MaterialReactTable
         data={data}
-        columns={columns}
+        columns={columns as MRT_ColumnDef<Record<string, any>>[]}
         enableDensityToggle={false}
         enableFullScreenToggle={false}
         initialState={{ density: "compact" }}
+        {...props}
       />
     ),
     [data, columns]
