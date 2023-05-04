@@ -11,6 +11,7 @@ function Categories() {
   const { data, isSuccess, isError, isLoading } = useReadCategoriesQuery(
     activeBlog?.address || ""
   );
+  console.log(isLoading);
 
   const columns = [
     { field: "name", title: "Name" },
@@ -24,7 +25,11 @@ function Categories() {
       </Typography>
       <Divider />
       <br />
-      <Table data={data?.categories || []} columns={columns} />
+      <Table
+        data={data?.categories || []}
+        columns={columns}
+        isLoading={isLoading}
+      />
     </Container>
   );
 }

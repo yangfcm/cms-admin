@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import LinearProgress from "@mui/material/LinearProgress";
 
 interface Column<RowData> {
   field: string;
@@ -18,13 +19,14 @@ interface Cell {
 }
 
 interface TableProps<RowData> {
-  keyField?: string;
   data: RowData[];
   columns: Column<RowData>[];
+  keyField?: string;
+  isLoading?: boolean;
 }
 
 function AppTable<RowData>(props: TableProps<RowData>) {
-  const { data: dataProp, columns, keyField = "id" } = props;
+  const { data: dataProp, columns, keyField = "id", isLoading = false } = props;
   const [data, setData] = useState<RowData[]>(dataProp);
 
   useEffect(() => {
@@ -46,6 +48,13 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           </TableRow>
         </TableHead>
         <TableBody>
+          {isLoading && (
+            <TableRow>
+              <TableCell colSpan={columns.length} sx={{ p: 0 }}>
+                <LinearProgress />
+              </TableCell>
+            </TableRow>
+          )}
           {data.map((row: Record<string, any>) => {
             const cells: Cell[] = [];
             columns.forEach((col) => {
