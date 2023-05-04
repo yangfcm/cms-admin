@@ -24,7 +24,7 @@ function ErrorMessage({ open, messages }: { open: boolean; messages: any }) {
     <Snackbar
       open={openAlert}
       autoHideDuration={6000}
-      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       onClose={() => setOpenAlert(false)}
     >
       <Alert

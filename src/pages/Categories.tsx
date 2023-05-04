@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -42,6 +41,9 @@ function Categories() {
         }}
         enableAdding
         addingText="Add category"
+        onSave={(data) => {
+          console.log(data);
+        }}
       />
     </Container>
   );

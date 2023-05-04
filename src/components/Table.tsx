@@ -17,6 +17,7 @@ const NEW_KEY = "_NEW_KEY";
 type TableProps = Omit<MaterialReactTableProps, "columns" | "data"> & {
   enableAdding?: boolean;
   addingText?: string;
+  onSave?: (newData: Record<string, any>) => void;
 };
 
 type TableColumnDef<T> = Omit<MRT_ColumnDef<T>, "accessorKey"> & {
@@ -49,7 +50,7 @@ function useTable<T extends Record<string, any>>(
 
   const Table = useCallback(
     (props: TableProps) => {
-      const { enableAdding, addingText = "Add", ...others } = props;
+      const { enableAdding, addingText = "Add", onSave, ...others } = props;
       return (
         <MaterialReactTable
           data={data}
@@ -70,8 +71,19 @@ function useTable<T extends Record<string, any>>(
           }}
           enableEditing
           editingMode="row"
+          positionActionsColumn="last"
+          onEditingRowSave={({ exitEditingMode, row, values }) => {
+            console.log(row, values);
+            if (onSave) onSave(values);
+            if (adding) setAdding(false);
+            exitEditingMode();
+          }}
+          onEditingRowCancel={() => {
+            if (adding) setAdding(false);
+          }}
+          enableRowActions
           renderRowActions={({ row, table }) => {
-            if (row.original.id === NEW_KEY) {
+            if (row.original.id === NEW_KEY && adding) {
               setTimeout(() => {
                 table.setEditingRow(row);
               }, 1);
@@ -84,7 +96,9 @@ function useTable<T extends Record<string, any>>(
                   </Tooltip>
                   <Tooltip arrow placement="right" title="Save">
                     <IconButton
-                    // onClick={() => handleDeleteRow(row)}
+                      onClick={() => {
+                        console.log(row);
+                      }}
                     >
                       <SaveIcon />
                     </IconButton>
