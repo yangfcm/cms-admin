@@ -38,7 +38,9 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           <TableRow>
             {columns.map((col) => {
               return (
-                <TableCell key={col.field as string}>{col.title}</TableCell>
+                <TableCell key={col.field} sx={{ fontWeight: 600 }}>
+                  {col.title}
+                </TableCell>
               );
             })}
           </TableRow>
