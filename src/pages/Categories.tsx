@@ -1,7 +1,7 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import useTable from "../components/Table";
+import Table from "../components/Table";
 import { useReadCategoriesQuery } from "../features/category/services";
 import useUserBlog from "../features/blog/useUserBlog";
 import { Category } from "../features/category/types";
@@ -12,21 +12,10 @@ function Categories() {
     activeBlog?.address || ""
   );
 
-  const Table = useTable<Category>(
-    [
-      {
-        accessorKey: "name",
-        header: "Name",
-        // accessorFn: (row) => {},
-      },
-      {
-        accessorKey: "description",
-        header: "Description",
-        // accessorFn: (row) => {},
-      },
-    ],
-    data?.categories || []
-  );
+  const columns = [
+    { field: "name", title: "Name" },
+    { field: "description", title: "Description" },
+  ];
 
   return (
     <Container>
@@ -35,16 +24,7 @@ function Categories() {
       </Typography>
       <Divider />
       <br />
-      <Table
-        state={{
-          isLoading,
-        }}
-        enableAdding
-        addingText="Add category"
-        onSave={(data) => {
-          console.log(data);
-        }}
-      />
+      <Table data={data?.categories || []} columns={columns} />
     </Container>
   );
 }
