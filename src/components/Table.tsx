@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,6 +9,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import LinearProgress from "@mui/material/LinearProgress";
+import WarningIcon from "@mui/icons-material/Warning";
+import { grey } from "@mui/material/colors";
 
 interface Column<RowData> {
   field: string;
@@ -52,6 +56,21 @@ function AppTable<RowData>(props: TableProps<RowData>) {
             <TableRow>
               <TableCell colSpan={columns.length} sx={{ p: 0 }}>
                 <LinearProgress />
+              </TableCell>
+            </TableRow>
+          )}
+          {data.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={columns.length} align="center">
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  spacing={1}
+                  sx={{ color: grey[600] }}
+                >
+                  <WarningIcon sx={{ fontSize: 30 }} />
+                  <Typography variant="h5">No data</Typography>
+                </Stack>
               </TableCell>
             </TableRow>
           )}
