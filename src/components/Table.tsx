@@ -17,6 +17,8 @@ import WarningIcon from "@mui/icons-material/Warning";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { grey } from "@mui/material/colors";
 
 interface Column<RowData> {
@@ -45,6 +47,8 @@ interface TableProps<RowData> {
   };
 }
 
+const NEW_ROW_ID = "__NEW_ROW__";
+
 function AppTable<RowData>(props: TableProps<RowData>) {
   const {
     data: dataProp,
@@ -54,11 +58,15 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     title = "Table",
     editable = {},
   } = props;
+
   const [data, setData] = useState<RowData[]>(dataProp);
   const isEditable = useMemo(
     () => !!editable && Object.keys(editable).length > 0,
     [editable]
   );
+  const [editId, setEditId] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+  const [addId, setAddId] = useState("");
 
   useEffect(() => {
     setData(dataProp);
@@ -71,13 +79,18 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           {title}
         </Typography>
         <Tooltip title={editable.add?.labelText || "Add"}>
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              if (addId) setAddId("");
+              else setAddId(NEW_ROW_ID);
+            }}
+          >
             <AddCircleOutlineIcon />
           </IconButton>
         </Tooltip>
       </Toolbar>
     );
-  }, [title, editable.add, editable.onRowAdd]);
+  }, [title, editable.add, editable.onRowAdd, addId]);
 
   const renderTableHead = useCallback(() => {
     return (
@@ -161,16 +174,64 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                     );
                   })}
                   <TableCell>
-                    <Tooltip title="Edit">
-                      <IconButton>
-                        <ModeEditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <IconButton>
-                        <DeleteOutlineIcon />
-                      </IconButton>
-                    </Tooltip>
+                    {editId === row[keyField] || deleteId === row[keyField] ? (
+                      <>
+                        <Tooltip title="Cancel">
+                          <IconButton
+                            color="error"
+                            edge="start"
+                            onClick={() => {
+                              if (editId) setEditId("");
+                              if (deleteId) setDeleteId("");
+                              if (addId) setAddId("");
+                            }}
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Save">
+                          <IconButton
+                            color="success"
+                            onClick={() => {
+                              console.log("TODO: add, update or delete row.");
+                              if (editId) setEditId("");
+                              if (deleteId) setDeleteId("");
+                              if (addId) setAddId("");
+                            }}
+                          >
+                            <CheckCircleIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    ) : (
+                      <>
+                        <Tooltip title="Edit">
+                          <IconButton
+                            disabled={
+                              !!addId ||
+                              (!!deleteId && deleteId !== row[keyField]) ||
+                              (!!editId && editId !== row[keyField])
+                            }
+                            onClick={() => setEditId(row[keyField])}
+                            edge="start"
+                          >
+                            <ModeEditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                          <IconButton
+                            disabled={
+                              !!addId ||
+                              (!!deleteId && deleteId !== row[keyField]) ||
+                              (!!editId && editId !== row[keyField])
+                            }
+                            onClick={() => setDeleteId(row[keyField])}
+                          >
+                            <DeleteOutlineIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    )}
                   </TableCell>
                 </TableRow>
               );
