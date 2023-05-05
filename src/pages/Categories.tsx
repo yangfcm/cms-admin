@@ -14,8 +14,8 @@ function Categories() {
   );
 
   const columns = [
-    { field: "name", title: "Name" },
-    { field: "description", title: "Description" },
+    { field: "name", title: "Name", editable: true },
+    { field: "description", title: "Description", editable: true },
     {
       field: "createdAt",
       title: "Created",

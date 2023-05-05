@@ -25,6 +25,7 @@ interface Column<RowData> {
   field: string;
   title: string | JSX.Element;
   render?: (value: any, row: RowData) => JSX.Element | string;
+  editable?: boolean;
 }
 
 interface Cell {
@@ -118,7 +119,11 @@ function AppTable<RowData>(props: TableProps<RowData>) {
               </TableCell>
             );
           })}
-          {isEditable && <TableCell sx={{ fontWeight: 600 }}>Action</TableCell>}
+          {isEditable && (
+            <TableCell sx={{ fontWeight: 600, width: "120px" }}>
+              Action
+            </TableCell>
+          )}
         </TableRow>
       </TableHead>
     );
@@ -179,6 +184,47 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                     col.render && col.render(row[col.field], row as RowData),
                 });
               });
+              if (row.id === NEW_ROW_ID) {
+                return (
+                  <TableRow key={NEW_ROW_ID}>
+                    {columns.map((col) => {
+                      return (
+                        <TableCell key={col.field}>
+                          {col.editable ? <input /> : ""}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell>
+                      <Tooltip title="Cancel">
+                        <IconButton
+                          color="error"
+                          edge="start"
+                          onClick={() => {
+                            if (editId) setEditId("");
+                            if (deleteId) setDeleteId("");
+                            if (addId) setAddId("");
+                          }}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Save">
+                        <IconButton
+                          color="success"
+                          onClick={() => {
+                            console.log("TODO: add, update or delete row.");
+                            if (editId) setEditId("");
+                            if (deleteId) setDeleteId("");
+                            if (addId) setAddId("");
+                          }}
+                        >
+                          <CheckCircleIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                );
+              }
               return (
                 <TableRow key={row[keyField]}>
                   {cells.map((cell) => {
