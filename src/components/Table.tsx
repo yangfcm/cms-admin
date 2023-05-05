@@ -263,10 +263,23 @@ function AppTable<RowData>(props: TableProps<RowData>) {
   );
 
   const renderInput = useCallback((input?: Input) => {
-    const { type = "text", name = "", placeholder = "" } = input || {};
-    return (
-      <TextField variant="standard" name={name} placeholder={placeholder} />
-    );
+    const {
+      type = "text",
+      name = "",
+      placeholder = "",
+      defaultValue = "",
+    } = input || {};
+    if (type === "text") {
+      return (
+        <TextField
+          variant="standard"
+          name={name}
+          placeholder={placeholder}
+          value={defaultValue}
+        />
+      );
+    }
+    return "@TODO: other input.";
   }, []);
 
   return (
@@ -299,7 +312,11 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                   render:
                     col.render && col.render(row[col.field], row as RowData),
                   editable: !!col.editable,
-                  input: col.input,
+                  input: {
+                    ...(col.input || {}),
+                    name: col.field,
+                    defaultValue: row[col.field],
+                  },
                 });
               });
               if (row[keyField] === editId && isEditable) {
