@@ -5,17 +5,27 @@ import Table from "../components/Table";
 import { useReadCategoriesQuery } from "../features/category/services";
 import useUserBlog from "../features/blog/useUserBlog";
 import { Category } from "../features/category/types";
+import { formatDateTime } from "../utils/dateTime";
 
 function Categories() {
   const { activeBlog } = useUserBlog();
   const { data, isSuccess, isError, isLoading } = useReadCategoriesQuery(
     activeBlog?.address || ""
   );
-  console.log(isLoading);
 
   const columns = [
     { field: "name", title: "Name" },
     { field: "description", title: "Description" },
+    {
+      field: "createdAt",
+      title: "Created",
+      render: (value: string) => formatDateTime(value),
+    },
+    {
+      field: "updatedAt",
+      title: "Last updated",
+      render: (value: string) => formatDateTime(value),
+    },
   ];
 
   return (

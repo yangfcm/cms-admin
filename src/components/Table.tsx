@@ -15,11 +15,13 @@ import { grey } from "@mui/material/colors";
 interface Column<RowData> {
   field: string;
   title: string | JSX.Element;
+  render?: (value: any, row: RowData) => JSX.Element | string;
 }
 
 interface Cell {
   field: string;
   value: any;
+  render?: JSX.Element | string;
 }
 
 interface TableProps<RowData> {
@@ -80,12 +82,18 @@ function AppTable<RowData>(props: TableProps<RowData>) {
               cells.push({
                 field: col.field,
                 value: row[col.field],
+                render:
+                  col.render && col.render(row[col.field], row as RowData),
               });
             });
             return (
               <TableRow key={row[keyField]}>
                 {cells.map((cell) => {
-                  return <TableCell key={cell.field}>{cell.value}</TableCell>;
+                  return (
+                    <TableCell key={cell.field}>
+                      {cell.render ? cell.render : cell.value}
+                    </TableCell>
+                  );
                 })}
               </TableRow>
             );
