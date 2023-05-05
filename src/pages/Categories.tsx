@@ -39,6 +39,13 @@ function Categories() {
         data={data?.categories || []}
         columns={columns}
         isLoading={isLoading}
+        title="Categories List"
+        editable={{
+          addLabelText: "Add Category",
+          onRowAdd: (newData) => {
+            console.log(newData);
+          },
+        }}
       />
     </Container>
   );
