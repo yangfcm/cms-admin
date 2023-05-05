@@ -13,6 +13,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import LinearProgress from "@mui/material/LinearProgress";
+import TextField from "@mui/material/TextField";
 import WarningIcon from "@mui/icons-material/Warning";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -21,11 +22,21 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { grey } from "@mui/material/colors";
 
+interface Input {
+  name: string;
+  placeholder?: string;
+  type?: "text" | "number" | "selection" | "checkbox";
+  defaultValue?: string | number | boolean;
+  lookup?: { text: string; value: string | number }[];
+  validate?: () => boolean | string;
+}
+
 interface Column<RowData> {
   field: string;
   title: string | JSX.Element;
   render?: (value: any, row: RowData) => JSX.Element | string;
   editable?: boolean;
+  input?: Input;
 }
 
 interface Cell {
@@ -33,6 +44,7 @@ interface Cell {
   value: any;
   render?: JSX.Element | string;
   editable?: boolean;
+  input?: Input;
 }
 
 interface TableProps<RowData> {
@@ -250,6 +262,13 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     [addId, deleteId, editId]
   );
 
+  const renderInput = useCallback((input?: Input) => {
+    const { type = "text", name = "", placeholder = "" } = input || {};
+    return (
+      <TextField variant="standard" name={name} placeholder={placeholder} />
+    );
+  }, []);
+
   return (
     <Paper>
       {renderTableToolbar()}
@@ -264,7 +283,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                 {columns.map((col) => {
                   return (
                     <TableCell key={col.field}>
-                      {col.editable ? <input /> : ""}
+                      {col.editable ? renderInput(col.input) : ""}
                     </TableCell>
                   );
                 })}
@@ -280,6 +299,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                   render:
                     col.render && col.render(row[col.field], row as RowData),
                   editable: !!col.editable,
+                  input: col.input,
                 });
               });
               if (row[keyField] === editId && isEditable) {
@@ -288,13 +308,11 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                     {cells.map((cell) => {
                       return (
                         <TableCell key={cell.field}>
-                          {cell.editable ? (
-                            <input />
-                          ) : cell.render ? (
-                            cell.render
-                          ) : (
-                            cell.value
-                          )}
+                          {cell.editable
+                            ? renderInput(cell.input)
+                            : cell.render
+                            ? cell.render
+                            : cell.value}
                         </TableCell>
                       );
                     })}
