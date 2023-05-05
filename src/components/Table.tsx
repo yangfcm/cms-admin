@@ -15,6 +15,8 @@ import Paper from "@mui/material/Paper";
 import LinearProgress from "@mui/material/LinearProgress";
 import WarningIcon from "@mui/icons-material/Warning";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { grey } from "@mui/material/colors";
 
 interface Column<RowData> {
@@ -156,7 +158,18 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                       </TableCell>
                     );
                   })}
-                  <TableCell>Action button here.</TableCell>
+                  <TableCell>
+                    <Tooltip title="Edit">
+                      <IconButton>
+                        <ModeEditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton>
+                        <DeleteOutlineIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
                 </TableRow>
               );
             })}
