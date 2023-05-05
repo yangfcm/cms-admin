@@ -38,7 +38,9 @@ interface TableProps<RowData> {
   isLoading?: boolean;
   title?: string;
   editable?: {
-    addLabelText?: string;
+    add?: {
+      labelText?: string;
+    };
     onRowAdd?: (newData: RowData) => Promise<any> | any;
   };
 }
@@ -68,14 +70,14 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         <Typography variant="h6" sx={{ flex: "1 1 100%" }}>
           {title}
         </Typography>
-        <Tooltip title={editable.addLabelText || "Add"}>
+        <Tooltip title={editable.add?.labelText || "Add"}>
           <IconButton>
             <AddCircleOutlineIcon />
           </IconButton>
         </Tooltip>
       </Toolbar>
     );
-  }, [title, editable.addLabelText, editable.onRowAdd]);
+  }, [title, editable.add, editable.onRowAdd]);
 
   const renderTableHead = useCallback(() => {
     return (

@@ -41,7 +41,9 @@ function Categories() {
         isLoading={isLoading}
         title="Categories List"
         editable={{
-          addLabelText: "Add Category",
+          add: {
+            labelText: "Add Category",
+          },
           onRowAdd: (newData) => {
             console.log(newData);
           },
