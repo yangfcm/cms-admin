@@ -66,11 +66,25 @@ function AppTable<RowData>(props: TableProps<RowData>) {
   );
   const [editId, setEditId] = useState("");
   const [deleteId, setDeleteId] = useState("");
-  const [addId, setAddId] = useState("");
+  const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
 
   useEffect(() => {
     setData(dataProp);
   }, [dataProp]);
+
+  useEffect(() => {
+    if (addId) {
+      const newData: Record<string, any> = {
+        id: NEW_ROW_ID,
+      };
+      columns.forEach((col) => {
+        newData[col.field] = "";
+      });
+      setData([newData as RowData, ...data]);
+    } else {
+      setData(data.filter((row: Record<string, any>) => row.id !== NEW_ROW_ID));
+    }
+  }, [addId]);
 
   const renderTableToolbar = useCallback(() => {
     return (
@@ -80,6 +94,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         </Typography>
         <Tooltip title={editable.add?.labelText || "Add"}>
           <IconButton
+            disabled={!!editId || !!deleteId}
             onClick={() => {
               if (addId) setAddId("");
               else setAddId(NEW_ROW_ID);
@@ -90,7 +105,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         </Tooltip>
       </Toolbar>
     );
-  }, [title, editable.add, editable.onRowAdd, addId]);
+  }, [title, editable.add, editable.onRowAdd, addId, editId, deleteId]);
 
   const renderTableHead = useCallback(() => {
     return (
@@ -124,7 +139,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
   }, [columns.length, isLoading, isEditable]);
 
   const renderNoData = useCallback(() => {
-    if (data.length) return null;
+    if (data.length || isLoading) return null;
     return (
       <TableRow>
         <TableCell
@@ -143,7 +158,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         </TableCell>
       </TableRow>
     );
-  }, [columns.length, isEditable, data]);
+  }, [columns.length, isEditable, isLoading, data]);
 
   return (
     <Paper>
@@ -174,7 +189,9 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                     );
                   })}
                   <TableCell>
-                    {editId === row[keyField] || deleteId === row[keyField] ? (
+                    {editId === row[keyField] ||
+                    deleteId === row[keyField] ||
+                    row.id === NEW_ROW_ID ? (
                       <>
                         <Tooltip title="Cancel">
                           <IconButton
