@@ -39,43 +39,59 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     setData(dataProp);
   }, [dataProp]);
 
+  const renderTableHead = useCallback(() => {
+    return (
+      <TableHead>
+        <TableRow>
+          {columns.map((col) => {
+            return (
+              <TableCell key={col.field} sx={{ fontWeight: 600 }}>
+                {col.title}
+              </TableCell>
+            );
+          })}
+        </TableRow>
+      </TableHead>
+    );
+  }, [columns]);
+
+  const renderLoader = useCallback(() => {
+    if (!isLoading) return null;
+    return (
+      <TableRow>
+        <TableCell colSpan={columns.length} sx={{ p: 0 }}>
+          <LinearProgress />
+        </TableCell>
+      </TableRow>
+    );
+  }, [columns.length, isLoading]);
+
+  const renderNoData = useCallback(() => {
+    if (data.length) return null;
+    return (
+      <TableRow>
+        <TableCell colSpan={columns.length} align="center">
+          <Stack
+            direction="row"
+            justifyContent="center"
+            spacing={1}
+            sx={{ color: grey[600] }}
+          >
+            <WarningIcon sx={{ fontSize: 30 }} />
+            <Typography variant="h5">No data</Typography>
+          </Stack>
+        </TableCell>
+      </TableRow>
+    );
+  }, [columns.length, data]);
+
   return (
     <TableContainer component={Paper}>
       <Table>
-        <TableHead>
-          <TableRow>
-            {columns.map((col) => {
-              return (
-                <TableCell key={col.field} sx={{ fontWeight: 600 }}>
-                  {col.title}
-                </TableCell>
-              );
-            })}
-          </TableRow>
-        </TableHead>
+        {renderTableHead()}
         <TableBody>
-          {isLoading && (
-            <TableRow>
-              <TableCell colSpan={columns.length} sx={{ p: 0 }}>
-                <LinearProgress />
-              </TableCell>
-            </TableRow>
-          )}
-          {data.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={columns.length} align="center">
-                <Stack
-                  direction="row"
-                  justifyContent="center"
-                  spacing={1}
-                  sx={{ color: grey[600] }}
-                >
-                  <WarningIcon sx={{ fontSize: 30 }} />
-                  <Typography variant="h5">No data</Typography>
-                </Stack>
-              </TableCell>
-            </TableRow>
-          )}
+          {renderLoader()}
+          {renderNoData()}
           {data.map((row: Record<string, any>) => {
             const cells: Cell[] = [];
             columns.forEach((col) => {
