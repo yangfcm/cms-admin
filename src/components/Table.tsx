@@ -49,12 +49,12 @@ interface TableProps<RowData> {
 }
 
 const NEW_ROW_ID = "__NEW_ROW__";
+const keyField = "__ID__";
 
 function AppTable<RowData>(props: TableProps<RowData>) {
   const {
     data: dataProp,
     columns,
-    keyField = "id",
     isLoading = false,
     title = "Table",
     editable = {},
@@ -70,7 +70,12 @@ function AppTable<RowData>(props: TableProps<RowData>) {
   const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
 
   useEffect(() => {
-    setData(dataProp);
+    setData(
+      dataProp.map((row, index) => ({
+        [keyField]: index.toString(),
+        ...row,
+      }))
+    );
   }, [dataProp]);
 
   useEffect(() => {
