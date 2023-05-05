@@ -93,20 +93,30 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         <Typography variant="h6" sx={{ flex: "1 1 100%" }}>
           {title}
         </Typography>
-        <Tooltip title={editable.add?.labelText || "Add"}>
-          <IconButton
-            disabled={!!editId || !!deleteId}
-            onClick={() => {
-              if (addId) setAddId("");
-              else setAddId(NEW_ROW_ID);
-            }}
-          >
-            <AddCircleOutlineIcon />
-          </IconButton>
-        </Tooltip>
+        {isEditable && (
+          <Tooltip title={editable.add?.labelText || "Add"}>
+            <IconButton
+              disabled={!!editId || !!deleteId}
+              onClick={() => {
+                if (addId) setAddId("");
+                else setAddId(NEW_ROW_ID);
+              }}
+            >
+              <AddCircleOutlineIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </Toolbar>
     );
-  }, [title, editable.add, editable.onRowAdd, addId, editId, deleteId]);
+  }, [
+    title,
+    editable.add,
+    editable.onRowAdd,
+    addId,
+    editId,
+    deleteId,
+    isEditable,
+  ]);
 
   const renderTableHead = useCallback(() => {
     return (
@@ -165,6 +175,74 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     );
   }, [columns.length, isEditable, isLoading, data]);
 
+  const renderConfirmActionCell = useCallback(() => {
+    return (
+      <TableCell>
+        <Tooltip title="Cancel">
+          <IconButton
+            color="error"
+            edge="start"
+            onClick={() => {
+              if (editId) setEditId("");
+              if (deleteId) setDeleteId("");
+              if (addId) setAddId("");
+            }}
+          >
+            <CancelIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Save">
+          <IconButton
+            color="success"
+            onClick={() => {
+              console.log("TODO: add, update or delete row.");
+              if (editId) setEditId("");
+              if (deleteId) setDeleteId("");
+              if (addId) setAddId("");
+            }}
+          >
+            <CheckCircleIcon />
+          </IconButton>
+        </Tooltip>
+      </TableCell>
+    );
+  }, [addId, editId, deleteId]);
+
+  const renderActionCell = useCallback(
+    (row: Record<string, any>) => {
+      return (
+        <TableCell>
+          <Tooltip title="Edit">
+            <IconButton
+              disabled={
+                !!addId ||
+                (!!deleteId && deleteId !== row[keyField]) ||
+                (!!editId && editId !== row[keyField])
+              }
+              onClick={() => setEditId(row[keyField])}
+              edge="start"
+            >
+              <ModeEditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton
+              disabled={
+                !!addId ||
+                (!!deleteId && deleteId !== row[keyField]) ||
+                (!!editId && editId !== row[keyField])
+              }
+              onClick={() => setDeleteId(row[keyField])}
+            >
+              <DeleteOutlineIcon />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+      );
+    },
+    [addId, deleteId, editId]
+  );
+
   return (
     <Paper>
       {renderTableToolbar()}
@@ -184,7 +262,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                     col.render && col.render(row[col.field], row as RowData),
                 });
               });
-              if (row.id === NEW_ROW_ID) {
+              if (row.id === NEW_ROW_ID && isEditable) {
                 return (
                   <TableRow key={NEW_ROW_ID}>
                     {columns.map((col) => {
@@ -194,34 +272,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                         </TableCell>
                       );
                     })}
-                    <TableCell>
-                      <Tooltip title="Cancel">
-                        <IconButton
-                          color="error"
-                          edge="start"
-                          onClick={() => {
-                            if (editId) setEditId("");
-                            if (deleteId) setDeleteId("");
-                            if (addId) setAddId("");
-                          }}
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Save">
-                        <IconButton
-                          color="success"
-                          onClick={() => {
-                            console.log("TODO: add, update or delete row.");
-                            if (editId) setEditId("");
-                            if (deleteId) setDeleteId("");
-                            if (addId) setAddId("");
-                          }}
-                        >
-                          <CheckCircleIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
+                    {renderConfirmActionCell()}
                   </TableRow>
                 );
               }
@@ -234,68 +285,13 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                       </TableCell>
                     );
                   })}
-                  <TableCell>
-                    {editId === row[keyField] ||
-                    deleteId === row[keyField] ||
-                    row.id === NEW_ROW_ID ? (
-                      <>
-                        <Tooltip title="Cancel">
-                          <IconButton
-                            color="error"
-                            edge="start"
-                            onClick={() => {
-                              if (editId) setEditId("");
-                              if (deleteId) setDeleteId("");
-                              if (addId) setAddId("");
-                            }}
-                          >
-                            <CancelIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Save">
-                          <IconButton
-                            color="success"
-                            onClick={() => {
-                              console.log("TODO: add, update or delete row.");
-                              if (editId) setEditId("");
-                              if (deleteId) setDeleteId("");
-                              if (addId) setAddId("");
-                            }}
-                          >
-                            <CheckCircleIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </>
-                    ) : (
-                      <>
-                        <Tooltip title="Edit">
-                          <IconButton
-                            disabled={
-                              !!addId ||
-                              (!!deleteId && deleteId !== row[keyField]) ||
-                              (!!editId && editId !== row[keyField])
-                            }
-                            onClick={() => setEditId(row[keyField])}
-                            edge="start"
-                          >
-                            <ModeEditIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete">
-                          <IconButton
-                            disabled={
-                              !!addId ||
-                              (!!deleteId && deleteId !== row[keyField]) ||
-                              (!!editId && editId !== row[keyField])
-                            }
-                            onClick={() => setDeleteId(row[keyField])}
-                          >
-                            <DeleteOutlineIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </>
-                    )}
-                  </TableCell>
+                  {!isEditable
+                    ? null
+                    : editId === row[keyField] ||
+                      deleteId === row[keyField] ||
+                      row.id === NEW_ROW_ID
+                    ? renderConfirmActionCell()
+                    : renderActionCell(row)}
                 </TableRow>
               );
             })}
