@@ -32,6 +32,7 @@ interface Cell {
   field: string;
   value: any;
   render?: JSX.Element | string;
+  editable?: boolean;
 }
 
 interface TableProps<RowData> {
@@ -60,7 +61,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     editable = {},
   } = props;
 
-  const [data, setData] = useState<RowData[]>(dataProp);
+  const [data, setData] = useState<RowData[]>([]);
   const isEditable = useMemo(
     () => !!editable && Object.keys(editable).length > 0,
     [editable]
@@ -68,6 +69,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
   const [editId, setEditId] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
+  const [newRow, setNewRow] = useState<Record<string, any>>();
 
   useEffect(() => {
     setData(
@@ -80,15 +82,15 @@ function AppTable<RowData>(props: TableProps<RowData>) {
 
   useEffect(() => {
     if (addId) {
-      const newData: Record<string, any> = {
-        id: NEW_ROW_ID,
+      const newRow: Record<string, any> = {
+        [keyField]: NEW_ROW_ID,
       };
       columns.forEach((col) => {
-        newData[col.field] = "";
+        newRow[col.field] = "";
       });
-      setData([newData as RowData, ...data]);
+      setNewRow(newRow);
     } else {
-      setData(data.filter((row: Record<string, any>) => row.id !== NEW_ROW_ID));
+      setNewRow(undefined);
     }
   }, [addId]);
 
@@ -257,6 +259,18 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           <TableBody>
             {renderLoader()}
             {renderNoData()}
+            {newRow && isEditable && (
+              <TableRow key={NEW_ROW_ID}>
+                {columns.map((col) => {
+                  return (
+                    <TableCell key={col.field}>
+                      {col.editable ? <input /> : ""}
+                    </TableCell>
+                  );
+                })}
+                {renderConfirmActionCell()}
+              </TableRow>
+            )}
             {data.map((row: Record<string, any>) => {
               const cells: Cell[] = [];
               columns.forEach((col) => {
@@ -265,15 +279,22 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                   value: row[col.field],
                   render:
                     col.render && col.render(row[col.field], row as RowData),
+                  editable: !!col.editable,
                 });
               });
-              if (row.id === NEW_ROW_ID && isEditable) {
+              if (row[keyField] === editId && isEditable) {
                 return (
-                  <TableRow key={NEW_ROW_ID}>
-                    {columns.map((col) => {
+                  <TableRow key={row[keyField]}>
+                    {cells.map((cell) => {
                       return (
-                        <TableCell key={col.field}>
-                          {col.editable ? <input /> : ""}
+                        <TableCell key={cell.field}>
+                          {cell.editable ? (
+                            <input />
+                          ) : cell.render ? (
+                            cell.render
+                          ) : (
+                            cell.value
+                          )}
                         </TableCell>
                       );
                     })}

@@ -18,7 +18,8 @@ const api = createApi({
     readCategories: builder.query<CategoriesResponse, string>({
       query: blogAddress => ({
         url: `/blogs/${blogAddress}/categories`,
-      })
+      }),
+      providesTags: ['Category']
     })
   })
 });
