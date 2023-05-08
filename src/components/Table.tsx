@@ -78,10 +78,22 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     () => !!editable && Object.keys(editable).length > 0,
     [editable]
   );
+
   const [editId, setEditId] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
   const [newRow, setNewRow] = useState<Record<string, any>>();
+
+  const inputColumns = useMemo(() => {
+    return columns.map((col) => {
+      if (col.input && col.editable) return col.input;
+    });
+  }, [columns, addId, editId]);
+  console.log(inputColumns);
+
+  const [form, setForm] = useState({
+    defaultValues: {},
+  });
 
   useEffect(() => {
     setData(
@@ -276,6 +288,9 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           name={name}
           placeholder={placeholder}
           value={defaultValue}
+          onChange={(e) => {
+            console.log(e.target.value);
+          }}
         />
       );
     }
