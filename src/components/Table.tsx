@@ -105,22 +105,30 @@ function AppTable<RowData>(props: TableProps<RowData>) {
   }, [editId, data]);
 
   const inputColumns = useMemo(() => {
-    if (!addId || !editId) return;
-    return columns.map((col) => {
+    if (!addId && !editId) return;
+    const inputColumns: Record<string, any> = {};
+    columns.forEach((col) => {
       if (col.input && col.editable) {
-        return {
+        inputColumns[col.field] = {
           ...col.input,
-          defaultValue: (editRow && editRow[col.field]
-            ? editRow[col.field]
-            : "") as string,
+          defaultValue: editRow && editRow[col.field] ? editRow[col.field] : "",
         };
       }
     });
+    return inputColumns;
   }, [columns, newRow, editRow]);
 
-  const [form, setForm] = useState({
-    defaultValues: {},
-  });
+  const [inputValues, setInputValues] = useState({});
+
+  useEffect(() => {
+    const initialValues: Record<string, any> = {};
+    if (inputColumns) {
+      Object.values(inputColumns).forEach((col) => {
+        initialValues[col.name] = col.defaultValue;
+      });
+    }
+    setInputValues(initialValues);
+  }, [inputColumns]);
 
   const renderTableToolbar = useCallback(() => {
     return (
