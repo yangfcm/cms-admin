@@ -58,6 +58,7 @@ interface TableProps<RowData> {
       labelText?: string;
     };
     onRowAdd?: (newData: RowData) => Promise<any> | any;
+    onRowEdit?: (editData: RowData) => Promise<any> | any;
   };
 }
 
@@ -238,10 +239,12 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           <IconButton
             color="success"
             onClick={() => {
-              console.log("TODO: add, update or delete row.");
-              if (editId) setEditId("");
-              if (deleteId) setDeleteId("");
-              if (addId) setAddId("");
+              if (addId && editable.onRowAdd) {
+                editable.onRowAdd(inputValues as RowData);
+              }
+              if (editId && editable.onRowEdit) {
+                editable.onRowEdit(inputValues as RowData);
+              }
             }}
           >
             <CheckCircleIcon />
@@ -249,7 +252,14 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         </Tooltip>
       </TableCell>
     );
-  }, [addId, editId, deleteId]);
+  }, [
+    addId,
+    editId,
+    deleteId,
+    inputValues,
+    editable.onRowAdd,
+    editable.onRowEdit,
+  ]);
 
   const renderActionCell = useCallback(
     (row: Record<string, any>) => {

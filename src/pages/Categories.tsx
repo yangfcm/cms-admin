@@ -61,7 +61,10 @@ function Categories() {
             labelText: "Add Category",
           },
           onRowAdd: (newData) => {
-            console.log(newData);
+            console.log("new", newData);
+          },
+          onRowEdit: (editData) => {
+            console.log("edit", editData);
           },
         }}
       />
