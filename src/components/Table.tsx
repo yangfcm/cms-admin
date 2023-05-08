@@ -73,12 +73,10 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     editable = {},
   } = props;
 
-  const [data, setData] = useState<RowData[]>([]);
   const isEditable = useMemo(
     () => !!editable && Object.keys(editable).length > 0,
     [editable]
   );
-
   const [editId, setEditId] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
@@ -94,13 +92,11 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     defaultValues: {},
   });
 
-  useEffect(() => {
-    setData(
-      dataProp.map((row, index) => ({
-        [keyField]: index.toString(),
-        ...row,
-      }))
-    );
+  const data = useMemo(() => {
+    return dataProp.map((row, index) => ({
+      [keyField]: index.toString(),
+      ...row,
+    }));
   }, [dataProp]);
 
   const newRow = useMemo(() => {
@@ -113,6 +109,11 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     });
     return newRow;
   }, [addId]);
+
+  const editRow = useMemo(() => {
+    if (!editId) return;
+    return data.filter((row) => row[keyField] === editId);
+  }, [editId, data]);
 
   const renderTableToolbar = useCallback(() => {
     return (
