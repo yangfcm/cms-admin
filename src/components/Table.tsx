@@ -118,7 +118,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     return inputColumns;
   }, [columns, newRow, editRow]);
 
-  const [inputValues, setInputValues] = useState({});
+  const [inputValues, setInputValues] = useState<Record<string, any>>({});
 
   useEffect(() => {
     const initialValues: Record<string, any> = {};
@@ -286,28 +286,35 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     [addId, deleteId, editId]
   );
 
-  const renderInput = useCallback((input?: Input) => {
-    const {
-      type = "text",
-      name = "",
-      placeholder = "",
-      defaultValue = "",
-    } = input || {};
-    if (type === "text") {
-      return (
-        <TextField
-          variant="standard"
-          name={name}
-          placeholder={placeholder}
-          value={defaultValue}
-          onChange={(e) => {
-            console.log(e.target.value);
-          }}
-        />
-      );
-    }
-    return "@TODO: other input.";
-  }, []);
+  const renderInput = useCallback(
+    (input?: Input) => {
+      const {
+        type = "text",
+        name = "",
+        placeholder = "",
+        defaultValue = "",
+      } = input || {};
+      // if (Object.keys(inputValues).length === 0) return;
+      if (type === "text") {
+        return (
+          <TextField
+            variant="standard"
+            name={name}
+            placeholder={placeholder}
+            value={inputValues[name] || ""}
+            onChange={(e) => {
+              setInputValues({
+                ...inputValues,
+                [name]: e.target.value,
+              });
+            }}
+          />
+        );
+      }
+      return "@TODO: other input.";
+    },
+    [inputValues]
+  );
 
   return (
     <Paper>
