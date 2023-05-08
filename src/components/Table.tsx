@@ -82,7 +82,6 @@ function AppTable<RowData>(props: TableProps<RowData>) {
   const [editId, setEditId] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
-  const [newRow, setNewRow] = useState<Record<string, any>>();
 
   const inputColumns = useMemo(() => {
     return columns.map((col) => {
@@ -104,18 +103,15 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     );
   }, [dataProp]);
 
-  useEffect(() => {
-    if (addId) {
-      const newRow: Record<string, any> = {
-        [keyField]: NEW_ROW_ID,
-      };
-      columns.forEach((col) => {
-        newRow[col.field] = "";
-      });
-      setNewRow(newRow);
-    } else {
-      setNewRow(undefined);
-    }
+  const newRow = useMemo(() => {
+    if (!addId) return;
+    const newRow: Record<string, any> = {
+      [keyField]: NEW_ROW_ID,
+    };
+    columns.forEach((col) => {
+      newRow[col.field] = "";
+    });
+    return newRow;
   }, [addId]);
 
   const renderTableToolbar = useCallback(() => {
