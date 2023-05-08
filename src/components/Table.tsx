@@ -81,18 +81,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
   const [deleteId, setDeleteId] = useState("");
   const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
 
-  const inputColumns = useMemo(() => {
-    return columns.map((col) => {
-      if (col.input && col.editable) return col.input;
-    });
-  }, [columns, addId, editId]);
-  console.log(inputColumns);
-
-  const [form, setForm] = useState({
-    defaultValues: {},
-  });
-
-  const data = useMemo(() => {
+  const data: Record<string, any>[] = useMemo(() => {
     return dataProp.map((row, index) => ({
       [keyField]: index.toString(),
       ...row,
@@ -112,8 +101,26 @@ function AppTable<RowData>(props: TableProps<RowData>) {
 
   const editRow = useMemo(() => {
     if (!editId) return;
-    return data.filter((row) => row[keyField] === editId);
+    return data.find((row) => row[keyField] === editId);
   }, [editId, data]);
+
+  const inputColumns = useMemo(() => {
+    if (!addId || !editId) return;
+    return columns.map((col) => {
+      if (col.input && col.editable) {
+        return {
+          ...col.input,
+          defaultValue: (editRow && editRow[col.field]
+            ? editRow[col.field]
+            : "") as string,
+        };
+      }
+    });
+  }, [columns, newRow, editRow]);
+
+  const [form, setForm] = useState({
+    defaultValues: {},
+  });
 
   const renderTableToolbar = useCallback(() => {
     return (
