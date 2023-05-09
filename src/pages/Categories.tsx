@@ -2,16 +2,32 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Table from "../components/Table";
-import { useReadCategoriesQuery } from "../features/category/services";
+import ErrorMessage from "../components/ErrorMessage";
+import {
+  useReadCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} from "../features/category/services";
 import useUserBlog from "../features/blog/useUserBlog";
 import { Category } from "../features/category/types";
 import { formatDateTime } from "../utils/dateTime";
 
 function Categories() {
   const { activeBlog } = useUserBlog();
-  const { data, isSuccess, isError, isLoading } = useReadCategoriesQuery(
-    activeBlog?.address || ""
-  );
+  const address = activeBlog?.address || "";
+  const {
+    data,
+    isSuccess: isReadingCategoriesSuccess,
+    isError: isReadingCategoriesError,
+    isLoading: isReadingCategories,
+  } = useReadCategoriesQuery(address);
+
+  const [createCategory, createCategoryState] = useCreateCategoryMutation();
+  const [updateCategory, updateCategoryState] = useUpdateCategoryMutation();
+  const [deleteCategory, deleteCategoryState] = useDeleteCategoryMutation();
+
+  const isLoading = isReadingCategories || createCategoryState.isLoading;
 
   const columns = [
     {
@@ -46,6 +62,10 @@ function Categories() {
 
   return (
     <Container>
+      <ErrorMessage
+        open={createCategoryState.isError}
+        messages={createCategoryState.error}
+      />
       <Typography variant="h5" sx={{ marginBottom: 1 }}>
         Categories Admin
       </Typography>
@@ -61,7 +81,10 @@ function Categories() {
             labelText: "Add Category",
           },
           onRowAdd: (newData) => {
-            console.log("new", newData);
+            createCategory({
+              blogAddress: address,
+              category: newData,
+            });
           },
           onRowEdit: (editData) => {
             console.log("edit", editData);

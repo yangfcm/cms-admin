@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { apiBaseUrl } from "../../settings/constants";
 import { RootState } from '../../app/store';
-import { CategoriesResponse } from "./types";
+import { CategoriesResponse, CategoryResponse, PostCategory, Category } from "./types";
 
 const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -19,11 +19,31 @@ const api = createApi({
       query: blogAddress => ({
         url: `/blogs/${blogAddress}/categories`,
       }),
-      providesTags: ['Category']
-    })
+      providesTags: ['Category'],
+    }),
+    createCategory: builder.mutation<CategoryResponse, { blogAddress: string, category: PostCategory }>({
+      query: ({ blogAddress, category }) => ({
+        url: `/blogs/${blogAddress}/categories`,
+        method: 'POST',
+        body: { category },
+      }),
+    }),
+    updateCategory: builder.mutation<CategoryResponse, { blogAddress: string, category: Pick<Category, 'id'> & Partial<PostCategory> }>({
+      query: ({ blogAddress, category: { id, ...patchedCategory } }) => ({
+        url: `/blogs/${blogAddress}/categories/${id}`,
+        method: 'PUT',
+        body: { category: patchedCategory },
+      }),
+    }),
+    deleteCategory: builder.mutation<CategoryResponse, { blogAddress: string, categoryId: string }>({
+      query: ({ blogAddress, categoryId }) => ({
+        url: `/blogs/${blogAddress}/categories/${categoryId}`,
+        method: 'DELETE',
+      }),
+    }),
   })
 });
 
 export default api;
 
-export const { useReadCategoriesQuery } = api;
+export const { useReadCategoriesQuery, useCreateCategoryMutation, useUpdateCategoryMutation, useDeleteCategoryMutation } = api;

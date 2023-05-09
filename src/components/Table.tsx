@@ -140,7 +140,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         {isEditable && (
           <Tooltip title={editable.add?.labelText || "Add"}>
             <IconButton
-              disabled={!!editId || !!deleteId}
+              disabled={!!editId || !!deleteId || isLoading}
               onClick={() => {
                 if (addId) setAddId("");
                 else setAddId(NEW_ROW_ID);
@@ -191,7 +191,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           colSpan={isEditable ? columns.length + 1 : columns.length}
           sx={{ p: 0 }}
         >
-          <LinearProgress />
+          <LinearProgress value={10} />
         </TableCell>
       </TableRow>
     );
@@ -231,6 +231,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
               if (deleteId) setDeleteId("");
               if (addId) setAddId("");
             }}
+            disabled={isLoading}
           >
             <CancelIcon />
           </IconButton>
@@ -246,6 +247,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                 editable.onRowEdit(inputValues as RowData);
               }
             }}
+            disabled={isLoading}
           >
             <CheckCircleIcon />
           </IconButton>
@@ -268,6 +270,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           <Tooltip title="Edit">
             <IconButton
               disabled={
+                isLoading ||
                 !!addId ||
                 (!!deleteId && deleteId !== row[keyField]) ||
                 (!!editId && editId !== row[keyField])
@@ -281,6 +284,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           <Tooltip title="Delete">
             <IconButton
               disabled={
+                isLoading ||
                 !!addId ||
                 (!!deleteId && deleteId !== row[keyField]) ||
                 (!!editId && editId !== row[keyField])
