@@ -139,15 +139,17 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         </Typography>
         {isEditable && (
           <Tooltip title={editable.add?.labelText || "Add"}>
-            <IconButton
-              disabled={!!editId || !!deleteId || isLoading}
-              onClick={() => {
-                if (addId) setAddId("");
-                else setAddId(NEW_ROW_ID);
-              }}
-            >
-              <AddCircleOutlineIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                disabled={!!editId || !!deleteId || isLoading}
+                onClick={() => {
+                  if (addId) setAddId("");
+                  else setAddId(NEW_ROW_ID);
+                }}
+              >
+                <AddCircleOutlineIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         )}
       </Toolbar>
@@ -223,34 +225,38 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     return (
       <TableCell>
         <Tooltip title="Cancel">
-          <IconButton
-            color="error"
-            edge="start"
-            onClick={() => {
-              if (editId) setEditId("");
-              if (deleteId) setDeleteId("");
-              if (addId) setAddId("");
-            }}
-            disabled={isLoading}
-          >
-            <CancelIcon />
-          </IconButton>
+          <span>
+            <IconButton
+              color="error"
+              edge="start"
+              onClick={() => {
+                if (editId) setEditId("");
+                if (deleteId) setDeleteId("");
+                if (addId) setAddId("");
+              }}
+              disabled={isLoading}
+            >
+              <CancelIcon />
+            </IconButton>
+          </span>
         </Tooltip>
         <Tooltip title="Save">
-          <IconButton
-            color="success"
-            onClick={() => {
-              if (addId && editable.onRowAdd) {
-                editable.onRowAdd(inputValues as RowData);
-              }
-              if (editId && editable.onRowEdit) {
-                editable.onRowEdit(inputValues as RowData);
-              }
-            }}
-            disabled={isLoading}
-          >
-            <CheckCircleIcon />
-          </IconButton>
+          <span>
+            <IconButton
+              color="success"
+              onClick={() => {
+                if (addId && editable.onRowAdd) {
+                  editable.onRowAdd(inputValues as RowData);
+                }
+                if (editId && editable.onRowEdit) {
+                  editable.onRowEdit(inputValues as RowData);
+                }
+              }}
+              disabled={isLoading}
+            >
+              <CheckCircleIcon />
+            </IconButton>
+          </span>
         </Tooltip>
       </TableCell>
     );
@@ -268,31 +274,35 @@ function AppTable<RowData>(props: TableProps<RowData>) {
       return (
         <TableCell>
           <Tooltip title="Edit">
-            <IconButton
-              disabled={
-                isLoading ||
-                !!addId ||
-                (!!deleteId && deleteId !== row[keyField]) ||
-                (!!editId && editId !== row[keyField])
-              }
-              onClick={() => setEditId(row[keyField])}
-              edge="start"
-            >
-              <ModeEditIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                disabled={
+                  isLoading ||
+                  !!addId ||
+                  (!!deleteId && deleteId !== row[keyField]) ||
+                  (!!editId && editId !== row[keyField])
+                }
+                onClick={() => setEditId(row[keyField])}
+                edge="start"
+              >
+                <ModeEditIcon />
+              </IconButton>
+            </span>
           </Tooltip>
           <Tooltip title="Delete">
-            <IconButton
-              disabled={
-                isLoading ||
-                !!addId ||
-                (!!deleteId && deleteId !== row[keyField]) ||
-                (!!editId && editId !== row[keyField])
-              }
-              onClick={() => setDeleteId(row[keyField])}
-            >
-              <DeleteOutlineIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                disabled={
+                  isLoading ||
+                  !!addId ||
+                  (!!deleteId && deleteId !== row[keyField]) ||
+                  (!!editId && editId !== row[keyField])
+                }
+                onClick={() => setDeleteId(row[keyField])}
+              >
+                <DeleteOutlineIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         </TableCell>
       );
