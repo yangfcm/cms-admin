@@ -81,7 +81,7 @@ function Categories() {
             labelText: "Add Category",
           },
           onRowAdd: (newData) => {
-            createCategory({
+            return createCategory({
               blogAddress: address,
               category: newData,
             });

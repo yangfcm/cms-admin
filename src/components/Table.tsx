@@ -245,11 +245,21 @@ function AppTable<RowData>(props: TableProps<RowData>) {
             <IconButton
               color="success"
               onClick={() => {
+                let result;
                 if (addId && editable.onRowAdd) {
-                  editable.onRowAdd(inputValues as RowData);
+                  result = editable.onRowAdd(inputValues as RowData);
                 }
                 if (editId && editable.onRowEdit) {
-                  editable.onRowEdit(inputValues as RowData);
+                  result = editable.onRowEdit(inputValues as RowData);
+                }
+                if (result instanceof Promise) {
+                  result.then(() => {
+                    setAddId("");
+                    setEditId("");
+                  });
+                } else {
+                  setAddId("");
+                  setEditId("");
                 }
               }}
               disabled={isLoading}
@@ -307,7 +317,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         </TableCell>
       );
     },
-    [addId, deleteId, editId]
+    [addId, deleteId, editId, isLoading]
   );
 
   const renderInput = useCallback(
