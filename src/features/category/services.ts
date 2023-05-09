@@ -27,6 +27,18 @@ const api = createApi({
         method: 'POST',
         body: { category },
       }),
+      async onQueryStarted({ blogAddress, category }, { dispatch, queryFulfilled }) {
+        let result;
+        try {
+          const { data: { category } } = await queryFulfilled;
+          result = dispatch(api.util.updateQueryData('readCategories', '', (categoriesResponse) => {
+            console.log(categoriesResponse.categories);
+            categoriesResponse.categories.unshift(category);
+          }))
+        } catch {
+          result?.undo()
+        }
+      }
     }),
     updateCategory: builder.mutation<CategoryResponse, { blogAddress: string, category: Pick<Category, 'id'> & Partial<PostCategory> }>({
       query: ({ blogAddress, category: { id, ...patchedCategory } }) => ({

@@ -27,7 +27,10 @@ function Categories() {
   const [updateCategory, updateCategoryState] = useUpdateCategoryMutation();
   const [deleteCategory, deleteCategoryState] = useDeleteCategoryMutation();
 
-  const isLoading = isReadingCategories || createCategoryState.isLoading;
+  const isLoading =
+    isReadingCategories ||
+    createCategoryState.isLoading ||
+    deleteCategoryState.isLoading;
 
   const columns = [
     {
@@ -88,6 +91,12 @@ function Categories() {
           },
           onRowEdit: (editData) => {
             console.log("edit", editData);
+          },
+          onRowDelete: (deleteData) => {
+            return deleteCategory({
+              blogAddress: address,
+              categoryId: deleteData.id,
+            });
           },
         }}
       />

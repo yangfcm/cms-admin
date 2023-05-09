@@ -57,8 +57,12 @@ interface TableProps<RowData> {
     add?: {
       labelText?: string;
     };
+    delete?: {
+      confirmText?: string;
+    };
     onRowAdd?: (newData: RowData) => Promise<any> | any;
     onRowEdit?: (editData: RowData) => Promise<any> | any;
+    onRowDelete?: (deleteData: RowData) => Promise<any> | any;
   };
 }
 
@@ -104,6 +108,11 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     if (!editId) return;
     return data.find((row) => row[keyField] === editId);
   }, [editId, data]);
+
+  const deleteRow = useMemo(() => {
+    if (!deleteId) return;
+    return data.find((row) => row[keyField] === deleteId);
+  }, [deleteId, data]);
 
   const inputColumns = useMemo(() => {
     if (!addId && !editId) return;
@@ -252,14 +261,21 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                 if (editId && editable.onRowEdit) {
                   result = editable.onRowEdit(inputValues as RowData);
                 }
+                if (deleteId && editable.onRowDelete) {
+                  result = editable.onRowDelete(deleteRow as RowData);
+                }
                 if (result instanceof Promise) {
-                  result.then(() => {
-                    setAddId("");
-                    setEditId("");
-                  });
+                  result
+                    .then(() => {
+                      setAddId("");
+                      setEditId("");
+                      setDeleteId("");
+                    })
+                    .catch();
                 } else {
                   setAddId("");
                   setEditId("");
+                  setDeleteId("");
                 }
               }}
               disabled={isLoading}
@@ -401,6 +417,19 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                         </TableCell>
                       );
                     })}
+                    {renderConfirmActionCell()}
+                  </TableRow>
+                );
+              }
+              if (row[keyField] === deleteId && isEditable) {
+                return (
+                  <TableRow key={row[keyField]}>
+                    <TableCell colSpan={columns.length}>
+                      <Typography color="error">
+                        {editable.delete?.confirmText ||
+                          "Are you sure to delete this record?"}
+                      </Typography>
+                    </TableCell>
                     {renderConfirmActionCell()}
                   </TableRow>
                 );
