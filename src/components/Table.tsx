@@ -222,8 +222,8 @@ function AppTable<RowData>(props: TableProps<RowData>) {
             spacing={1}
             sx={{ color: grey[600] }}
           >
-            <WarningIcon sx={{ fontSize: 30 }} />
-            <Typography variant="h5">No data</Typography>
+            <WarningIcon />
+            <Typography variant="subtitle1">No data</Typography>
           </Stack>
         </TableCell>
       </TableRow>
@@ -374,7 +374,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           {renderTableHead()}
           <TableBody>
             {renderLoader()}
-            {renderNoData()}
+            {!addId && renderNoData()}
             {newRow && isEditable && (
               <TableRow key={NEW_ROW_ID}>
                 {columns.map((col) => {
