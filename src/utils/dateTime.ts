@@ -5,6 +5,6 @@ export const formatDateTime = (dateStr: string) => {
   const date = new Date(dateStr);
   const year = date.getFullYear();
   const month = MONTHS_WORDS[date.getMonth()];
-  const day = date.getDay();
+  const day = date.getDate();
   return `${month} ${day}, ${year}, ${date.toLocaleTimeString('en-US')}`;
 }
