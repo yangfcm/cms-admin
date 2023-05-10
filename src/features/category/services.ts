@@ -51,6 +51,17 @@ const api = createApi({
         url: `/blogs/${blogAddress}/categories/${categoryId}`,
         method: 'DELETE',
       }),
+      async onQueryStarted({ blogAddress, categoryId }, { dispatch, queryFulfilled }) {
+        let result;
+        try {
+          await queryFulfilled;
+          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (categoriesResponse) => {
+            categoriesResponse.categories = categoriesResponse.categories.filter(c => c.id !== categoryId);
+          }))
+        } catch {
+          result?.undo()
+        }
+      }
     }),
   })
 });
