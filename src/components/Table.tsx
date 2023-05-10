@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -114,10 +114,12 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     return data.find((row) => row[keyField] === deleteId);
   }, [deleteId, data]);
 
+  const columnsRef = useRef<Column<RowData>[]>(columns);
+
   const inputColumns = useMemo(() => {
     if (!addId && !editId) return;
     const inputColumns: Record<string, any> = {};
-    columns.forEach((col) => {
+    columnsRef.current.forEach((col) => {
       if (col.input && col.editable) {
         inputColumns[col.field] = {
           ...col.input,
@@ -126,7 +128,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
       }
     });
     return inputColumns;
-  }, [columns, newRow, editRow]);
+  }, [editRow]);
 
   const [inputValues, setInputValues] = useState<Record<string, any>>({});
 
@@ -270,13 +272,12 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                 if (result instanceof Promise) {
                   result
                     .then((data) => {
-                      console.log(data);
                       setAddId("");
                       setEditId("");
                       setDeleteId("");
                     })
                     .catch((error) => {
-                      console.log(error);
+                      // Handle error.
                     });
                 } else {
                   setAddId("");

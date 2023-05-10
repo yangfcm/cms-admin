@@ -154,7 +154,6 @@ function Categories() {
             });
           },
           onRowEdit: (editData) => {
-            console.log("edit", editData);
             return new Promise(async (resolve, reject) => {
               const response = await updateCategory({
                 blogAddress: address,
