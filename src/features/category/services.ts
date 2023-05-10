@@ -45,6 +45,25 @@ const api = createApi({
         method: 'PUT',
         body: { category: patchedCategory },
       }),
+      async onQueryStarted({ blogAddress, category }, { dispatch, queryFulfilled }) {
+        let result;
+        try {
+          const { data: { category } } = await queryFulfilled;
+          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (categoriesResponse) => {
+            categoriesResponse.categories = categoriesResponse.categories.map(c => {
+              if (c.id === category.id) {
+                return {
+                  ...c,
+                  ...category,
+                };
+              }
+              return c;
+            });
+          }));
+        } catch {
+          result?.undo()
+        }
+      }
     }),
     deleteCategory: builder.mutation<CategoryResponse, { blogAddress: string, categoryId: string }>({
       query: ({ blogAddress, categoryId }) => ({
