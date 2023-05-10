@@ -12,8 +12,13 @@ import {
   useDeleteCategoryMutation,
 } from "../features/category/services";
 import useUserBlog from "../features/blog/useUserBlog";
-import { Category } from "../features/category/types";
+// import { Category } from "../features/category/types";
 import { formatDateTime } from "../utils/dateTime";
+import {
+  CATEGORY_CREATED,
+  CATEGORY_UPDATED,
+  CATEGORY_DELETED,
+} from "../settings/constants";
 
 function Categories() {
   const { activeBlog } = useUserBlog();
@@ -69,20 +74,6 @@ function Categories() {
     ]
   );
 
-  const successMessage = useMemo(() => {
-    let message = "";
-    if (createCategoryState.isSuccess) {
-      message = "Category is created successfully.";
-    }
-    if (updateCategoryState.isSuccess) {
-      message = "Category is updated successfully.";
-    }
-    if (deleteCategoryState.isSuccess) {
-      message = "Category is deleted successfully.";
-    }
-    return message;
-  }, [createCategoryState, updateCategoryState, deleteCategoryState]);
-
   const columns = [
     {
       field: "name",
@@ -118,13 +109,16 @@ function Categories() {
     <Container>
       <ErrorMessage open={hasError} messages={errorMessages} />
       <SuccessMessage
-        open={!!successMessage}
-        message={successMessage}
-        onClose={() => {
-          if (createCategoryState.isSuccess) createCategoryState.reset();
-          if (updateCategoryState.isSuccess) updateCategoryState.reset();
-          if (deleteCategoryState.isSuccess) deleteCategoryState.reset();
-        }}
+        open={createCategoryState.isSuccess}
+        message={CATEGORY_CREATED}
+      />
+      <SuccessMessage
+        open={updateCategoryState.isSuccess}
+        message={CATEGORY_UPDATED}
+      />
+      <SuccessMessage
+        open={deleteCategoryState.isSuccess}
+        message={CATEGORY_DELETED}
       />
       <Typography variant="h5" sx={{ marginBottom: 1 }}>
         Categories Admin
