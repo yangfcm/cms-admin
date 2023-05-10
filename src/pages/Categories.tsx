@@ -141,18 +141,32 @@ function Categories() {
             labelText: "Add Category",
           },
           onRowAdd: (newData) => {
-            return createCategory({
-              blogAddress: address,
-              category: newData,
+            return new Promise(async (resolve, reject) => {
+              const response = await createCategory({
+                blogAddress: address,
+                category: newData,
+              });
+              if ("error" in response) {
+                reject(response.error);
+              } else {
+                resolve(response.data);
+              }
             });
           },
           onRowEdit: (editData) => {
             console.log("edit", editData);
           },
           onRowDelete: (deleteData) => {
-            return deleteCategory({
-              blogAddress: address,
-              categoryId: deleteData.id,
+            return new Promise(async (resolve, reject) => {
+              const response = await deleteCategory({
+                blogAddress: address,
+                categoryId: deleteData.id,
+              });
+              if ("error" in response) {
+                reject(response.error);
+              } else {
+                resolve(response.data);
+              }
             });
           },
         }}

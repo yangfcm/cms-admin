@@ -266,12 +266,15 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                 }
                 if (result instanceof Promise) {
                   result
-                    .then(() => {
+                    .then((data) => {
+                      console.log(data);
                       setAddId("");
                       setEditId("");
                       setDeleteId("");
                     })
-                    .catch();
+                    .catch((error) => {
+                      console.log(error);
+                    });
                 } else {
                   setAddId("");
                   setEditId("");
