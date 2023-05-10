@@ -31,8 +31,8 @@ const api = createApi({
         let result;
         try {
           const { data: { category } } = await queryFulfilled;
-          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (categoriesResponse) => {
-            categoriesResponse.categories.unshift(category);
+          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (draft) => {
+            draft.categories.unshift(category);
           }))
         } catch {
           result?.undo()
@@ -49,8 +49,8 @@ const api = createApi({
         let result;
         try {
           const { data: { category } } = await queryFulfilled;
-          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (categoriesResponse) => {
-            categoriesResponse.categories = categoriesResponse.categories.map(c => {
+          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (draft) => {
+            draft.categories = draft.categories.map(c => {
               if (c.id === category.id) {
                 return {
                   ...c,
@@ -74,8 +74,8 @@ const api = createApi({
         let result;
         try {
           await queryFulfilled;
-          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (categoriesResponse) => {
-            categoriesResponse.categories = categoriesResponse.categories.filter(c => c.id !== categoryId);
+          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (draft) => {
+            draft.categories = draft.categories.filter(c => c.id !== categoryId);
           }))
         } catch {
           result?.undo()
