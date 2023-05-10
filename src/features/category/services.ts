@@ -31,8 +31,7 @@ const api = createApi({
         let result;
         try {
           const { data: { category } } = await queryFulfilled;
-          result = dispatch(api.util.updateQueryData('readCategories', '', (categoriesResponse) => {
-            console.log(categoriesResponse.categories);
+          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (categoriesResponse) => {
             categoriesResponse.categories.unshift(category);
           }))
         } catch {

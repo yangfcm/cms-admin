@@ -67,7 +67,7 @@ interface TableProps<RowData> {
 }
 
 const NEW_ROW_ID = "__NEW_ROW__";
-const keyField = "__ID__";
+export const keyField = "__ID__";
 
 function AppTable<RowData>(props: TableProps<RowData>) {
   const {
