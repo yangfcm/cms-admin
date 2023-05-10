@@ -21,7 +21,7 @@ function Categories() {
   const {
     data,
     isError: isReadCategoriesError,
-    isLoading: isReadCategories,
+    isLoading: isReadingCategories,
     error: readCategoriesError,
   } = useReadCategoriesQuery(address);
 
@@ -29,20 +29,45 @@ function Categories() {
   const [updateCategory, updateCategoryState] = useUpdateCategoryMutation();
   const [deleteCategory, deleteCategoryState] = useDeleteCategoryMutation();
 
-  const isLoading =
-    isReadCategories ||
-    createCategoryState.isLoading ||
-    deleteCategoryState.isLoading;
-  const hasError =
-    isReadCategoriesError ||
-    createCategoryState.isError ||
-    updateCategoryState.isError ||
-    deleteCategoryState.isError;
-  const errorMessages =
-    readCategoriesError ||
-    createCategoryState.error ||
-    updateCategoryState.error ||
-    deleteCategoryState.error;
+  const isLoading = useMemo(
+    () =>
+      isReadingCategories ||
+      createCategoryState.isLoading ||
+      updateCategoryState.isLoading ||
+      deleteCategoryState.isLoading,
+    [
+      isReadingCategories,
+      createCategoryState,
+      updateCategoryState,
+      deleteCategoryState,
+    ]
+  );
+  const hasError = useMemo(
+    () =>
+      isReadCategoriesError ||
+      createCategoryState.isError ||
+      updateCategoryState.isError ||
+      deleteCategoryState.isError,
+    [
+      isReadCategoriesError,
+      createCategoryState,
+      updateCategoryState,
+      deleteCategoryState,
+    ]
+  );
+  const errorMessages = useMemo(
+    () =>
+      readCategoriesError ||
+      createCategoryState.error ||
+      updateCategoryState.error ||
+      deleteCategoryState.error,
+    [
+      readCategoriesError,
+      createCategoryState,
+      updateCategoryState,
+      deleteCategoryState,
+    ]
+  );
 
   const successMessage = useMemo(() => {
     let message = "";
