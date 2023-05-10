@@ -1,8 +1,10 @@
+import { useMemo } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Table from "../components/Table";
 import ErrorMessage from "../components/ErrorMessage";
+import SuccessMessage from "../components/SuccessMessage";
 import {
   useReadCategoriesQuery,
   useCreateCategoryMutation,
@@ -18,9 +20,9 @@ function Categories() {
   const address = activeBlog?.address || "";
   const {
     data,
-    isSuccess: isReadingCategoriesSuccess,
-    isError: isReadingCategoriesError,
-    isLoading: isReadingCategories,
+    isError: isReadCategoriesError,
+    isLoading: isReadCategories,
+    error: readCategoriesError,
   } = useReadCategoriesQuery(address);
 
   const [createCategory, createCategoryState] = useCreateCategoryMutation();
@@ -28,9 +30,33 @@ function Categories() {
   const [deleteCategory, deleteCategoryState] = useDeleteCategoryMutation();
 
   const isLoading =
-    isReadingCategories ||
+    isReadCategories ||
     createCategoryState.isLoading ||
     deleteCategoryState.isLoading;
+  const hasError =
+    isReadCategoriesError ||
+    createCategoryState.isError ||
+    updateCategoryState.isError ||
+    deleteCategoryState.isError;
+  const errorMessages =
+    readCategoriesError ||
+    createCategoryState.error ||
+    updateCategoryState.error ||
+    deleteCategoryState.error;
+
+  const successMessage = useMemo(() => {
+    let message = "";
+    if (createCategoryState.isSuccess) {
+      message = "Category is created successfully.";
+    }
+    if (updateCategoryState.isSuccess) {
+      message = "Category is updated successfully.";
+    }
+    if (deleteCategoryState.isSuccess) {
+      message = "Category is deleted successfully.";
+    }
+    return message;
+  }, [createCategoryState, updateCategoryState, deleteCategoryState]);
 
   const columns = [
     {
@@ -65,9 +91,15 @@ function Categories() {
 
   return (
     <Container>
-      <ErrorMessage
-        open={createCategoryState.isError}
-        messages={createCategoryState.error}
+      <ErrorMessage open={hasError} messages={errorMessages} />
+      <SuccessMessage
+        open={!!successMessage}
+        message={successMessage}
+        onClose={() => {
+          if (createCategoryState.isSuccess) createCategoryState.reset();
+          if (updateCategoryState.isSuccess) updateCategoryState.reset();
+          if (deleteCategoryState.isSuccess) deleteCategoryState.reset();
+        }}
       />
       <Typography variant="h5" sx={{ marginBottom: 1 }}>
         Categories Admin
