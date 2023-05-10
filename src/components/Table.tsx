@@ -259,7 +259,10 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                   result = editable.onRowAdd(inputValues as RowData);
                 }
                 if (editId && editable.onRowEdit) {
-                  result = editable.onRowEdit(inputValues as RowData);
+                  result = editable.onRowEdit({
+                    id: editRow?.id,
+                    ...inputValues,
+                  } as { id: string } & RowData);
                 }
                 if (deleteId && editable.onRowDelete) {
                   result = editable.onRowDelete(deleteRow as RowData);
@@ -347,7 +350,6 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         placeholder = "",
         defaultValue = "",
       } = input || {};
-      // if (Object.keys(inputValues).length === 0) return;
       if (type === "text") {
         return (
           <TextField

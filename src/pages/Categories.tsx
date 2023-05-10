@@ -155,6 +155,17 @@ function Categories() {
           },
           onRowEdit: (editData) => {
             console.log("edit", editData);
+            return new Promise(async (resolve, reject) => {
+              const response = await updateCategory({
+                blogAddress: address,
+                category: editData,
+              });
+              if ("error" in response) {
+                reject(response.error);
+              } else {
+                resolve(response.data);
+              }
+            });
           },
           onRowDelete: (deleteData) => {
             return new Promise(async (resolve, reject) => {
