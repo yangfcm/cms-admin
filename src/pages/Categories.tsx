@@ -130,6 +130,9 @@ function Categories() {
         columns={columns}
         isLoading={isLoading}
         title="Categories List"
+        options={{
+          sorting: true,
+        }}
         editable={{
           add: {
             labelText: "Add Category",

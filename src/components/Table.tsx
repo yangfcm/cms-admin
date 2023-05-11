@@ -20,6 +20,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { grey } from "@mui/material/colors";
 
 interface Input {
@@ -37,6 +38,7 @@ interface Column<RowData> {
   render?: (value: any, row: RowData) => JSX.Element | string;
   editable?: boolean;
   input?: Input;
+  sorting?: boolean;
 }
 
 interface Cell {
@@ -64,6 +66,13 @@ interface TableProps<RowData> {
     onRowEdit?: (editData: RowData) => Promise<any> | any;
     onRowDelete?: (deleteData: RowData) => Promise<any> | any;
   };
+  options?: {
+    sorting?: boolean;
+  };
+}
+
+interface TableSorting {
+  [field: string]: "DEFAULT" | "ASC" | "DESC";
 }
 
 const NEW_ROW_ID = "__NEW_ROW__";
@@ -76,15 +85,28 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     isLoading = false,
     title = "Table",
     editable = {},
+    options: { sorting = false } = {},
   } = props;
+
+  const columnsRef = useRef<Column<RowData>[]>(
+    columns.map(
+      ({ field, title, render, editable = false, input, sorting = true }) => {
+        // Extract column's prop and set default value when necessary.
+        return { field, title, render, editable, input, sorting };
+      }
+    )
+  );
+
+  const [editId, setEditId] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+  const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
+  const [inputValues, setInputValues] = useState<Record<string, any>>({});
+  const [tableSorting, setTableSorting] = useState<TableSorting>({});
 
   const isEditable = useMemo(
     () => !!editable && Object.keys(editable).length > 0,
     [editable]
   );
-  const [editId, setEditId] = useState("");
-  const [deleteId, setDeleteId] = useState("");
-  const [addId, setAddId] = useState<"" | typeof NEW_ROW_ID>("");
 
   const data: Record<string, any>[] = useMemo(() => {
     return dataProp.map((row, index) => ({
@@ -114,8 +136,6 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     return data.find((row) => row[keyField] === deleteId);
   }, [deleteId, data]);
 
-  const columnsRef = useRef<Column<RowData>[]>(columns);
-
   const inputColumns = useMemo(() => {
     if (!addId && !editId) return;
     const inputColumns: Record<string, any> = {};
@@ -130,8 +150,6 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     return inputColumns;
   }, [editRow]);
 
-  const [inputValues, setInputValues] = useState<Record<string, any>>({});
-
   useEffect(() => {
     const initialValues: Record<string, any> = {};
     if (inputColumns) {
@@ -141,6 +159,16 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     }
     setInputValues(initialValues);
   }, [inputColumns]);
+
+  useEffect(() => {
+    // Initialize sorting state.
+    const initSorting: TableSorting = {};
+    if (!sorting) return;
+    columnsRef.current.forEach((col) => {
+      if (col.sorting) initSorting[col.field] = "DEFAULT";
+    });
+    setTableSorting(initSorting);
+  }, []);
 
   const renderTableToolbar = useCallback(() => {
     return (
@@ -182,7 +210,15 @@ function AppTable<RowData>(props: TableProps<RowData>) {
           {columns.map((col) => {
             return (
               <TableCell key={col.field} sx={{ fontWeight: 600 }}>
-                {col.title}
+                <Stack direction="row" alignItems="center" gap={1}>
+                  {col.title}{" "}
+                  {tableSorting[col.field] && (
+                    <ArrowUpwardIcon
+                      color="disabled"
+                      sx={{ cursor: "pointer" }}
+                    />
+                  )}
+                </Stack>
               </TableCell>
             );
           })}
