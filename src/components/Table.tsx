@@ -72,7 +72,7 @@ interface TableProps<RowData> {
 }
 
 interface TableSorting {
-  [field: string]: "DEFAULT" | "ASC" | "DESC";
+  [field: string]: "NONE" | "ASC" | "DESC";
 }
 
 const NEW_ROW_ID = "__NEW_ROW__";
@@ -165,10 +165,29 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     const initSorting: TableSorting = {};
     if (!sorting) return;
     columnsRef.current.forEach((col) => {
-      if (col.sorting) initSorting[col.field] = "DEFAULT";
+      if (col.sorting) initSorting[col.field] = "NONE";
     });
     setTableSorting(initSorting);
   }, []);
+
+  const handleSorting = useCallback(
+    (field: string) => {
+      const currentSorting = tableSorting[field];
+      const nextSorting =
+        currentSorting === "NONE"
+          ? "ASC"
+          : currentSorting === "ASC"
+          ? "DESC"
+          : "NONE";
+      const newSorting: TableSorting = {};
+      columnsRef.current.forEach((col) => {
+        if (col.sorting) newSorting[col.field] = "NONE";
+      });
+      newSorting[field] = nextSorting;
+      setTableSorting(newSorting);
+    },
+    [tableSorting]
+  );
 
   const renderTableToolbar = useCallback(() => {
     return (
@@ -212,11 +231,24 @@ function AppTable<RowData>(props: TableProps<RowData>) {
               <TableCell key={col.field} sx={{ fontWeight: 600 }}>
                 <Stack direction="row" alignItems="center" gap={1}>
                   {col.title}{" "}
-                  {tableSorting[col.field] && (
-                    <ArrowUpwardIcon
-                      color="disabled"
-                      sx={{ cursor: "pointer" }}
-                    />
+                  {tableSorting[col.field] && data.length > 1 && (
+                    <IconButton onClick={() => handleSorting(col.field)}>
+                      <ArrowUpwardIcon
+                        color={
+                          tableSorting[col.field] === "NONE"
+                            ? "disabled"
+                            : "inherit"
+                        }
+                        sx={{
+                          cursor: "pointer",
+                          rotate:
+                            tableSorting[col.field] === "DESC"
+                              ? "180deg"
+                              : "0deg",
+                          transition: "rotate, .2s",
+                        }}
+                      />
+                    </IconButton>
                   )}
                 </Stack>
               </TableCell>
@@ -230,7 +262,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         </TableRow>
       </TableHead>
     );
-  }, [columns, isEditable]);
+  }, [columns, isEditable, tableSorting]);
 
   const renderLoader = useCallback(() => {
     if (!isLoading) return null;
