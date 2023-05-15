@@ -108,12 +108,43 @@ function AppTable<RowData>(props: TableProps<RowData>) {
     [editable]
   );
 
+  const sort = useMemo(() => {
+    // Get the field name and the order that required sorting.
+    const sort = {
+      field: "",
+      order: "",
+    };
+    for (const [key, value] of Object.entries(tableSorting)) {
+      if (value !== "NONE") {
+        sort.field = key;
+        sort.order = value;
+      }
+    }
+    return sort;
+  }, [tableSorting]);
+
   const data: Record<string, any>[] = useMemo(() => {
-    return dataProp.map((row, index) => ({
+    const tableData = dataProp.map((row, index) => ({
       [keyField]: index.toString(),
       ...row,
     }));
-  }, [dataProp]);
+    if (sort.field) {
+      const sortedTableData = tableData.sort((a, b) => {
+        // Just to string compare initially.
+        const strA = (a as Record<string, any>)[sort.field].toString();
+        const strB = (b as Record<string, any>)[sort.field].toString();
+        if (sort.order === "ASC") {
+          return strA > strB ? 1 : -1;
+        }
+        if (sort.order === "DESC") {
+          return strA > strB ? -1 : 1;
+        }
+        return 0;
+      });
+      return sortedTableData;
+    }
+    return tableData;
+  }, [dataProp, sort]);
 
   const newRow = useMemo(() => {
     if (!addId) return;
@@ -232,7 +263,10 @@ function AppTable<RowData>(props: TableProps<RowData>) {
                 <Stack direction="row" alignItems="center" gap={1}>
                   {col.title}{" "}
                   {tableSorting[col.field] && data.length > 1 && (
-                    <IconButton onClick={() => handleSorting(col.field)}>
+                    <IconButton
+                      onClick={() => handleSorting(col.field)}
+                      disabled={!!(addId || editId || deleteId)}
+                    >
                       <ArrowUpwardIcon
                         color={
                           tableSorting[col.field] === "NONE"
@@ -262,7 +296,7 @@ function AppTable<RowData>(props: TableProps<RowData>) {
         </TableRow>
       </TableHead>
     );
-  }, [columns, isEditable, tableSorting]);
+  }, [columns, isEditable, tableSorting, addId, editId, deleteId]);
 
   const renderLoader = useCallback(() => {
     if (!isLoading) return null;
