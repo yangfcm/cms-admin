@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Table from "../components/Table";
+import Table from "@yangfcm/react-mui-table";
 import ErrorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
 import {
