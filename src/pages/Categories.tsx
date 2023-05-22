@@ -74,36 +74,38 @@ function Categories() {
     ]
   );
 
-  const columns = [
-    {
-      field: "name",
-      title: "Name",
-      editable: true,
-      input: {
-        name: "name",
-        placeholder: "Name",
+  const columns = useMemo(() => {
+    return [
+      {
+        field: "name",
+        title: "Name",
+        editable: true,
+        input: {
+          name: "name",
+          placeholder: "Name",
+        },
       },
-    },
-    {
-      field: "description",
-      title: "Description",
-      editable: true,
-      input: {
-        name: "description",
-        placeholder: "Description",
+      {
+        field: "description",
+        title: "Description",
+        editable: true,
+        input: {
+          name: "description",
+          placeholder: "Description",
+        },
       },
-    },
-    {
-      field: "createdAt",
-      title: "Created",
-      render: (value: string) => formatDateTime(value),
-    },
-    {
-      field: "updatedAt",
-      title: "Last updated",
-      render: (value: string) => formatDateTime(value),
-    },
-  ];
+      {
+        field: "createdAt",
+        title: "Created",
+        render: (value: string) => formatDateTime(value),
+      },
+      {
+        field: "updatedAt",
+        title: "Last updated",
+        render: (value: string) => formatDateTime(value),
+      },
+    ];
+  }, []);
 
   return (
     <Container>
