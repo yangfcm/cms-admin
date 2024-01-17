@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Table from "@yangfcm/react-mui-table";
 import ErrorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
 import {
@@ -18,9 +19,8 @@ import {
   CATEGORY_UPDATED,
   CATEGORY_DELETED,
 } from "../settings/constants";
-import CategoriesTable from "../components/CategoriesTable";
 
-function Categories() {
+function MuiCategories() {
   const { activeBlog } = useUserBlog();
   const address = activeBlog?.address || "";
   const {
@@ -127,9 +127,61 @@ function Categories() {
       </Typography>
       <Divider />
       <br />
-      <CategoriesTable categories={data?.categories || []} />
+      <Table
+        data={data?.categories || []}
+        columns={columns}
+        isLoading={isLoading}
+        title="Categories List"
+        options={{
+          sorting: true,
+        }}
+        editable={{
+          add: {
+            labelText: "Add Category",
+          },
+          onRowAdd: (newData) => {
+            return new Promise(async (resolve, reject) => {
+              const response = await createCategory({
+                blogAddress: address,
+                category: newData,
+              });
+              if ("error" in response) {
+                reject(response.error);
+              } else {
+                resolve(response.data);
+              }
+            });
+          },
+          onRowEdit: (editData) => {
+            return new Promise(async (resolve, reject) => {
+              const response = await updateCategory({
+                blogAddress: address,
+                category: editData,
+              });
+              if ("error" in response) {
+                reject(response.error);
+              } else {
+                resolve(response.data);
+              }
+            });
+          },
+          onRowDelete: (deleteData) => {
+            return new Promise(async (resolve, reject) => {
+              const response = await deleteCategory({
+                blogAddress: address,
+                categoryId: deleteData.id,
+              });
+              if ("error" in response) {
+                reject(response.error);
+              } else {
+                resolve(response.data);
+              }
+            });
+          },
+        }}
+      />
     </Container>
   );
 }
 
-export default Categories;
+export default MuiCategories;

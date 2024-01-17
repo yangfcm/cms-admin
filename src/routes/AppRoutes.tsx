@@ -13,6 +13,7 @@ import Root from "../pages/Root";
 import Home from "../pages/Home";
 import Articles from "../pages/Articles";
 import Categories from "../pages/Categories";
+import MuiCategories from "../pages/MuiCategories";
 import Tags from "../pages/Tags";
 import Onboarding from "../pages/Onboarding";
 import AuthProvider from "../components/AuthProvider";
@@ -79,6 +80,7 @@ function AppRoutes() {
           >
             <Route path="" element={<Home />} />
             <Route path="articles" element={<Articles />} />
+            <Route path="mui-categories" element={<MuiCategories />} />
             <Route path="categories" element={<Categories />} />
             <Route path="tags" element={<Tags />} />
             <Route path="blog-settings" element={<BlogSettings />} />
