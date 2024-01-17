@@ -7,6 +7,7 @@ import TableBody from '@mui/material/TableBody';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Category } from "../features/category/types";
+import { formatDateTime } from '../utils/dateTime';
 
 type CategoriesTableProps = {
   categories: Category[];
@@ -27,6 +28,8 @@ function CategoriesTable(props: CategoriesTableProps) {
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Description</TableCell>
+            <TableCell>Created</TableCell>
+            <TableCell>Last Updated</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -36,6 +39,8 @@ function CategoriesTable(props: CategoriesTableProps) {
                 <TableRow key={category.id}>
                   <TableCell>{category.name}</TableCell>
                   <TableCell>{category.description}</TableCell>
+                  <TableCell>{formatDateTime(category.createdAt)}</TableCell>
+                  <TableCell>{formatDateTime(category.updatedAt)}</TableCell>
                 </TableRow>
               )
             })
