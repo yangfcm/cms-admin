@@ -5,6 +5,7 @@ import {
   CategoriesResponse,
   CategoryResponse,
   AddCategory,
+  UpdateCategory,
   Category,
 } from "./types";
 
@@ -58,7 +59,7 @@ const api = createApi({
       CategoryResponse,
       {
         blogAddress: string;
-        category: Pick<Category, "id"> & Partial<AddCategory>;
+        category: UpdateCategory;
       }
     >({
       query: ({ blogAddress, category: { id, ...patchedCategory } }) => ({
