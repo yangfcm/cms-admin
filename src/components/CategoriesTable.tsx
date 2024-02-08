@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import { Category } from "../features/category/types";
 import { formatDateTime } from '../utils/dateTime';
 import AddCategory from './AddCategory';
+import EditCategory from './EditCategory';
+import DeleteCategory from './DeleteCategory';
 
 type CategoriesTableProps = {
   categories: Category[];
@@ -35,6 +37,7 @@ function CategoriesTable(props: CategoriesTableProps) {
             <TableCell>Description</TableCell>
             <TableCell>Created</TableCell>
             <TableCell>Last Updated</TableCell>
+            <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -46,6 +49,10 @@ function CategoriesTable(props: CategoriesTableProps) {
                   <TableCell>{category.description}</TableCell>
                   <TableCell>{formatDateTime(category.createdAt)}</TableCell>
                   <TableCell>{formatDateTime(category.updatedAt)}</TableCell>
+                  <TableCell align="center">
+                    <EditCategory />
+                    <DeleteCategory />
+                  </TableCell>
                 </TableRow>
               )
             })
