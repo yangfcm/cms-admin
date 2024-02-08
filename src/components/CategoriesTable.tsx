@@ -50,7 +50,7 @@ function CategoriesTable(props: CategoriesTableProps) {
                   <TableCell>{formatDateTime(category.createdAt)}</TableCell>
                   <TableCell>{formatDateTime(category.updatedAt)}</TableCell>
                   <TableCell align="center">
-                    <EditCategory />
+                    <EditCategory category={category} />
                     <DeleteCategory category={category} />
                   </TableCell>
                 </TableRow>
