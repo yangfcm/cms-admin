@@ -4,8 +4,10 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { LoadingButton } from '@mui/lab';
 import TextInput from './TextInput';
-import { Category } from '../features/category/types';
+import { Category, PostCategory } from '../features/category/types';
 import { CATEGORY_NAME_REQUIRED } from '../settings/constants';
+import { useCreateCategoryMutation, useUpdateCategoryMutation } from '../features/category/services';
+import useUserBlog from '../features/blog/useUserBlog';
 
 type CategoryFormProps = {
   category?: Category;
@@ -13,6 +15,7 @@ type CategoryFormProps = {
 };
 function CategoryForm(props: CategoryFormProps) {
   const { category, onCancel } = props;
+  const { activeBlogAddress } = useUserBlog();
 
   const methods = useForm({
     mode: 'onSubmit',
@@ -22,8 +25,24 @@ function CategoryForm(props: CategoryFormProps) {
     }
   });
 
-  const onSubmit = (data: unknown) => {
-    console.log(data);
+  const [createCategory, createCategoryState] = useCreateCategoryMutation();
+  const [updateCategory, updateCategoryState] = useUpdateCategoryMutation();
+
+  const onSubmit = (data: PostCategory) => {
+    if(category) {
+      updateCategory({
+        blogAddress: activeBlogAddress,
+        category: {
+          ...data,
+          id: category.id,
+        },
+      });
+    } else {
+      createCategory({
+        blogAddress: activeBlogAddress,
+        category: data,
+      });
+    }
   }
 
   return (

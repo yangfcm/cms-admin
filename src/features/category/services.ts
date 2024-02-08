@@ -4,7 +4,7 @@ import { RootState } from "../../app/store";
 import {
   CategoriesResponse,
   CategoryResponse,
-  AddCategory,
+  PostCategory,
   UpdateCategory,
   Category,
 } from "./types";
@@ -29,7 +29,7 @@ const api = createApi({
     }),
     createCategory: builder.mutation<
       CategoryResponse,
-      { blogAddress: string; category: AddCategory }
+      { blogAddress: string; category: PostCategory }
     >({
       query: ({ blogAddress, category }) => ({
         url: `/blogs/${blogAddress}/categories`,
