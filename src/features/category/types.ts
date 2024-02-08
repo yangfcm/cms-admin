@@ -15,6 +15,6 @@ export type CategoriesResponse = {
   categories: Category[];
 };
 
-export type PostCategory = Pick<Category, "name" | "description">;
+export type AddCategory = Pick<Category, "name" | "description">;
 
-export type PatchCategory = Partial<PostCategory>;
+export type PatchCategory = Partial<AddCategory>;

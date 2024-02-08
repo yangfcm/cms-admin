@@ -1,90 +1,133 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { apiBaseUrl } from "../../settings/constants";
-import { RootState } from '../../app/store';
-import { CategoriesResponse, CategoryResponse, PostCategory, Category } from "./types";
+import { RootState } from "../../app/store";
+import {
+  CategoriesResponse,
+  CategoryResponse,
+  AddCategory,
+  Category,
+} from "./types";
 
 const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: apiBaseUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).user.token;
-      if (token) headers.set('x-auth', token);
+      if (token) headers.set("x-auth", token);
       return headers;
-    }
+    },
   }),
-  tagTypes: ['Category'],
-  reducerPath: 'categoryApi',
+  tagTypes: ["Category"],
+  reducerPath: "categoryApi",
   endpoints: (builder) => ({
     readCategories: builder.query<CategoriesResponse, string>({
-      query: blogAddress => ({
+      query: (blogAddress) => ({
         url: `/blogs/${blogAddress}/categories`,
       }),
-      providesTags: ['Category'],
+      providesTags: ["Category"],
     }),
-    createCategory: builder.mutation<CategoryResponse, { blogAddress: string, category: PostCategory }>({
+    createCategory: builder.mutation<
+      CategoryResponse,
+      { blogAddress: string; category: AddCategory }
+    >({
       query: ({ blogAddress, category }) => ({
         url: `/blogs/${blogAddress}/categories`,
-        method: 'POST',
+        method: "POST",
         body: { category },
       }),
-      async onQueryStarted({ blogAddress, category }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(
+        { blogAddress, category },
+        { dispatch, queryFulfilled }
+      ) {
         let result;
         try {
-          const { data: { category } } = await queryFulfilled;
-          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (draft) => {
-            draft.categories.unshift(category);
-          }))
+          const {
+            data: { category },
+          } = await queryFulfilled;
+          result = dispatch(
+            api.util.updateQueryData("readCategories", blogAddress, (draft) => {
+              draft.categories.unshift(category);
+            })
+          );
         } catch {
-          result?.undo()
+          result?.undo();
         }
-      }
+      },
     }),
-    updateCategory: builder.mutation<CategoryResponse, { blogAddress: string, category: Pick<Category, 'id'> & Partial<PostCategory> }>({
+    updateCategory: builder.mutation<
+      CategoryResponse,
+      {
+        blogAddress: string;
+        category: Pick<Category, "id"> & Partial<AddCategory>;
+      }
+    >({
       query: ({ blogAddress, category: { id, ...patchedCategory } }) => ({
         url: `/blogs/${blogAddress}/categories/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: { category: patchedCategory },
       }),
-      async onQueryStarted({ blogAddress, category }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(
+        { blogAddress, category },
+        { dispatch, queryFulfilled }
+      ) {
         let result;
         try {
-          const { data: { category } } = await queryFulfilled;
-          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (draft) => {
-            draft.categories = draft.categories.map(c => {
-              if (c.id === category.id) {
-                return {
-                  ...c,
-                  ...category,
-                };
-              }
-              return c;
-            });
-          }));
+          const {
+            data: { category },
+          } = await queryFulfilled;
+          result = dispatch(
+            api.util.updateQueryData("readCategories", blogAddress, (draft) => {
+              draft.categories = draft.categories.map((c) => {
+                if (c.id === category.id) {
+                  return {
+                    ...c,
+                    ...category,
+                  };
+                }
+                return c;
+              });
+            })
+          );
         } catch {
-          result?.undo()
+          result?.undo();
         }
-      }
+      },
     }),
-    deleteCategory: builder.mutation<CategoryResponse, { blogAddress: string, categoryId: string }>({
+    deleteCategory: builder.mutation<
+      CategoryResponse,
+      { blogAddress: string; categoryId: string }
+    >({
       query: ({ blogAddress, categoryId }) => ({
         url: `/blogs/${blogAddress}/categories/${categoryId}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      async onQueryStarted({ blogAddress, categoryId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(
+        { blogAddress, categoryId },
+        { dispatch, queryFulfilled }
+      ) {
         let result;
         try {
           await queryFulfilled;
-          result = dispatch(api.util.updateQueryData('readCategories', blogAddress, (draft) => {
-            draft.categories = draft.categories.filter(c => c.id !== categoryId);
-          }))
+          result = dispatch(
+            api.util.updateQueryData("readCategories", blogAddress, (draft) => {
+              draft.categories = draft.categories.filter(
+                (c) => c.id !== categoryId
+              );
+            })
+          );
         } catch {
-          result?.undo()
+          result?.undo();
         }
-      }
+      },
     }),
-  })
+  }),
 });
 
 export default api;
 
-export const { useReadCategoriesQuery, useCreateCategoryMutation, useUpdateCategoryMutation, useDeleteCategoryMutation } = api;
+export const {
+  useReadCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} = api;

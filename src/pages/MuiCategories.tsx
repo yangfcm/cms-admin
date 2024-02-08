@@ -19,7 +19,7 @@ import {
   CATEGORY_UPDATED,
   CATEGORY_DELETED,
 } from "../settings/constants";
-import { Category, PostCategory } from "../features/category/types";
+import { Category, AddCategory } from "../features/category/types";
 
 function MuiCategories() {
   const { activeBlog } = useUserBlog();
@@ -140,7 +140,7 @@ function MuiCategories() {
           add: {
             labelText: "Add Category",
           },
-          onRowAdd: (newData: PostCategory) => {
+          onRowAdd: (newData: AddCategory) => {
             return new Promise(async (resolve, reject) => {
               const response = await createCategory({
                 blogAddress: address,
@@ -153,7 +153,7 @@ function MuiCategories() {
               }
             });
           },
-          onRowEdit: (editData: Pick<Category, 'id'> & Partial<PostCategory>) => {
+          onRowEdit: (editData: Pick<Category, 'id'> & Partial<AddCategory>) => {
             return new Promise(async (resolve, reject) => {
               const response = await updateCategory({
                 blogAddress: address,
