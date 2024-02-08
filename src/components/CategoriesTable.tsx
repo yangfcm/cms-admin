@@ -1,4 +1,5 @@
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
@@ -8,6 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Category } from "../features/category/types";
 import { formatDateTime } from '../utils/dateTime';
+import AddCategory from './AddCategory';
 
 type CategoriesTableProps = {
   categories: Category[];
@@ -18,10 +20,13 @@ function CategoriesTable(props: CategoriesTableProps) {
 
   return (
     <Paper>
-      <Toolbar>
-        <Typography variant="h6" sx={{flex: "1 1 100%"}}>
+      <Toolbar sx={{justifyContent: 'space-between'}}>
+        <Typography variant="h6">
           Categories List
         </Typography>
+        <Box>
+          <AddCategory />
+        </Box>
       </Toolbar>
       <Table>
         <TableHead>
