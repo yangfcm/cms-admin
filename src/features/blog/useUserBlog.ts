@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../app/hooks';
-import { RootState } from '../../app/store';
-import { setActiveBlog as setActiveBlogAction } from './blogSlice';
+import { useCallback, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../app/hooks";
+import { RootState } from "../../app/store";
+import { setActiveBlog as setActiveBlogAction } from "./blogSlice";
 
 function useUserBlog() {
   const dispatch = useAppDispatch();
@@ -13,14 +13,21 @@ function useUserBlog() {
   const activeBlog = useSelector(({ blog }: RootState) => {
     const { activeBlogAddress } = blog;
     if (!activeBlogAddress || !blog.blogs) return null;
-    return blog.blogs.find(b => b.address === activeBlogAddress);
+    return blog.blogs.find((b) => b.address === activeBlogAddress);
   });
 
-  const setActiveBlog = useCallback((blogAddress: string) => {
-    dispatch(setActiveBlogAction(blogAddress));
-  }, [dispatch, setActiveBlogAction]);
+  const activeBlogAddress = useMemo(() => {
+    return activeBlog?.address || "";
+  }, [activeBlog?.address]);
 
-  return { blogs, activeBlog, setActiveBlog }
+  const setActiveBlog = useCallback(
+    (blogAddress: string) => {
+      dispatch(setActiveBlogAction(blogAddress));
+    },
+    [dispatch, setActiveBlogAction]
+  );
+
+  return { blogs, activeBlog, setActiveBlog, activeBlogAddress };
 }
 
 export default useUserBlog;
