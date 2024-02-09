@@ -21,6 +21,7 @@ export const CREATE_BLOG_CACHE_KEY = "CREATE_BLOG_CACHE_KEY";
 export const BLOG_DELETED = "Blog is deleted.";
 export const DELETE_BLOG_CACHE_KEY = "DELETE_BLOG_CACHE_KEY";
 
+export const CATEGORY_FIXED_CACHE_KEY = "CATEGORY_FIXED_CACHE_KEY";
 export const CATEGORY_CREATED = "Category is created successfully.";
 export const CATEGORY_UPDATED = "Category is updated successfully.";
 export const CATEGORY_DELETED = "Category is deleted successfully.";

@@ -12,11 +12,11 @@ import {
 } from "../features/category/services";
 import useUserBlog from "../features/blog/useUserBlog";
 // import { Category } from "../features/category/types";
-import { formatDateTime } from "../utils/dateTime";
 import {
   CATEGORY_CREATED,
   CATEGORY_UPDATED,
   CATEGORY_DELETED,
+  CATEGORY_FIXED_CACHE_KEY
 } from "../settings/constants";
 import CategoriesTable from "../components/CategoriesTable";
 
@@ -30,9 +30,9 @@ function Categories() {
     error: readCategoriesError,
   } = useReadCategoriesQuery(address);
 
-  const [createCategory, createCategoryState] = useCreateCategoryMutation();
-  const [updateCategory, updateCategoryState] = useUpdateCategoryMutation();
-  const [deleteCategory, deleteCategoryState] = useDeleteCategoryMutation();
+  const [, createCategoryState] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
+  const [, updateCategoryState] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
+  const [, deleteCategoryState] = useDeleteCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
 
   const isLoading = useMemo(
     () =>
@@ -73,39 +73,6 @@ function Categories() {
       deleteCategoryState,
     ]
   );
-
-  const columns = useMemo(() => {
-    return [
-      {
-        field: "name",
-        title: "Name",
-        editable: true,
-        input: {
-          name: "name",
-          placeholder: "Name",
-        },
-      },
-      {
-        field: "description",
-        title: "Description",
-        editable: true,
-        input: {
-          name: "description",
-          placeholder: "Description",
-        },
-      },
-      {
-        field: "createdAt",
-        title: "Created",
-        render: (value: string) => formatDateTime(value),
-      },
-      {
-        field: "updatedAt",
-        title: "Last updated",
-        render: (value: string) => formatDateTime(value),
-      },
-    ];
-  }, []);
 
   return (
     <Container>
