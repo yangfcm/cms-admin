@@ -16,7 +16,9 @@ import {
   CATEGORY_CREATED,
   CATEGORY_UPDATED,
   CATEGORY_DELETED,
-  CATEGORY_FIXED_CACHE_KEY
+  CATEGORY_DELETE_FIXED_CACHE_KEY,
+  CATEGORY_CREATE_FIXED_CACHE_KEY,
+  CATEGORY_UPDATE_FIXED_CACHE_KEY,
 } from "../settings/constants";
 import CategoriesTable from "../components/CategoriesTable";
 
@@ -30,9 +32,9 @@ function Categories() {
     error: readCategoriesError,
   } = useReadCategoriesQuery(address);
 
-  const [, createCategoryState] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
-  const [, updateCategoryState] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
-  const [, deleteCategoryState] = useDeleteCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
+  const [, createCategoryState] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY});
+  const [, updateCategoryState] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY});
+  const [, deleteCategoryState] = useDeleteCategoryMutation({fixedCacheKey: CATEGORY_DELETE_FIXED_CACHE_KEY});
 
   const isLoading = useMemo(
     () =>
@@ -74,6 +76,7 @@ function Categories() {
     ]
   );
 
+  console.log(createCategoryState.isSuccess, deleteCategoryState.isSuccess);
   return (
     <Container>
       <ErrorMessage open={hasError} messages={errorMessages} />

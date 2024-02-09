@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import { LoadingButton } from '@mui/lab';
 import TextInput from './TextInput';
 import { Category, PostCategory } from '../features/category/types';
-import { CATEGORY_FIXED_CACHE_KEY, CATEGORY_NAME_REQUIRED } from '../settings/constants';
+import { CATEGORY_CREATE_FIXED_CACHE_KEY, CATEGORY_NAME_REQUIRED, CATEGORY_UPDATE_FIXED_CACHE_KEY } from '../settings/constants';
 import { useCreateCategoryMutation, useUpdateCategoryMutation } from '../features/category/services';
 import useUserBlog from '../features/blog/useUserBlog';
 
@@ -25,8 +25,8 @@ function CategoryForm(props: CategoryFormProps) {
     }
   });
 
-  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
-  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
+  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY});
+  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY});
 
   const onSubmit = (data: PostCategory) => {
     if(category) {

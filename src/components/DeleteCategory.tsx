@@ -5,10 +5,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ConfirmDialog from "./ConfirmDialog";
 import { Category } from "../features/category/types";
 import { useDeleteCategoryMutation } from "../features/category/services";
-import ErrorMessage from "./ErrorMessage";
 import useUserBlog from "../features/blog/useUserBlog";
-import SuccessMessage from "./SuccessMessage";
-import { CATEGORY_DELETED, CATEGORY_FIXED_CACHE_KEY } from "../settings/constants";
+import { CATEGORY_DELETE_FIXED_CACHE_KEY } from "../settings/constants";
 
 type DeleteCategoryProps = {
   category: Category;
@@ -18,7 +16,7 @@ function DeleteCategory({ category }: DeleteCategoryProps) {
   const [open, setOpen] = useState(false);
 
   const { activeBlogAddress } = useUserBlog();
-  const [deleteCategory, { isLoading }] = useDeleteCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
+  const [deleteCategory, { isLoading }] = useDeleteCategoryMutation({fixedCacheKey: CATEGORY_DELETE_FIXED_CACHE_KEY});
 
   const handleDeleteCategory = useCallback(() => {
     deleteCategory({
