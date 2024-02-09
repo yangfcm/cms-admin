@@ -1,3 +1,4 @@
+import { useEffect, useCallback } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -12,9 +13,12 @@ import useUserBlog from '../features/blog/useUserBlog';
 type CategoryFormProps = {
   category?: Category;
   onCancel?: () => void;
+  onCreateCategorySuccess?: () => void;
+  onUpdateCategorySuccess?: () => void;
 };
+
 function CategoryForm(props: CategoryFormProps) {
-  const { category, onCancel } = props;
+  const { category, onCancel, onCreateCategorySuccess, onUpdateCategorySuccess } = props;
   const { activeBlogAddress } = useUserBlog();
 
   const methods = useForm({
@@ -25,10 +29,22 @@ function CategoryForm(props: CategoryFormProps) {
     }
   });
 
-  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY});
-  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY});
+  const [
+    createCategory,
+    {
+      isLoading: isCreating,
+      isSuccess: createCategorySuccess,
+    }
+  ] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY});
+  const [
+    updateCategory,
+    {
+      isLoading: isUpdating,
+      isSuccess: updateCategorySuccess,
+    }
+  ] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY});
 
-  const onSubmit = (data: PostCategory) => {
+  const onSubmit = useCallback((data: PostCategory) => {
     if(category) {
       updateCategory({
         blogAddress: activeBlogAddress,
@@ -43,7 +59,16 @@ function CategoryForm(props: CategoryFormProps) {
         category: data,
       });
     }
-  }
+  }, [activeBlogAddress, updateCategory, createCategory]);
+
+  useEffect(() => {
+    if(createCategorySuccess && onCreateCategorySuccess) {
+      onCreateCategorySuccess();
+    }
+    if(updateCategorySuccess && onUpdateCategorySuccess) {
+      onUpdateCategorySuccess();
+    }
+  }, [createCategorySuccess, updateCategorySuccess]);
 
   return (
     <FormProvider {...methods}>

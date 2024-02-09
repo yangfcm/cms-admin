@@ -25,7 +25,7 @@ function EditCategory({ category }: EditCategoryProps) {
       <FormDialog
         title="Edit the category"
         open={open}
-        form={<CategoryForm category={category} onCancel={() => setOpen(false)} />}
+        form={<CategoryForm category={category} onCancel={() => setOpen(false)} onUpdateCategorySuccess={() => setOpen(false)} />}
       />
     </>
   )

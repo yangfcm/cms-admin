@@ -36,19 +36,6 @@ function Categories() {
   const [, updateCategoryState] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY});
   const [, deleteCategoryState] = useDeleteCategoryMutation({fixedCacheKey: CATEGORY_DELETE_FIXED_CACHE_KEY});
 
-  const isLoading = useMemo(
-    () =>
-      isReadingCategories ||
-      createCategoryState.isLoading ||
-      updateCategoryState.isLoading ||
-      deleteCategoryState.isLoading,
-    [
-      isReadingCategories,
-      createCategoryState,
-      updateCategoryState,
-      deleteCategoryState,
-    ]
-  );
   const hasError = useMemo(
     () =>
       isReadCategoriesError ||
@@ -76,21 +63,23 @@ function Categories() {
     ]
   );
 
-  console.log(createCategoryState.isSuccess, deleteCategoryState.isSuccess);
   return (
     <Container>
       <ErrorMessage open={hasError} messages={errorMessages} />
       <SuccessMessage
         open={createCategoryState.isSuccess}
         message={CATEGORY_CREATED}
+        onClose={createCategoryState.reset}
       />
       <SuccessMessage
         open={updateCategoryState.isSuccess}
         message={CATEGORY_UPDATED}
+        onClose={updateCategoryState.reset}
       />
       <SuccessMessage
         open={deleteCategoryState.isSuccess}
         message={CATEGORY_DELETED}
+        onClose={deleteCategoryState.reset}
       />
       <Typography variant="h5" sx={{ marginBottom: 1 }}>
         Categories Admin

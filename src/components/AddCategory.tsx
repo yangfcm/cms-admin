@@ -19,7 +19,7 @@ function AddCategory() {
       <FormDialog
         title="Add a new category"
         open={open}
-        form={<CategoryForm onCancel={() => setOpen(false)} />}
+        form={<CategoryForm onCancel={() => setOpen(false)} onCreateCategorySuccess={() => setOpen(false)} />}
       />
     </>
   )
