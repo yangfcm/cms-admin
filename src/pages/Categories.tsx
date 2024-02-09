@@ -21,6 +21,7 @@ import {
   CATEGORY_UPDATE_FIXED_CACHE_KEY,
 } from "../settings/constants";
 import CategoriesTable from "../components/CategoriesTable";
+import Loader from "../components/Loader";
 
 function Categories() {
   const { activeBlog } = useUserBlog();
@@ -86,7 +87,8 @@ function Categories() {
       </Typography>
       <Divider />
       <br />
-      <CategoriesTable categories={data?.categories || []} />
+      {isReadingCategories && <Loader />}
+      {!isReadingCategories && <CategoriesTable categories={data?.categories || []} />}
     </Container>
   );
 }
