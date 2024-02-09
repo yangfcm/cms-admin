@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -63,6 +63,12 @@ function Categories() {
       deleteCategoryState,
     ]
   );
+
+  useEffect(() => {
+    createCategoryState.reset();
+    updateCategoryState.reset();
+    deleteCategoryState.reset();
+  }, []);
 
   return (
     <Container>
