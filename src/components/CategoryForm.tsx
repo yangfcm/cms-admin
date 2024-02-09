@@ -25,8 +25,8 @@ function CategoryForm(props: CategoryFormProps) {
     }
   });
 
-  const [createCategory] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
-  const [updateCategory] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
+  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
+  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_FIXED_CACHE_KEY});
 
   const onSubmit = (data: PostCategory) => {
     if(category) {
@@ -69,9 +69,16 @@ function CategoryForm(props: CategoryFormProps) {
           alignItems="center"
           spacing={1}
         >
-          <Button type="button" onClick={() => {onCancel && onCancel()}}>Cancel</Button>
+          <Button
+            type="button"
+            onClick={() => {onCancel && onCancel()}}
+            disabled={isCreating || isUpdating}
+          >
+            Cancel
+          </Button>
           <LoadingButton
             type="submit"
+            loading={isCreating || isUpdating}
           >
             Submit
           </LoadingButton>
