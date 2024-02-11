@@ -13,9 +13,15 @@ type SuccessMessageProps = {
   open: boolean;
   message: string;
   onClose?: () => void;
+  autoHideduration?: number;
 };
 
-function SuccessMessage({ open, message, onClose }: SuccessMessageProps) {
+function SuccessMessage({
+  open,
+  message,
+  onClose,
+  autoHideduration = 6000,
+}: SuccessMessageProps) {
   const [openAlert, setOpenAlert] = useState(false);
   useEffect(() => {
     setOpenAlert(open);
@@ -24,7 +30,7 @@ function SuccessMessage({ open, message, onClose }: SuccessMessageProps) {
   return (
     <Snackbar
       open={openAlert}
-      autoHideDuration={6000}
+      autoHideDuration={autoHideduration}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       onClose={() => {
         setOpenAlert(false);

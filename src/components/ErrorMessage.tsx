@@ -12,7 +12,17 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function ErrorMessage({ open, messages }: { open: boolean; messages: any }) {
+type ErrorMessageProps = {
+  open: boolean;
+  messages: any;
+  autoHideduration?: number;
+};
+
+function ErrorMessage({
+  open,
+  messages,
+  autoHideduration = 6000,
+}: ErrorMessageProps) {
   const [openAlert, setOpenAlert] = useState(false);
   useEffect(() => {
     setOpenAlert(open);
@@ -23,7 +33,7 @@ function ErrorMessage({ open, messages }: { open: boolean; messages: any }) {
   return (
     <Snackbar
       open={openAlert}
-      autoHideDuration={6000}
+      autoHideDuration={autoHideduration}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       onClose={() => setOpenAlert(false)}
     >
