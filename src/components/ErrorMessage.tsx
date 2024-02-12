@@ -16,12 +16,14 @@ type ErrorMessageProps = {
   open: boolean;
   messages: any;
   autoHideduration?: number;
+  onClose?: () => void;
 };
 
 function ErrorMessage({
   open,
   messages,
   autoHideduration = 6000,
+  onClose,
 }: ErrorMessageProps) {
   const [openAlert, setOpenAlert] = useState(false);
   useEffect(() => {
@@ -35,7 +37,10 @@ function ErrorMessage({
       open={openAlert}
       autoHideDuration={autoHideduration}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      onClose={() => setOpenAlert(false)}
+      onClose={() => {
+        setOpenAlert(false);
+        onClose && onClose();
+      }}
     >
       <Alert
         severity="error"

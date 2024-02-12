@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -70,15 +70,23 @@ function Categories() {
     ]
   );
 
-  useEffect(() => {
+  const reset = useCallback(() => {
     createCategoryState.reset();
     updateCategoryState.reset();
     deleteCategoryState.reset();
+  }, [
+    createCategoryState.reset,
+    updateCategoryState.reset,
+    deleteCategoryState.reset,
+  ]);
+
+  useEffect(() => {
+    reset();
   }, []);
 
   return (
     <Container>
-      <ErrorMessage open={hasError} messages={errorMessages} />
+      <ErrorMessage open={hasError} messages={errorMessages} onClose={reset} />
       <SuccessMessage
         open={createCategoryState.isSuccess}
         message={CATEGORY_CREATED}
