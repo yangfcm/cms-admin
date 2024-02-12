@@ -33,9 +33,15 @@ function Categories() {
     error: readCategoriesError,
   } = useReadCategoriesQuery(address);
 
-  const [, createCategoryState] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY});
-  const [, updateCategoryState] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY});
-  const [, deleteCategoryState] = useDeleteCategoryMutation({fixedCacheKey: CATEGORY_DELETE_FIXED_CACHE_KEY});
+  const [, createCategoryState] = useCreateCategoryMutation({
+    fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY,
+  });
+  const [, updateCategoryState] = useUpdateCategoryMutation({
+    fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY,
+  });
+  const [, deleteCategoryState] = useDeleteCategoryMutation({
+    fixedCacheKey: CATEGORY_DELETE_FIXED_CACHE_KEY,
+  });
 
   const hasError = useMemo(
     () =>
@@ -45,9 +51,9 @@ function Categories() {
       deleteCategoryState.isError,
     [
       isReadCategoriesError,
-      createCategoryState,
-      updateCategoryState,
-      deleteCategoryState,
+      createCategoryState.isError,
+      updateCategoryState.isError,
+      deleteCategoryState.isError,
     ]
   );
   const errorMessages = useMemo(
@@ -94,7 +100,9 @@ function Categories() {
       <Divider />
       <br />
       {isReadingCategories && <Loader />}
-      {!isReadingCategories && <CategoriesTable categories={data?.categories || []} />}
+      {!isReadingCategories && (
+        <CategoriesTable categories={data?.categories || []} />
+      )}
     </Container>
   );
 }
