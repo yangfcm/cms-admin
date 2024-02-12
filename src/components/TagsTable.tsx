@@ -9,6 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Tag } from "../features/tag/types";
 import { formatDateTime } from "../utils/dateTime";
+import AddTag from "./AddTag";
 
 type TagsTableProps = {
   tags: Tag[];
@@ -20,7 +21,9 @@ function TagsTable(props: TagsTableProps) {
     <Paper>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Typography variant="h6">Tags List</Typography>
-        <Box>Add tag button here</Box>
+        <Box>
+          <AddTag />
+        </Box>
       </Toolbar>
       <Table>
         <TableHead>

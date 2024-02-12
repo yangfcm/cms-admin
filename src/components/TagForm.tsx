@@ -69,6 +69,7 @@ function TagForm(props: TagFormProps) {
       onUpdateTagSuccess();
     }
   }, [createTagSuccess, updateTagSuccess]);
+
   return (
     <FormProvider {...methods}>
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
