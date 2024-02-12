@@ -15,3 +15,5 @@ export type TagResponse = {
 };
 
 export type PostTag = Pick<Tag, "name">;
+
+export type UpdateTag = Pick<Tag, "id"> & Partial<PostTag>;
