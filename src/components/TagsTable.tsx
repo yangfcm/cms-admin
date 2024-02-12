@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import { Tag } from "../features/tag/types";
 import { formatDateTime } from "../utils/dateTime";
 import AddTag from "./AddTag";
+import EditTag from "./EditTag";
+import DeleteTag from "./DeleteTag";
 
 type TagsTableProps = {
   tags: Tag[];
@@ -41,7 +43,10 @@ function TagsTable(props: TagsTableProps) {
                 <TableCell>{tag.name}</TableCell>
                 <TableCell>{formatDateTime(tag.createdAt)}</TableCell>
                 <TableCell>{formatDateTime(tag.updatedAt)}</TableCell>
-                <TableCell align="center">Edit tag, Delete tag</TableCell>
+                <TableCell align="center">
+                  <EditTag tag={tag} />
+                  <DeleteTag tag={tag} />
+                </TableCell>
               </TableRow>
             );
           })}
