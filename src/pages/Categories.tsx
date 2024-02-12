@@ -64,9 +64,9 @@ function Categories() {
       deleteCategoryState.error,
     [
       readCategoriesError,
-      createCategoryState,
-      updateCategoryState,
-      deleteCategoryState,
+      createCategoryState.error,
+      updateCategoryState.error,
+      deleteCategoryState.error,
     ]
   );
 
