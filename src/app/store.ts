@@ -6,6 +6,7 @@ import blogReducer from "../features/blog/blogSlice";
 import blogApi from "../features/blog/services";
 import categoryApi from "../features/category/services";
 import tagApi from "../features/tag/services";
+import articleApi from "../features/article/services";
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -25,6 +26,7 @@ const store = configureStore({
     [blogApi.reducerPath]: blogApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [tagApi.reducerPath]: tagApi.reducer,
+    [articleApi.reducerPath]: articleApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
@@ -32,6 +34,7 @@ const store = configureStore({
       blogApi.middleware,
       categoryApi.middleware,
       tagApi.middleware,
+      articleApi.middleware,
     ]),
 });
 
