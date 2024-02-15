@@ -29,3 +29,15 @@ export type ArticleResponse = {
 export type ArticlesResponse = {
   articles: Article[];
 };
+
+export type PostArticle = {
+  title: string;
+  content: string;
+  featuredImage: string;
+  status: ArticleStatus;
+  isTop: boolean;
+  blogId: string;
+  userId: string;
+  categoryId: string;
+  tagIds: string[];
+};
