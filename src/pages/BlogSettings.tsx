@@ -12,6 +12,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { Blog } from "../features/blog/types";
 import { useDeleteBlogMutation } from "../features/blog/services";
 import { DELETE_BLOG_CACHE_KEY } from "../settings/constants";
+import PageTitle from "../components/PageTitle";
 
 type DeleteBlogButtonProps = {
   blog: Blog;
@@ -59,10 +60,7 @@ function BlogSettings() {
   return (
     <>
       <Container maxWidth="md" sx={{ marginLeft: "inherit" }}>
-        <Typography variant="h5" sx={{ marginBottom: 1 }}>
-          Basic Settings
-        </Typography>
-        <Divider />
+        <PageTitle title="Blog Settings" />
         <NewBlogForm blog={activeBlog} />
         <br />
         <Typography color={red[900]} variant="h5" sx={{ marginBottom: 1 }}>

@@ -22,6 +22,7 @@ import {
 } from "../settings/constants";
 import CategoriesTable from "../components/CategoriesTable";
 import Loader from "../components/Loader";
+import PageTitle from "../components/PageTitle";
 
 function Categories() {
   const { activeBlog } = useUserBlog();
@@ -102,11 +103,7 @@ function Categories() {
         message={CATEGORY_DELETED}
         onClose={deleteCategoryState.reset}
       />
-      <Typography variant="h5" sx={{ marginBottom: 1 }}>
-        Categories Admin
-      </Typography>
-      <Divider />
-      <br />
+      <PageTitle title="Categories Admin" />
       {isReadingCategories && <Loader />}
       {!isReadingCategories && (
         <CategoriesTable categories={data?.categories || []} />

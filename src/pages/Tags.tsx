@@ -21,6 +21,7 @@ import {
 import ErrorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
 import Loader from "../components/Loader";
+import PageTitle from "../components/PageTitle";
 
 function Tags() {
   const { activeBlogAddress } = useUserBlog();
@@ -87,11 +88,7 @@ function Tags() {
         message={TAG_DELETED}
         onClose={deleteTagState.reset}
       />
-      <Typography variant="h5" sx={{ marginBottom: 1 }}>
-        Tags Admin
-      </Typography>
-      <Divider />
-      <br />
+      <PageTitle title="Tag admin" />
       {isReadingTags && <Loader />}
       {!isReadingTags && <TagsTable tags={data?.tags || []} />}
     </Container>
