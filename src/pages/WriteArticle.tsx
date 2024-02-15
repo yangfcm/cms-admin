@@ -1,15 +1,11 @@
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
+import PageTitle from "../components/PageTitle";
 
 function WriteArticle() {
   return (
     <Container>
-      <Typography variant="h5" sx={{ marginBottom: 1 }}>
-        Write article
-      </Typography>
-      <Divider />
-      <br />
+      <PageTitle title="Write article" />
+      <div>Write an article</div>
     </Container>
   );
 }

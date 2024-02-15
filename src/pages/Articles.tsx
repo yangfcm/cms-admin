@@ -1,13 +1,12 @@
 import { useCallback, useEffect } from "react";
 import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import ErrorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
 import { useReadArticlesQuery } from "../features/article/services";
 import useUserBlog from "../features/blog/useUserBlog";
 import ArticlesTable from "../components/ArticlesTable";
 import Loader from "../components/Loader";
+import PageTitle from "../components/PageTitle";
 
 function Articles() {
   const { activeBlogAddress } = useUserBlog();
@@ -16,11 +15,7 @@ function Articles() {
 
   return (
     <Container>
-      <Typography variant="h5" sx={{ marginBottom: 1 }}>
-        Articles Admin
-      </Typography>
-      <Divider />
-      <br />
+      <PageTitle title="Articles Admin" />
       {isLoading && <Loader />}
       {!isLoading && <ArticlesTable />}
     </Container>
