@@ -6,6 +6,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MuiLink from "@mui/material/Link";
 import HomeIcon from "@mui/icons-material/Home";
+import CreateIcon from "@mui/icons-material/Create";
 import ArticleIcon from "@mui/icons-material/Article";
 import CategoryIcon from "@mui/icons-material/Category";
 import LabelIcon from "@mui/icons-material/Label";
@@ -40,6 +41,11 @@ function SidebarMenu() {
       </ListItem>
       <Divider />
       <MenuLink to="." text="Home" icon={<HomeIcon />} />
+      <MenuLink
+        to="./write-article"
+        text="Write Article"
+        icon={<CreateIcon />}
+      />
       <MenuLink to="./articles" text="Articles" icon={<ArticleIcon />} />
       <MenuLink to="./categories" text="Categories" icon={<CategoryIcon />} />
       <MenuLink to="./tags" text="Tags" icon={<LabelIcon />} />
