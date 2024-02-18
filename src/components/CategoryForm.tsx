@@ -1,14 +1,21 @@
-import { useEffect, useCallback } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useEffect, useCallback } from "react";
+import { useForm, FormProvider } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { LoadingButton } from '@mui/lab';
-import TextInput from './TextInput';
-import { Category, PostCategory } from '../features/category/types';
-import { CATEGORY_CREATE_FIXED_CACHE_KEY, CATEGORY_NAME_REQUIRED, CATEGORY_UPDATE_FIXED_CACHE_KEY } from '../settings/constants';
-import { useCreateCategoryMutation, useUpdateCategoryMutation } from '../features/category/services';
-import useUserBlog from '../features/blog/useUserBlog';
+import { LoadingButton } from "@mui/lab";
+import TextInput from "./TextInput";
+import { Category, PostCategory } from "../features/category/types";
+import {
+  CATEGORY_CREATE_FIXED_CACHE_KEY,
+  CATEGORY_NAME_REQUIRED,
+  CATEGORY_UPDATE_FIXED_CACHE_KEY,
+} from "../settings/constants";
+import {
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+} from "../features/category/services";
+import useUserBlog from "../features/blog/useUserBlog";
 
 type CategoryFormProps = {
   category?: Category;
@@ -18,54 +25,60 @@ type CategoryFormProps = {
 };
 
 function CategoryForm(props: CategoryFormProps) {
-  const { category, onCancel, onCreateCategorySuccess, onUpdateCategorySuccess } = props;
+  const {
+    category,
+    onCancel,
+    onCreateCategorySuccess,
+    onUpdateCategorySuccess,
+  } = props;
   const { activeBlogAddress } = useUserBlog();
 
   const methods = useForm({
-    mode: 'onSubmit',
+    mode: "onSubmit",
     defaultValues: {
-      name: category? category.name : '',
-      description: category ? category.description : '',
-    }
+      name: category ? category.name : "",
+      description: category ? category.description : "",
+    },
   });
 
   const [
     createCategory,
-    {
-      isLoading: isCreating,
-      isSuccess: createCategorySuccess,
-    }
-  ] = useCreateCategoryMutation({fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY});
+    { isLoading: isCreating, isSuccess: createCategorySuccess },
+  ] = useCreateCategoryMutation({
+    fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY,
+  });
   const [
     updateCategory,
-    {
-      isLoading: isUpdating,
-      isSuccess: updateCategorySuccess,
-    }
-  ] = useUpdateCategoryMutation({fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY});
+    { isLoading: isUpdating, isSuccess: updateCategorySuccess },
+  ] = useUpdateCategoryMutation({
+    fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY,
+  });
 
-  const onSubmit = useCallback((data: PostCategory) => {
-    if(category) {
-      updateCategory({
-        blogAddress: activeBlogAddress,
-        category: {
-          ...data,
-          id: category.id,
-        },
-      });
-    } else {
-      createCategory({
-        blogAddress: activeBlogAddress,
-        category: data,
-      });
-    }
-  }, [activeBlogAddress, updateCategory, createCategory]);
+  const onSubmit = useCallback(
+    (data: PostCategory) => {
+      if (category) {
+        updateCategory({
+          blogAddress: activeBlogAddress,
+          category: {
+            ...data,
+            id: category.id,
+          },
+        });
+      } else {
+        createCategory({
+          blogAddress: activeBlogAddress,
+          category: data,
+        });
+      }
+    },
+    [activeBlogAddress, updateCategory, createCategory]
+  );
 
   useEffect(() => {
-    if(createCategorySuccess && onCreateCategorySuccess) {
+    if (createCategorySuccess && onCreateCategorySuccess) {
       onCreateCategorySuccess();
     }
-    if(updateCategorySuccess && onUpdateCategorySuccess) {
+    if (updateCategorySuccess && onUpdateCategorySuccess) {
       onUpdateCategorySuccess();
     }
   }, [createCategorySuccess, updateCategorySuccess]);
@@ -79,7 +92,7 @@ function CategoryForm(props: CategoryFormProps) {
           label="Name"
           placeholder="Name"
           rules={{
-            required: CATEGORY_NAME_REQUIRED
+            required: CATEGORY_NAME_REQUIRED,
           }}
         />
         <TextInput
@@ -96,21 +109,20 @@ function CategoryForm(props: CategoryFormProps) {
         >
           <Button
             type="button"
-            onClick={() => {onCancel && onCancel()}}
+            onClick={() => {
+              onCancel && onCancel();
+            }}
             disabled={isCreating || isUpdating}
           >
             Cancel
           </Button>
-          <LoadingButton
-            type="submit"
-            loading={isCreating || isUpdating}
-          >
+          <LoadingButton type="submit" loading={isCreating || isUpdating}>
             Submit
           </LoadingButton>
         </Stack>
       </Box>
     </FormProvider>
-  )
+  );
 }
 
 export default CategoryForm;

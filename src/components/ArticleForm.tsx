@@ -6,9 +6,10 @@ import Stack from "@mui/material/Stack";
 import { Article, ArticleStatus, PostArticle } from "../features/article/types";
 import useUserBlog from "../features/blog/useUserBlog";
 import useAuth from "../features/user/useAuth";
+import TextInput from "./TextInput";
 
 type ArticleFormProps = {
-  article: Article;
+  article?: Article;
 };
 
 function ArticleForm(props: ArticleFormProps) {
@@ -37,7 +38,14 @@ function ArticleForm(props: ArticleFormProps) {
 
   return (
     <FormProvider {...methods}>
-      <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}></Box>
+      <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
+        <TextInput
+          name="title"
+          id="article-title-input"
+          label="Title"
+          rules={{ required: true }}
+        />
+      </Box>
     </FormProvider>
   );
 }

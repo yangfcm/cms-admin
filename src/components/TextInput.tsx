@@ -13,6 +13,7 @@ type TextInputProps = UseControllerProps & {
   id?: string;
   type?: string;
   label?: string;
+  labelShrink?: boolean;
   defaultValue?: string;
   placeholder?: string;
   variant?: "filled" | "outlined" | "standard";
@@ -25,6 +26,7 @@ function TextInput(props: TextInputProps) {
   const {
     id,
     label,
+    labelShrink,
     name,
     rules,
     type = "text",
@@ -47,7 +49,7 @@ function TextInput(props: TextInputProps) {
   return (
     <FormControl variant={variant} fullWidth={fullWidth} margin="dense">
       {label && (
-        <InputLabel htmlFor={id} shrink>
+        <InputLabel htmlFor={id} shrink={labelShrink}>
           {label}
         </InputLabel>
       )}
@@ -63,11 +65,11 @@ function TextInput(props: TextInputProps) {
               type={type}
               error={!!errors[name]}
               placeholder={placeholder}
-              startAdornment={
-                startIcon && (
-                  <InputAdornment position="start">{startIcon}</InputAdornment>
-                )
-              }
+              // startAdornment={
+              //   startIcon && (
+              //     <InputAdornment position="start">{startIcon}</InputAdornment>
+              //   )
+              // }
               autoFocus={autoFocus}
               key={name}
             />

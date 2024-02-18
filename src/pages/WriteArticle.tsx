@@ -1,11 +1,12 @@
 import Container from "@mui/material/Container";
 import PageTitle from "../components/PageTitle";
+import ArticleForm from "../components/ArticleForm";
 
 function WriteArticle() {
   return (
     <Container>
       <PageTitle title="Write article" />
-      <div>Write an article</div>
+      <ArticleForm />
     </Container>
   );
 }
