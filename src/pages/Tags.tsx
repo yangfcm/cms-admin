@@ -9,7 +9,7 @@ import {
   useUpdateTagMutation,
 } from "../features/tag/services";
 import useUserBlog from "../features/blog/useUserBlog";
-import TagsTable from "../components/TagsTable";
+import TagsTable from "../components/tags/TagsTable";
 import {
   TAG_CREATED,
   TAG_CREATE_FIXED_CACHE_KEY,

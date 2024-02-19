@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Divider from "@mui/material/Divider";
-import useUserBlog from "../features/blog/useUserBlog";
+import useUserBlog from "../../features/blog/useUserBlog";
 
 function BlogsMenu() {
   const { blogs = [], activeBlog, setActiveBlog } = useUserBlog();

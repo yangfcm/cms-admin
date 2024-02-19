@@ -2,11 +2,11 @@ import { useCallback, useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ConfirmDialog from "./ConfirmDialog";
-import { Tag } from "../features/tag/types";
-import { useDeleteTagMutation } from "../features/tag/services";
-import useUserBlog from "../features/blog/useUserBlog";
-import { TAG_DELETE_FIXED_CACHE_KEY } from "../settings/constants";
+import ConfirmDialog from "../ConfirmDialog";
+import { Tag } from "../../features/tag/types";
+import { useDeleteTagMutation } from "../../features/tag/services";
+import useUserBlog from "../../features/blog/useUserBlog";
+import { TAG_DELETE_FIXED_CACHE_KEY } from "../../settings/constants";
 
 type DeleteTagProps = {
   tag: Tag;

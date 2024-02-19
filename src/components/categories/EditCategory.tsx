@@ -2,9 +2,9 @@ import { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import CategoryForm from "./forms/CategoryForm";
-import FormDialog from "./FormDialog";
-import { Category } from "../features/category/types";
+import CategoryForm from "../forms/CategoryForm";
+import FormDialog from "../FormDialog";
+import { Category } from "../../features/category/types";
 
 type EditCategoryProps = {
   category: Category;

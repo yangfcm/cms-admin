@@ -7,45 +7,48 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Tag } from "../features/tag/types";
-import { formatDateTime } from "../utils/dateTime";
-import AddTag from "./AddTag";
-import EditTag from "./EditTag";
-import DeleteTag from "./DeleteTag";
+import { Category } from "../../features/category/types";
+import { formatDateTime } from "../../utils/dateTime";
+import AddCategory from "./AddCategory";
+import EditCategory from "./EditCategory";
+import DeleteCategory from "./DeleteCategory";
 
-type TagsTableProps = {
-  tags: Tag[];
+type CategoriesTableProps = {
+  categories: Category[];
 };
-function TagsTable(props: TagsTableProps) {
-  const { tags } = props;
+
+function CategoriesTable(props: CategoriesTableProps) {
+  const { categories } = props;
 
   return (
     <Paper>
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Typography variant="h6">Tags List</Typography>
+        <Typography variant="h6">Categories List</Typography>
         <Box>
-          <AddTag />
+          <AddCategory />
         </Box>
       </Toolbar>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
+            <TableCell>Description</TableCell>
             <TableCell>Created</TableCell>
             <TableCell>Last Updated</TableCell>
             <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {tags.map((tag) => {
+          {categories.map((category) => {
             return (
-              <TableRow key={tag.id}>
-                <TableCell>{tag.name}</TableCell>
-                <TableCell>{formatDateTime(tag.createdAt)}</TableCell>
-                <TableCell>{formatDateTime(tag.updatedAt)}</TableCell>
+              <TableRow key={category.id}>
+                <TableCell>{category.name}</TableCell>
+                <TableCell>{category.description}</TableCell>
+                <TableCell>{formatDateTime(category.createdAt)}</TableCell>
+                <TableCell>{formatDateTime(category.updatedAt)}</TableCell>
                 <TableCell align="center">
-                  <EditTag tag={tag} />
-                  <DeleteTag tag={tag} />
+                  <EditCategory category={category} />
+                  <DeleteCategory category={category} />
                 </TableCell>
               </TableRow>
             );
@@ -56,4 +59,4 @@ function TagsTable(props: TagsTableProps) {
   );
 }
 
-export default TagsTable;
+export default CategoriesTable;

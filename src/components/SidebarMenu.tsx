@@ -12,7 +12,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import LabelIcon from "@mui/icons-material/Label";
 import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
 import Divider from "@mui/material/Divider";
-import BlogsMenu from "./BlogsMenu";
+import BlogsMenu from "./blogs/BlogsMenu";
 
 type MenuLinkProps = {
   to: string;

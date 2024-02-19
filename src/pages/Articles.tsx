@@ -4,7 +4,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
 import { useReadArticlesQuery } from "../features/article/services";
 import useUserBlog from "../features/blog/useUserBlog";
-import ArticlesTable from "../components/ArticlesTable";
+import ArticlesTable from "../components/articles/ArticlesTable";
 import Loader from "../components/Loader";
 import PageTitle from "../components/PageTitle";
 

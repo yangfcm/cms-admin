@@ -20,7 +20,7 @@ import {
   CATEGORY_CREATE_FIXED_CACHE_KEY,
   CATEGORY_UPDATE_FIXED_CACHE_KEY,
 } from "../settings/constants";
-import CategoriesTable from "../components/CategoriesTable";
+import CategoriesTable from "../components/categories/CategoriesTable";
 import Loader from "../components/Loader";
 import PageTitle from "../components/PageTitle";
 
