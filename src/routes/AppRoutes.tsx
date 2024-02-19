@@ -82,7 +82,7 @@ function AppRoutes() {
             <Route path="" element={<Home />} />
             <Route path="write-article" element={<WriteArticle />} />
             <Route path="articles" element={<Articles />} />
-            <Route path="mui-categories" element={<MuiCategories />} />
+            {/* <Route path="mui-categories" element={<MuiCategories />} /> */}
             <Route path="categories" element={<Categories />} />
             <Route path="tags" element={<Tags />} />
             <Route path="blog-settings" element={<BlogSettings />} />

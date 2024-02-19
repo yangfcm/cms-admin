@@ -6,7 +6,7 @@ import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import { red } from "@mui/material/colors";
 import useUserBlog from "../features/blog/useUserBlog";
-import NewBlogForm from "../components/NewBlogForm";
+import NewBlogForm from "../components/forms/NewBlogForm";
 import ConfirmDialog from "../components/ConfirmDialog";
 import ErrorMessage from "../components/ErrorMessage";
 import { Blog } from "../features/blog/types";

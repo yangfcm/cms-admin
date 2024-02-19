@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Button from "@mui/material/Button";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FormDialog from "./FormDialog";
-import CategoryForm from "./CategoryForm";
+import CategoryForm from "./forms/CategoryForm";
 
 function AddCategory() {
   const [open, setOpen] = useState(false);
@@ -19,10 +19,15 @@ function AddCategory() {
       <FormDialog
         title="Add a new category"
         open={open}
-        form={<CategoryForm onCancel={() => setOpen(false)} onCreateCategorySuccess={() => setOpen(false)} />}
+        form={
+          <CategoryForm
+            onCancel={() => setOpen(false)}
+            onCreateCategorySuccess={() => setOpen(false)}
+          />
+        }
       />
     </>
-  )
+  );
 }
 
 export default AddCategory;

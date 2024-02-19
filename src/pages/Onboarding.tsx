@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Header from "../components/Header";
-import NewBlogForm from "../components/NewBlogForm";
+import NewBlogForm from "../components/forms/NewBlogForm";
 
 function Onboarding() {
   const navigate = useNavigate();

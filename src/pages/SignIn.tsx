@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
 import Link from "@mui/material/Link";
-import SignInForm from "../components/SignInForm";
+import SignInForm from "../components/forms/SignInForm";
 import AuthPageLayout from "../components/AuthPageLayout";
 
 function SignIn() {

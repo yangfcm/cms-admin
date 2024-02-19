@@ -2,7 +2,7 @@ import { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import CategoryForm from "./CategoryForm";
+import CategoryForm from "./forms/CategoryForm";
 import FormDialog from "./FormDialog";
 import { Category } from "../features/category/types";
 
@@ -25,10 +25,16 @@ function EditCategory({ category }: EditCategoryProps) {
       <FormDialog
         title="Edit the category"
         open={open}
-        form={<CategoryForm category={category} onCancel={() => setOpen(false)} onUpdateCategorySuccess={() => setOpen(false)} />}
+        form={
+          <CategoryForm
+            category={category}
+            onCancel={() => setOpen(false)}
+            onUpdateCategorySuccess={() => setOpen(false)}
+          />
+        }
       />
     </>
-  )
+  );
 }
 
 export default EditCategory;

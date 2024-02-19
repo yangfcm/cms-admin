@@ -4,11 +4,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { LoadingButton } from "@mui/lab";
 import Stack from "@mui/material/Stack";
-import { Article, ArticleStatus, PostArticle } from "../features/article/types";
-import useUserBlog from "../features/blog/useUserBlog";
-import useAuth from "../features/user/useAuth";
-import TextInput from "./TextInput";
-import EditorInput from "./EditorInput";
+import {
+  Article,
+  ArticleStatus,
+  PostArticle,
+} from "../../features/article/types";
+import useUserBlog from "../../features/blog/useUserBlog";
+import useAuth from "../../features/user/useAuth";
+import TextInput from "../TextInput";
+import EditorInput from "../EditorInput";
 
 type ArticleFormProps = {
   article?: Article;

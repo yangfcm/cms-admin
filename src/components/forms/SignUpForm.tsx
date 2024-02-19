@@ -6,8 +6,8 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import PasswordIcon from "@mui/icons-material/Password";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import { useSignupMutation } from "../features/user/services";
-import { isValidEmail, isValidCharacters } from "../utils/validators";
+import { useSignupMutation } from "../../features/user/services";
+import { isValidEmail, isValidCharacters } from "../../utils/validators";
 import {
   EMAIL_REQUIRED,
   INVALID_EMAIL,
@@ -18,9 +18,9 @@ import {
   INVALID_USERNAME,
   USERNAME_MAX_LENGTH,
   USERNAME_TOO_LONG,
-} from "../settings/constants";
-import TextInput from "./TextInput";
-import ErrorMessage from "./ErrorMessage";
+} from "../../settings/constants";
+import TextInput from "../TextInput";
+import ErrorMessage from "../ErrorMessage";
 
 type SignUpFormData = {
   email: string;

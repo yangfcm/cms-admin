@@ -5,9 +5,9 @@ import Stack from "@mui/material/Stack";
 import CreateIcon from "@mui/icons-material/Create";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
-import TextInput from "./TextInput";
-import ErrorMessage from "./ErrorMessage";
-import SuccessMessage from "./SuccessMessage";
+import TextInput from "../TextInput";
+import ErrorMessage from "../ErrorMessage";
+import SuccessMessage from "../SuccessMessage";
 import {
   BLOG_ADDRESS_REQUIRED,
   BLOG_ADDRESS_INVALID,
@@ -15,13 +15,13 @@ import {
   BLOG_TITLE_REQUIRED,
   BLOG_TITLE_TOO_LONG,
   CREATE_BLOG_CACHE_KEY,
-} from "../settings/constants";
+} from "../../settings/constants";
 import {
   useCreateBlogMutation,
   useUpdateBlogMutation,
-} from "../features/blog/services";
-import { isValidCharacters } from "../utils/validators";
-import { Blog, PostBlog } from "../features/blog/types";
+} from "../../features/blog/services";
+import { isValidCharacters } from "../../utils/validators";
+import { Blog, PostBlog } from "../../features/blog/types";
 import UndoIcon from "@mui/icons-material/Undo";
 
 type NewBlogFormProps = {

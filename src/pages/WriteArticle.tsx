@@ -1,6 +1,6 @@
 import Container from "@mui/material/Container";
 import PageTitle from "../components/PageTitle";
-import ArticleForm from "../components/ArticleForm";
+import ArticleForm from "../components/forms/ArticleForm";
 
 function WriteArticle() {
   return (
