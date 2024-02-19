@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import CreateIcon from "@mui/icons-material/Create";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
-import TextInput from "../TextInput";
+import TextInput from "../inputs/TextInput";
 import ErrorMessage from "../ErrorMessage";
 import SuccessMessage from "../SuccessMessage";
 import {

@@ -9,7 +9,7 @@ import {
   PASSWORD_REQUIRED,
   USERNAME_OR_EMAIL_REQUIRED,
 } from "../../settings/constants";
-import TextInput from "../TextInput";
+import TextInput from "../inputs/TextInput";
 import { useSigninMutation } from "../../features/user/services";
 import ErrorMessage from "../ErrorMessage";
 

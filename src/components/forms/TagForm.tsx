@@ -4,18 +4,18 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { LoadingButton } from "@mui/lab";
-import TextInput from "./TextInput";
-import useUserBlog from "../features/blog/useUserBlog";
+import TextInput from "../inputs/TextInput";
+import useUserBlog from "../../features/blog/useUserBlog";
 import {
   useCreateTagMutation,
   useUpdateTagMutation,
-} from "../features/tag/services";
-import { PostTag, Tag } from "../features/tag/types";
+} from "../../features/tag/services";
+import { PostTag, Tag } from "../../features/tag/types";
 import {
   TAG_CREATE_FIXED_CACHE_KEY,
   TAG_NAME_REQUIRED,
   TAG_UPDATE_FIXED_CACHE_KEY,
-} from "../settings/constants";
+} from "../../settings/constants";
 
 type TagFormProps = {
   tag?: Tag;

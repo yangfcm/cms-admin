@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FormDialog from "./FormDialog";
-import TagForm from "./TagForm";
+import TagForm from "./forms/TagForm";
 
 function AddTag() {
   const [open, setOpen] = useState(false);

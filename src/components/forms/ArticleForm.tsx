@@ -11,8 +11,8 @@ import {
 } from "../../features/article/types";
 import useUserBlog from "../../features/blog/useUserBlog";
 import useAuth from "../../features/user/useAuth";
-import TextInput from "../TextInput";
-import EditorInput from "../EditorInput";
+import TextInput from "../inputs/TextInput";
+import EditorInput from "../inputs/EditorInput";
 
 type ArticleFormProps = {
   article?: Article;

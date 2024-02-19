@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { LoadingButton } from "@mui/lab";
-import TextInput from "../TextInput";
+import TextInput from "../inputs/TextInput";
 import { Category, PostCategory } from "../../features/category/types";
 import {
   CATEGORY_CREATE_FIXED_CACHE_KEY,

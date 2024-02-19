@@ -19,7 +19,7 @@ import {
   USERNAME_MAX_LENGTH,
   USERNAME_TOO_LONG,
 } from "../../settings/constants";
-import TextInput from "../TextInput";
+import TextInput from "../inputs/TextInput";
 import ErrorMessage from "../ErrorMessage";
 
 type SignUpFormData = {
