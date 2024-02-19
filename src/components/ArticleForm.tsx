@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { LoadingButton } from "@mui/lab";
 import Stack from "@mui/material/Stack";
 import { Article, ArticleStatus, PostArticle } from "../features/article/types";
 import useUserBlog from "../features/blog/useUserBlog";
@@ -45,6 +46,16 @@ function ArticleForm(props: ArticleFormProps) {
           label="Title"
           rules={{ required: true }}
         />
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
+        >
+          <LoadingButton type="submit" variant="contained" size="large">
+            Submit
+          </LoadingButton>
+        </Stack>
       </Box>
     </FormProvider>
   );
