@@ -65,11 +65,11 @@ function TextInput(props: TextInputProps) {
               type={type}
               error={!!errors[name]}
               placeholder={placeholder}
-              // startAdornment={
-              //   startIcon && (
-              //     <InputAdornment position="start">{startIcon}</InputAdornment>
-              //   )
-              // }
+              startAdornment={
+                startIcon && (
+                  <InputAdornment position="start">{startIcon}</InputAdornment>
+                )
+              }
               autoFocus={autoFocus}
               key={name}
             />

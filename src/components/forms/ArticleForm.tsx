@@ -51,7 +51,7 @@ function ArticleForm(props: ArticleFormProps) {
           label="Title"
           rules={{ required: true }}
         />
-        <EditorInput />
+        <EditorInput name="content" />
         <Stack
           direction="row"
           justifyContent="center"
