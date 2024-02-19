@@ -8,6 +8,7 @@ import { Article, ArticleStatus, PostArticle } from "../features/article/types";
 import useUserBlog from "../features/blog/useUserBlog";
 import useAuth from "../features/user/useAuth";
 import TextInput from "./TextInput";
+import EditorInput from "./EditorInput";
 
 type ArticleFormProps = {
   article?: Article;
@@ -46,6 +47,7 @@ function ArticleForm(props: ArticleFormProps) {
           label="Title"
           rules={{ required: true }}
         />
+        <EditorInput />
         <Stack
           direction="row"
           justifyContent="center"
