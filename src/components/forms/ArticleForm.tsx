@@ -13,6 +13,7 @@ import useUserBlog from "../../features/blog/useUserBlog";
 import useAuth from "../../features/user/useAuth";
 import TextInput from "../inputs/TextInput";
 import EditorInput from "../inputs/EditorInput";
+import SwitchInput from "../inputs/SwitchInput";
 
 type ArticleFormProps = {
   article?: Article;
@@ -29,7 +30,8 @@ function ArticleForm(props: ArticleFormProps) {
       title: article ? article.title : "",
       content: article ? article.content : "",
       featuredImage: article ? article.featuredImage : "",
-      status: article ? article.status : ArticleStatus.DRAFT,
+      // status: article ? article.status : ArticleStatus.DRAFT,
+      isDraft: article ? article.status === ArticleStatus.DRAFT : true,
       isTop: article ? article.isTop : false,
       blogId: activeBlog!.id,
       userId: authUser!.id,
@@ -59,6 +61,13 @@ function ArticleForm(props: ArticleFormProps) {
           placeholder="The URL of the featured image for the article. Start with 'http://' or 'https://'"
         />
         <EditorInput name="content" />
+        <br />
+        <SwitchInput
+          name="isDraft"
+          label="Draft"
+          helperText="Save as draft or live."
+          legend="Article Status"
+        />
         <Stack
           direction="row"
           justifyContent="center"
@@ -66,7 +75,7 @@ function ArticleForm(props: ArticleFormProps) {
           spacing={1}
         >
           <LoadingButton type="submit" variant="contained" size="large">
-            Submit
+            Publish
           </LoadingButton>
         </Stack>
       </Box>

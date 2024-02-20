@@ -34,7 +34,8 @@ export type PostArticle = {
   title: string;
   content: string;
   featuredImage: string;
-  status: ArticleStatus;
+  // status: ArticleStatus;
+  isDraft: boolean;
   isTop: boolean;
   blogId: string;
   userId: string;
