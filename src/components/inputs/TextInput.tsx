@@ -26,7 +26,7 @@ function TextInput(props: TextInputProps) {
   const {
     id,
     label,
-    labelShrink,
+    labelShrink = true,
     name,
     rules,
     type = "text",

@@ -50,6 +50,13 @@ function ArticleForm(props: ArticleFormProps) {
           id="article-title-input"
           label="Title"
           rules={{ required: true }}
+          placeholder="The title of the article"
+        />
+        <TextInput
+          name="featuredImage"
+          id="featured-image-input"
+          label="Featured Image"
+          placeholder="The URL of the featured image for the article. Start with 'http://' or 'https://'"
         />
         <EditorInput name="content" />
         <Stack
