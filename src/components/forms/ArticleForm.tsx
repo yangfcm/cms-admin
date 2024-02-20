@@ -1,7 +1,6 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import { LoadingButton } from "@mui/lab";
 import Stack from "@mui/material/Stack";
 import {
@@ -14,6 +13,8 @@ import useAuth from "../../features/user/useAuth";
 import TextInput from "../inputs/TextInput";
 import EditorInput from "../inputs/EditorInput";
 import SwitchInput from "../inputs/SwitchInput";
+import { useReadCategoriesQuery } from "../../features/category/services";
+import { useReadTagsQuery } from "../../features/tag/services";
 
 type ArticleFormProps = {
   article?: Article;
@@ -23,6 +24,8 @@ function ArticleForm(props: ArticleFormProps) {
   const { article } = props;
   const { activeBlog } = useUserBlog();
   const { authUser } = useAuth();
+  const { data: categories } = useReadCategoriesQuery(activeBlog!.address);
+  const { data: tags } = useReadTagsQuery(activeBlog!.address);
 
   const methods = useForm({
     mode: "onSubmit",
