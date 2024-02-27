@@ -13,6 +13,7 @@ import useAuth from "../../features/user/useAuth";
 import TextInput from "../inputs/TextInput";
 import EditorInput from "../inputs/EditorInput";
 import SwitchInput from "../inputs/SwitchInput";
+import SelectInput from "../inputs/SelectInput";
 import { useReadCategoriesQuery } from "../../features/category/services";
 import { useReadTagsQuery } from "../../features/tag/services";
 
@@ -71,6 +72,9 @@ function ArticleForm(props: ArticleFormProps) {
           helperText="Save as draft or live."
           legend="Article Status"
         />
+        <Stack sx={{ mt: 2 }}>
+          <SelectInput name="category" />
+        </Stack>
         <Stack
           direction="row"
           justifyContent="center"
