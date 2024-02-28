@@ -65,16 +65,25 @@ function ArticleForm(props: ArticleFormProps) {
           placeholder="The URL of the featured image for the article. Start with 'http://' or 'https://'"
         />
         <EditorInput name="content" />
-        <br />
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          spacing={2}
+          sx={{ my: 2 }}
+        >
+          <Box sx={{ flexGrow: 1 }}>
+            <SelectInput name="category" label="Category" />
+          </Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <SelectInput name="tag" label="Tag" />
+          </Box>
+        </Stack>
         <SwitchInput
           name="isDraft"
           label="Draft"
           helperText="Save as draft or live."
           legend="Article Status"
         />
-        <Stack sx={{ mt: 2 }}>
-          <SelectInput name="category" label="Category" />
-        </Stack>
         <Stack
           direction="row"
           justifyContent="center"

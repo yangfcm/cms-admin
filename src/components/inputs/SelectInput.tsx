@@ -19,7 +19,7 @@ function SelectInput(props: SelectInputProps) {
   const formContext = useFormContext();
   const { control } = formContext;
   return (
-    <FormControl>
+    <FormControl fullWidth>
       <InputLabel id={id}>{label}</InputLabel>
       <Controller
         name={name}
