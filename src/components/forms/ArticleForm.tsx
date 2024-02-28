@@ -73,7 +73,7 @@ function ArticleForm(props: ArticleFormProps) {
           legend="Article Status"
         />
         <Stack sx={{ mt: 2 }}>
-          <SelectInput name="category" />
+          <SelectInput name="category" label="Category" />
         </Stack>
         <Stack
           direction="row"
