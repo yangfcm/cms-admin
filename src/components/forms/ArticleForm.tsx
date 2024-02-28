@@ -78,12 +78,20 @@ function ArticleForm(props: ArticleFormProps) {
             <SelectInput name="tag" label="Tag" />
           </Box>
         </Stack>
-        <SwitchInput
-          name="isDraft"
-          label="Draft"
-          helperText="Save as draft or live."
-          legend="Article Status"
-        />
+        <Stack direction="row" spacing={3}>
+          <SwitchInput
+            name="isDraft"
+            label="Draft"
+            helperText="Save as draft or live."
+            legend="Article Status"
+          />
+          <SwitchInput
+            name="isTop"
+            label="Top"
+            helperText="Place the article on top."
+            legend="Set as top"
+          />
+        </Stack>
         <Stack
           direction="row"
           justifyContent="center"
