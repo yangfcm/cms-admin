@@ -3,6 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
 import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Grid";
 import {
   Article,
   ArticleStatus,
@@ -64,34 +65,35 @@ function ArticleForm(props: ArticleFormProps) {
           label="Featured Image"
           placeholder="The URL of the featured image for the article. Start with 'http://' or 'https://'"
         />
-        <EditorInput name="content" />
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          spacing={2}
-          sx={{ my: 2 }}
-        >
-          <Box sx={{ flexGrow: 1 }}>
+        <Box mb={3}>
+          <EditorInput name="content" />
+        </Box>
+        <Grid container spacing={2} mb={3}>
+          <Grid item xs={12} sm={6}>
             <SelectInput name="category" label="Category" />
-          </Box>
-          <Box sx={{ flexGrow: 1 }}>
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <SelectInput name="tag" label="Tag" />
-          </Box>
-        </Stack>
-        <Stack direction="row" spacing={3}>
-          <SwitchInput
-            name="isDraft"
-            label="Draft"
-            helperText="Save as draft or live."
-            legend="Article Status"
-          />
-          <SwitchInput
-            name="isTop"
-            label="Top"
-            helperText="Place the article on top."
-            legend="Set as top"
-          />
-        </Stack>
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} mb={3}>
+          <Grid item xs={12} sm={4} md={3} lg={2}>
+            <SwitchInput
+              name="isDraft"
+              label="Draft"
+              helperText="Save as draft or live."
+              legend="Article Status"
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={3} lg={2}>
+            <SwitchInput
+              name="isTop"
+              label="Top"
+              helperText="Place the article on top."
+              legend="Set as top"
+            />
+          </Grid>
+        </Grid>
         <Stack
           direction="row"
           justifyContent="center"
