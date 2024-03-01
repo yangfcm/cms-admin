@@ -12,10 +12,11 @@ type SelectInputProps = UseControllerProps & {
   id?: string;
   label?: string;
   labelId?: string;
+  options: { value: string | number; label: string }[];
 };
 
 function SelectInput(props: SelectInputProps) {
-  const { id, label = "Selection", name } = props;
+  const { id, label = "Selection", name, options } = props;
   const formContext = useFormContext();
   const { control } = formContext;
   return (
@@ -26,9 +27,11 @@ function SelectInput(props: SelectInputProps) {
         control={control}
         render={({ field }) => (
           <Select labelId={id} label={label} {...field}>
-            <MenuItem value="item1">item1</MenuItem>
-            <MenuItem value="item2">item2</MenuItem>
-            <MenuItem value="item3">item3</MenuItem>
+            {options.map((option) => (
+              <MenuItem value={option.value} key={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
           </Select>
         )}
       />

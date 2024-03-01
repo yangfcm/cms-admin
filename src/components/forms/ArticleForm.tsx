@@ -26,8 +26,10 @@ function ArticleForm(props: ArticleFormProps) {
   const { article } = props;
   const { activeBlog } = useUserBlog();
   const { authUser } = useAuth();
-  const { data: categories } = useReadCategoriesQuery(activeBlog!.address);
-  const { data: tags } = useReadTagsQuery(activeBlog!.address);
+  const { data: { categories = [] } = {} } = useReadCategoriesQuery(
+    activeBlog!.address
+  );
+  const { data: { tags = [] } = {} } = useReadTagsQuery(activeBlog!.address);
 
   const methods = useForm({
     mode: "onSubmit",
@@ -70,10 +72,17 @@ function ArticleForm(props: ArticleFormProps) {
         </Box>
         <Grid container spacing={2} mb={3}>
           <Grid item xs={12} sm={6}>
-            <SelectInput name="category" label="Category" />
+            <SelectInput
+              name="categoryId"
+              label="Category"
+              options={categories.map((category) => ({
+                value: category.id,
+                label: category.name,
+              }))}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <SelectInput name="tag" label="Tag" />
+            {/* <SelectInput name="tag" label="Tag" /> */}
           </Grid>
         </Grid>
         <Grid container spacing={2} mb={3}>
