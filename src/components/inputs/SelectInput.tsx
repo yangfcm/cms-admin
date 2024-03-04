@@ -11,7 +11,6 @@ import MenuItem from "@mui/material/MenuItem";
 type SelectInputProps = UseControllerProps & {
   id?: string;
   label?: string;
-  labelId?: string;
   options: { value: string | number; label: string }[];
 };
 
