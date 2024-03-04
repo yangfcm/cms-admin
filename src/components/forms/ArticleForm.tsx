@@ -15,6 +15,7 @@ import TextInput from "../inputs/TextInput";
 import EditorInput from "../inputs/EditorInput";
 import SwitchInput from "../inputs/SwitchInput";
 import SelectInput from "../inputs/SelectInput";
+import MultiSelectInput from "../inputs/MultiSelectInput";
 import { useReadCategoriesQuery } from "../../features/category/services";
 import { useReadTagsQuery } from "../../features/tag/services";
 
@@ -82,7 +83,14 @@ function ArticleForm(props: ArticleFormProps) {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            {/* <SelectInput name="tag" label="Tag" /> */}
+            <MultiSelectInput
+              name="tagIds"
+              label="Tags"
+              options={tags.map((tag) => ({
+                value: tag.id,
+                label: tag.name,
+              }))}
+            />
           </Grid>
         </Grid>
         <Grid container spacing={2} mb={3}>
