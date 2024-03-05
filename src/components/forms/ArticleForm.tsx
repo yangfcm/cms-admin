@@ -24,10 +24,14 @@ type ArticleFormProps = {
   article?: Article;
 };
 
+type ArticleFormData = Pick<
+  Article,
+  "title" | "content" | "featuredImage" | "isTop"
+> & { categoryId: string; tagIds: string[]; isDraft: boolean };
+
 function ArticleForm(props: ArticleFormProps) {
   const { article } = props;
   const { activeBlog } = useUserBlog();
-  const { authUser } = useAuth();
   const { data: { categories = [] } = {} } = useReadCategoriesQuery(
     activeBlog!.address
   );
@@ -42,14 +46,12 @@ function ArticleForm(props: ArticleFormProps) {
       // status: article ? article.status : ArticleStatus.DRAFT,
       isDraft: article ? article.status === ArticleStatus.DRAFT : true,
       isTop: article ? article.isTop : false,
-      blogId: activeBlog!.id,
-      userId: authUser!.id,
       categoryId: article ? article.category.id : "",
       tagIds: article ? article.tags.map((t) => t.id) : [],
     },
   });
 
-  const onSubmit = useCallback((data: PostArticle) => {
+  const onSubmit = useCallback((data: ArticleFormData) => {
     console.log(data);
   }, []);
 

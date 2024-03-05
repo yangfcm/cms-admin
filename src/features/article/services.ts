@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { apiBaseUrl } from "../../settings/constants";
 import { RootState } from "../../app/store";
-import { ArticlesResponse, ArticleResponse } from "./types";
+import { ArticlesResponse, ArticleResponse, PostArticle } from "./types";
 
 const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -21,9 +21,34 @@ const api = createApi({
       }),
       providesTags: ["Article"],
     }),
+    createArticle: builder.mutation<
+      ArticleResponse,
+      { blogAddress: string; article: PostArticle }
+    >({
+      query: ({ blogAddress, article }) => ({
+        url: `/blogs/${blogAddress}/articles`,
+        method: "POST",
+        body: { article },
+      }),
+      async onQueryStarted({ blogAddress }, { dispatch, queryFulfilled }) {
+        let result;
+        try {
+          const {
+            data: { article },
+          } = await queryFulfilled;
+          result = dispatch(
+            api.util.updateQueryData("readArticles", blogAddress, (draft) => {
+              draft.articles.unshift(article);
+            })
+          );
+        } catch {
+          result?.undo();
+        }
+      },
+    }),
   }),
 });
 
 export default api;
 
-export const { useReadArticlesQuery } = api;
+export const { useReadArticlesQuery, useCreateArticleMutation } = api;
