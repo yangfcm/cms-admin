@@ -4,18 +4,14 @@ import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import {
-  Article,
-  ArticleStatus,
-  PostArticle,
-} from "../../features/article/types";
+import { Article, ArticleStatus } from "../../features/article/types";
 import useUserBlog from "../../features/blog/useUserBlog";
-import useAuth from "../../features/user/useAuth";
 import TextInput from "../inputs/TextInput";
 import EditorInput from "../inputs/EditorInput";
 import SwitchInput from "../inputs/SwitchInput";
 import SelectInput from "../inputs/SelectInput";
 import MultiSelectInput from "../inputs/MultiSelectInput";
+import { useCreateArticleMutation } from "../../features/article/services";
 import { useReadCategoriesQuery } from "../../features/category/services";
 import { useReadTagsQuery } from "../../features/tag/services";
 import { ARTICLE_TITLE_REQUIRED } from "../../settings/constants";
@@ -31,11 +27,12 @@ type ArticleFormData = Pick<
 
 function ArticleForm(props: ArticleFormProps) {
   const { article } = props;
-  const { activeBlog } = useUserBlog();
-  const { data: { categories = [] } = {} } = useReadCategoriesQuery(
-    activeBlog!.address
-  );
-  const { data: { tags = [] } = {} } = useReadTagsQuery(activeBlog!.address);
+  const { activeBlogAddress } = useUserBlog();
+  const { data: { categories = [] } = {} } =
+    useReadCategoriesQuery(activeBlogAddress);
+  const { data: { tags = [] } = {} } = useReadTagsQuery(activeBlogAddress);
+
+  const [createArticle, { isLoading, isSuccess }] = useCreateArticleMutation();
 
   const methods = useForm({
     mode: "onSubmit",
@@ -52,7 +49,13 @@ function ArticleForm(props: ArticleFormProps) {
   });
 
   const onSubmit = useCallback((data: ArticleFormData) => {
-    console.log(data);
+    createArticle({
+      blogAddress: activeBlogAddress,
+      article: {
+        ...data,
+        status: data.isDraft ? ArticleStatus.DRAFT : ArticleStatus.PUBLISHED,
+      },
+    });
   }, []);
 
   return (
