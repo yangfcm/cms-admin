@@ -13,6 +13,8 @@ import MuiLink from "@mui/material/Link";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Article } from "../../features/article/types";
 import { formatDateTime } from "../../utils/dateTime";
+import EditArticle from "./EditArticle";
+import DeleteArticle from "./DeleteArticle";
 
 type ArticlesTableProps = {
   articles?: Article[];
@@ -43,7 +45,7 @@ function ArticlesTable(props: ArticlesTableProps) {
             <TableCell>Status</TableCell>
             <TableCell>Created</TableCell>
             <TableCell>Last Updated</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -59,6 +61,10 @@ function ArticlesTable(props: ArticlesTableProps) {
                 <TableCell>{article.status}</TableCell>
                 <TableCell>{formatDateTime(article.createdAt)}</TableCell>
                 <TableCell>{formatDateTime(article.updatedAt)}</TableCell>
+                <TableCell align="center">
+                  <EditArticle article={article} />
+                  <DeleteArticle article={article} />
+                </TableCell>
               </TableRow>
             );
           })}
