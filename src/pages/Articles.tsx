@@ -17,7 +17,7 @@ function Articles() {
     <Container>
       <PageTitle title="Articles Admin" />
       {isLoading && <Loader />}
-      {!isLoading && <ArticlesTable />}
+      {!isLoading && <ArticlesTable articles={data?.articles} />}
     </Container>
   );
 }

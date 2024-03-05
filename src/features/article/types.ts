@@ -20,6 +20,8 @@ export type Article = {
   user: Pick<User, "id" | "username" | "nickname" | "biography" | "avatar">;
   category: Pick<Category, "id" | "name" | "description">;
   tags: Pick<Tag, "id" | "name">[];
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type ArticleResponse = {
