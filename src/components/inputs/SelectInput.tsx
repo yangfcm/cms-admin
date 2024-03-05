@@ -9,13 +9,14 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 type SelectInputProps = UseControllerProps & {
+  options: { value: string | number; label: string }[];
   id?: string;
   label?: string;
-  options: { value: string | number; label: string }[];
+  disabled?: boolean;
 };
 
 function SelectInput(props: SelectInputProps) {
-  const { id, label = "Selection", name, options } = props;
+  const { id, label = "Selection", name, options, disabled = false } = props;
   const formContext = useFormContext();
   const { control } = formContext;
   return (
@@ -25,7 +26,7 @@ function SelectInput(props: SelectInputProps) {
         name={name}
         control={control}
         render={({ field }) => (
-          <Select labelId={id} label={label} {...field}>
+          <Select {...field} labelId={id} label={label} disabled={disabled}>
             {options.map((option) => (
               <MenuItem value={option.value} key={option.value}>
                 {option.label}

@@ -12,9 +12,10 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 type MultiSelectInputProps = UseControllerProps & {
+  options: { value: string | number; label: string }[];
   id?: string;
   label?: string;
-  options: { value: string | number; label: string }[];
+  disabled?: boolean;
 };
 
 function getStyles(option: string, selected: string[], theme: Theme) {
@@ -28,7 +29,7 @@ function getStyles(option: string, selected: string[], theme: Theme) {
 
 function MultiSelectInput(props: MultiSelectInputProps) {
   const theme = useTheme();
-  const { id, label = "Multi-select", name, options } = props;
+  const { id, label = "Multi-select", name, options, disabled = false } = props;
   const formContext = useFormContext();
   const { control } = formContext;
   const optionsObj = options.reduce((result, item) => {
@@ -45,6 +46,7 @@ function MultiSelectInput(props: MultiSelectInputProps) {
         defaultValue={[]} /** @TODO Fix defaultValue. */
         render={({ field }) => (
           <Select
+            {...field}
             labelId={id}
             label={label}
             multiple
@@ -59,7 +61,7 @@ function MultiSelectInput(props: MultiSelectInputProps) {
                 ))}
               </Box>
             )}
-            {...field}
+            disabled={disabled}
           >
             {options.map((option) => (
               <MenuItem

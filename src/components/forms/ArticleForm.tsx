@@ -84,6 +84,7 @@ function ArticleForm(props: ArticleFormProps) {
                 value: category.id,
                 label: category.name,
               }))}
+              disabled={categories.length === 0}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -94,6 +95,7 @@ function ArticleForm(props: ArticleFormProps) {
                 value: tag.id,
                 label: tag.name,
               }))}
+              disabled={tags.length === 0}
             />
           </Grid>
         </Grid>
