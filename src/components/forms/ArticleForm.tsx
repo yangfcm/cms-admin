@@ -18,6 +18,7 @@ import SelectInput from "../inputs/SelectInput";
 import MultiSelectInput from "../inputs/MultiSelectInput";
 import { useReadCategoriesQuery } from "../../features/category/services";
 import { useReadTagsQuery } from "../../features/tag/services";
+import { ARTICLE_TITLE_REQUIRED } from "../../settings/constants";
 
 type ArticleFormProps = {
   article?: Article;
@@ -59,7 +60,10 @@ function ArticleForm(props: ArticleFormProps) {
           name="title"
           id="article-title-input"
           label="Title"
-          rules={{ required: true }}
+          rules={{
+            validate: (value) =>
+              value.trim().length > 0 ? true : ARTICLE_TITLE_REQUIRED,
+          }}
           placeholder="The title of the article"
         />
         <TextInput
