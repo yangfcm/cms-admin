@@ -12,7 +12,7 @@ type EditArticleProps = {
 
 function EditArticle({ article }: EditArticleProps) {
   return (
-    <MuiLink component={Link} to={`../write-article/${article.id}`}>
+    <MuiLink component={Link} to={`../edit-article/${article.id}`}>
       <Tooltip title="Edit">
         <span>
           <IconButton>

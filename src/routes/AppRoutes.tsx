@@ -19,6 +19,7 @@ import Onboarding from "../pages/Onboarding";
 import AuthProvider from "../components/AuthProvider";
 import BlogSettings from "../pages/BlogSettings";
 import WriteArticle from "../pages/WriteArticle";
+import EditArticle from "../pages/EditArticle";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const location = useLocation();
@@ -80,7 +81,7 @@ function AppRoutes() {
             }
           >
             <Route path="" element={<Home />} />
-            <Route path="write-article/:id" element={<WriteArticle />} />
+            <Route path="edit-article/:id" element={<EditArticle />} />
             <Route path="write-article" element={<WriteArticle />} />
             <Route path="articles" element={<Articles />} />
             {/* <Route path="mui-categories" element={<MuiCategories />} /> */}
