@@ -1,11 +1,5 @@
 import { useEffect } from "react";
-import {
-  Outlet,
-  Navigate,
-  useParams,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Outlet, Navigate, useParams, useNavigate } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import { useAppDispatch } from "../app/hooks";
@@ -24,12 +18,9 @@ import {
   DELETE_BLOG_CACHE_KEY,
 } from "../settings/constants";
 
-const pathPattern = /^\/blog\/([\w_-]+)(?:\/([\w_-]+))?\/?$/;
-
 function BlogProvider({ children }: { children: JSX.Element }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { address } = useParams();
   const [, { isSuccess: blogIsCreated }] = useCreateBlogMutation({
     fixedCacheKey: CREATE_BLOG_CACHE_KEY,
@@ -40,15 +31,14 @@ function BlogProvider({ children }: { children: JSX.Element }) {
   const { setActiveBlog, blogs, activeBlog } = useUserBlog();
 
   useEffect(() => {
-    if (blogIsDeleted && activeBlog) {
-      // When blog is deleted, navigate to the home page of next active blog.
-      return navigate(`/blog/${activeBlog.address}`);
-    }
-    const match = pathname.match(pathPattern);
-    if (activeBlog && match) {
-      navigate(`/blog/${activeBlog.address}/${match[2] || ""}`);
-    } else {
-      navigate("/new-blog");
+    if (blogIsDeleted) {
+      if (activeBlog) {
+        // When blog is deleted, navigate to the home page of next active blog.
+        navigate(`/blog/${activeBlog.address}`);
+      } else {
+        // If the blog deleted is the last blog, navigate to onboarding page.
+        navigate("/new-blog");
+      }
     }
   }, [activeBlog, blogIsDeleted]);
 
