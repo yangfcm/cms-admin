@@ -21,6 +21,15 @@ const api = createApi({
       }),
       providesTags: ["Article"],
     }),
+    readArticle: builder.query<
+      ArticleResponse,
+      { blogAddress: string; id: string }
+    >({
+      query: ({ blogAddress, id }) => ({
+        url: `/blogs/${blogAddress}/articles/${id}`,
+      }),
+      providesTags: ["Article"],
+    }),
     createArticle: builder.mutation<
       ArticleResponse,
       { blogAddress: string; article: PostArticle }
@@ -51,4 +60,8 @@ const api = createApi({
 
 export default api;
 
-export const { useReadArticlesQuery, useCreateArticleMutation } = api;
+export const {
+  useReadArticlesQuery,
+  useReadArticleQuery,
+  useCreateArticleMutation,
+} = api;
