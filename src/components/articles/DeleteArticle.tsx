@@ -3,6 +3,8 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ConfirmDialog from "../ConfirmDialog";
+import useUserBlog from "../../features/blog/useUserBlog";
+import { useDeleteArticleMutation } from "../../features/article/services";
 import { Article } from "../../features/article/types";
 
 type DeleteArticleProps = {
@@ -12,9 +14,15 @@ type DeleteArticleProps = {
 function DeleteArticle({ article }: DeleteArticleProps) {
   const [open, setOpen] = useState(false);
 
+  const { activeBlogAddress: blogAddress } = useUserBlog();
+  const [deleteArticle] = useDeleteArticleMutation();
+
   const handleDeleteArticle = useCallback(() => {
-    console.log("delete article!!", article.id);
-  }, [article.id]);
+    deleteArticle({
+      blogAddress,
+      articleId: article.id,
+    });
+  }, [article.id, blogAddress]);
 
   return (
     <>
