@@ -36,3 +36,5 @@ export type PostArticle = Pick<
   Article,
   "title" | "content" | "featuredImage" | "status" | "isTop"
 > & { categoryId: string; tagIds: string[] };
+
+export type UpdateArticle = Pick<Article, "id"> & Partial<PostArticle>;

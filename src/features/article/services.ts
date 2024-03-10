@@ -1,7 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { apiBaseUrl } from "../../settings/constants";
 import { RootState } from "../../app/store";
-import { ArticlesResponse, ArticleResponse, PostArticle } from "./types";
+import {
+  ArticlesResponse,
+  ArticleResponse,
+  PostArticle,
+  UpdateArticle,
+} from "./types";
 
 const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -55,6 +60,70 @@ const api = createApi({
         }
       },
     }),
+    updateArticle: builder.mutation<
+      ArticleResponse,
+      {
+        blogAddress: string;
+        article: UpdateArticle;
+      }
+    >({
+      query: ({ blogAddress, article: { id, ...patchedArticle } }) => ({
+        url: `/blogs/${blogAddress}/articles/${id}`,
+        method: "PUT",
+        body: { article: patchedArticle },
+      }),
+      async onQueryStarted({ blogAddress }, { dispatch, queryFulfilled }) {
+        let result;
+        try {
+          const {
+            data: { article },
+          } = await queryFulfilled;
+          result = dispatch(
+            api.util.updateQueryData("readArticles", blogAddress, (draft) => {
+              draft.articles = draft.articles.map((a) => {
+                if (a.id === article.id) {
+                  return {
+                    ...a,
+                    ...article,
+                  };
+                }
+                return a;
+              });
+            })
+          );
+        } catch {
+          result?.undo();
+        }
+      },
+    }),
+    deleteArticle: builder.mutation<
+      ArticleResponse,
+      {
+        blogAddress: string;
+        articleId: string;
+      }
+    >({
+      query: ({ blogAddress, articleId }) => ({
+        url: `/blogs/${blogAddress}/articles/${articleId}`,
+        method: "DELETE",
+      }),
+      async onQueryStarted(
+        { blogAddress, articleId },
+        { dispatch, queryFulfilled }
+      ) {
+        let result;
+        try {
+          await queryFulfilled;
+          result = dispatch(
+            api.util.updateQueryData("readArticles", blogAddress, (draft) => {
+              draft.articles = draft.articles.filter((a) => a.id !== articleId);
+            })
+          );
+        } catch {
+          result?.undo();
+        }
+      },
+    }),
   }),
 });
 
@@ -64,4 +133,6 @@ export const {
   useReadArticlesQuery,
   useReadArticleQuery,
   useCreateArticleMutation,
+  useUpdateArticleMutation,
+  useDeleteArticleMutation,
 } = api;
