@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -7,6 +7,8 @@ import useUserBlog from "../../features/blog/useUserBlog";
 import { useDeleteArticleMutation } from "../../features/article/services";
 import { Article } from "../../features/article/types";
 import ErrorMessage from "../ErrorMessage";
+import { useSnackbar } from "../SnackbarProvider";
+import { ARTICLE_DELETED } from "../../settings/constants";
 
 type DeleteArticleProps = {
   article: Article;
@@ -14,10 +16,11 @@ type DeleteArticleProps = {
 
 function DeleteArticle({ article }: DeleteArticleProps) {
   const [open, setOpen] = useState(false);
-
   const { activeBlogAddress: blogAddress } = useUserBlog();
-  const [deleteArticle, { isLoading, isError, error }] =
+  const [deleteArticle, { isLoading, isError, error, isSuccess }] =
     useDeleteArticleMutation();
+
+  const { addSnackbar } = useSnackbar();
 
   const handleDeleteArticle = useCallback(() => {
     deleteArticle({
@@ -25,6 +28,12 @@ function DeleteArticle({ article }: DeleteArticleProps) {
       articleId: article.id,
     });
   }, [article.id, blogAddress]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      addSnackbar(ARTICLE_DELETED);
+    }
+  }, [isSuccess]);
 
   return (
     <>

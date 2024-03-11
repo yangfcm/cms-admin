@@ -35,7 +35,6 @@ function SuccessMessage({
       autoHideDuration={autoHideduration}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       onClose={() => {
-        // Close Snackbar by clicking the window.
         setOpenAlert(false);
         if (onClose) {
           onClose();

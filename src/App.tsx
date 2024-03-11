@@ -4,12 +4,15 @@ import Box from "@mui/material/Box";
 import AppThemeProvider from "./components/AppThemeProvider";
 import AppRoutes from "./routes/AppRoutes";
 import SuccessMessage from "./components/SuccessMessage";
+import SnackbarProvider from "./components/SnackbarProvider";
 
 function App() {
   return (
     <Provider store={store}>
       <AppThemeProvider>
-        <AppRoutes />
+        <SnackbarProvider>
+          <AppRoutes />
+        </SnackbarProvider>
         {/* <Box
           sx={{
             zIndex: 1400,
