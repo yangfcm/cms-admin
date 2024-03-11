@@ -14,6 +14,7 @@ type SuccessMessageProps = {
   message: string;
   onClose?: () => void;
   autoHideduration?: number;
+  sx?: Object;
 };
 
 function SuccessMessage({
@@ -21,6 +22,7 @@ function SuccessMessage({
   message,
   onClose,
   autoHideduration = 6000,
+  sx = {},
 }: SuccessMessageProps) {
   const [openAlert, setOpenAlert] = useState(false);
   useEffect(() => {
@@ -33,11 +35,13 @@ function SuccessMessage({
       autoHideDuration={autoHideduration}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       onClose={() => {
+        // Close Snackbar by clicking the window.
         setOpenAlert(false);
         if (onClose) {
           onClose();
         }
       }}
+      sx={sx}
     >
       <Alert
         severity="success"
