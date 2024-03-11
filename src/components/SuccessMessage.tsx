@@ -1,4 +1,4 @@
-import { forwardRef, useState, useEffect } from "react";
+import { forwardRef } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
@@ -24,21 +24,13 @@ function SuccessMessage({
   autoHideduration = 6000,
   sx = {},
 }: SuccessMessageProps) {
-  const [openAlert, setOpenAlert] = useState(false);
-  useEffect(() => {
-    setOpenAlert(open);
-  }, [open]);
-
   return (
     <Snackbar
-      open={openAlert}
+      open={open}
       autoHideDuration={autoHideduration}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       onClose={() => {
-        setOpenAlert(false);
-        if (onClose) {
-          onClose();
-        }
+        onClose && onClose();
       }}
       sx={sx}
     >
@@ -46,10 +38,7 @@ function SuccessMessage({
         severity="success"
         sx={{ width: "100%" }}
         onClose={() => {
-          setOpenAlert(false);
-          if (onClose) {
-            onClose();
-          }
+          onClose && onClose();
         }}
       >
         {message}
