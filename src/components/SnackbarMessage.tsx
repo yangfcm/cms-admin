@@ -16,7 +16,7 @@ type SnackbarMessageProps = {
   message: string | string[];
   title?: string;
   onClose?: () => void;
-  autiHideDuration?: number;
+  autoHideDuration?: number;
   sx?: Object;
   severity?: "error" | "info" | "success" | "warning";
 };
@@ -27,14 +27,14 @@ function SnackbarMessage(props: SnackbarMessageProps) {
     message,
     title,
     onClose,
-    autiHideDuration = 6000,
+    autoHideDuration = 6000,
     sx = {},
     severity = "info",
   } = props;
   return (
     <Snackbar
       open={open}
-      autoHideDuration={autiHideDuration}
+      autoHideDuration={autoHideDuration}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       onClose={() => {
         onClose && onClose();

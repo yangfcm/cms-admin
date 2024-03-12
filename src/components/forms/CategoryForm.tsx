@@ -16,8 +16,6 @@ import {
   useUpdateCategoryMutation,
 } from "../../features/category/services";
 import useUserBlog from "../../features/blog/useUserBlog";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
-import { SerializedError } from "@reduxjs/toolkit";
 import parseError from "../../utils/parseError";
 
 type CategoryFormProps = {

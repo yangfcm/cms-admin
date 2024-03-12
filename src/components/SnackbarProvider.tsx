@@ -5,6 +5,7 @@ type SnackbarValue = {
   message: string | string[];
   severity?: "error" | "info" | "success" | "warning";
   title?: string;
+  autoHideDuration?: number;
 };
 
 const SnackbarContext = createContext<{
@@ -37,10 +38,8 @@ function SnackbarProvider({ children }: { children: JSX.Element }) {
       <>
         <SnackbarMessage
           open={open}
-          message={snackbarValue.message}
-          severity={snackbarValue.severity}
-          title={snackbarValue.title}
           onClose={() => setOpen(false)}
+          {...snackbarValue}
         />
         {children}
       </>
