@@ -21,7 +21,7 @@ function BlogsMenu() {
   const location = useLocation();
   const [, , , path = "/"] = location.pathname.split("/");
 
-  const { blogs = [], activeBlog, setActiveBlog } = useUserBlog();
+  const { blogs = [], activeBlog } = useUserBlog();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -63,7 +63,6 @@ function BlogsMenu() {
           <MenuItem
             key={blog.id}
             onClick={() => {
-              setActiveBlog(blog.address);
               const newPath = ALLOWED_NAVIGATED_PATH.includes(path)
                 ? `/blog/${blog.address}/${path}`
                 : `/blog/${blog.address}/`;
