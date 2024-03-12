@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import MuiLink from "@mui/material/Link";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,9 +8,20 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Divider from "@mui/material/Divider";
 import useUserBlog from "../../features/blog/useUserBlog";
 
-function BlogsMenu() {
-  const { blogs = [], activeBlog, setActiveBlog } = useUserBlog();
+const ALLOWED_NAVIGATED_PATH = [
+  "/",
+  "articles",
+  "categories",
+  "tags",
+  "blog-settings",
+];
 
+function BlogsMenu() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [, , , path = "/"] = location.pathname.split("/");
+
+  const { blogs = [], activeBlog, setActiveBlog } = useUserBlog();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -51,7 +62,13 @@ function BlogsMenu() {
         {blogs.map((blog) => (
           <MenuItem
             key={blog.id}
-            onClick={() => setActiveBlog(blog.address)}
+            onClick={() => {
+              setActiveBlog(blog.address);
+              const newPath = ALLOWED_NAVIGATED_PATH.includes(path)
+                ? `/blog/${blog.address}/${path}`
+                : `/blog/${blog.address}/`;
+              navigate(newPath);
+            }}
             selected={activeBlog?.address === blog.address}
           >
             {blog.title}
