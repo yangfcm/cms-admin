@@ -27,7 +27,7 @@ type ArticleFormData = Pick<
 
 function ArticleForm(props: ArticleFormProps) {
   const { article } = props;
-  console.log(article);
+
   const { activeBlogAddress } = useUserBlog();
   const { data: { categories = [] } = {} } =
     useReadCategoriesQuery(activeBlogAddress);

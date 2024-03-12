@@ -3,9 +3,12 @@ import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FormDialog from "../FormDialog";
 import CategoryForm from "../forms/CategoryForm";
+import { useSnackbar } from "../SnackbarProvider";
+import { CATEGORY_CREATED } from "../../settings/constants";
 
 function AddCategory() {
   const [open, setOpen] = useState(false);
+  const { addSnackbar } = useSnackbar();
 
   return (
     <>
@@ -22,7 +25,10 @@ function AddCategory() {
         form={
           <CategoryForm
             onCancel={() => setOpen(false)}
-            onCreateCategorySuccess={() => setOpen(false)}
+            onCreateCategorySuccess={() => {
+              setOpen(false);
+              addSnackbar({ message: CATEGORY_CREATED, severity: "success" });
+            }}
           />
         }
       />

@@ -49,13 +49,13 @@ function SnackbarMessage(props: SnackbarMessageProps) {
         }}
       >
         {title && <AlertTitle>{title}</AlertTitle>}
-        {typeof message === "string"
-          ? message
-          : message.map((m, i) => (
+        {Array.isArray(message)
+          ? message.map((m, i) => (
               <div key={i}>
                 <CircleIcon sx={{ fontSize: 8 }} /> {m}
               </div>
-            ))}
+            ))
+          : message}
       </Alert>
     </Snackbar>
   );

@@ -4,6 +4,7 @@ import SnackbarMessage from "./SnackbarMessage";
 type SnackbarValue = {
   message: string | string[];
   severity?: "error" | "info" | "success" | "warning";
+  title?: string;
 };
 
 const SnackbarContext = createContext<{
@@ -20,6 +21,7 @@ function SnackbarProvider({ children }: { children: JSX.Element }) {
   const [snackbarValue, setSnackbarValue] = useState<SnackbarValue>({
     message: "",
     severity: "info",
+    title: "",
   });
 
   const addSnackbar = useCallback(
@@ -37,6 +39,7 @@ function SnackbarProvider({ children }: { children: JSX.Element }) {
           open={open}
           message={snackbarValue.message}
           severity={snackbarValue.severity}
+          title={snackbarValue.title}
           onClose={() => setOpen(false)}
         />
         {children}

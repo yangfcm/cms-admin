@@ -16,12 +16,17 @@ import {
   useUpdateCategoryMutation,
 } from "../../features/category/services";
 import useUserBlog from "../../features/blog/useUserBlog";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { SerializedError } from "@reduxjs/toolkit";
+import parseError from "../../utils/parseError";
 
 type CategoryFormProps = {
   category?: Category;
   onCancel?: () => void;
   onCreateCategorySuccess?: () => void;
   onUpdateCategorySuccess?: () => void;
+  onCreateCategoryError?: (error: string | string[]) => void;
+  onUpdateCategoryError?: (error: string | string[]) => void;
 };
 
 function CategoryForm(props: CategoryFormProps) {
@@ -29,7 +34,9 @@ function CategoryForm(props: CategoryFormProps) {
     category,
     onCancel,
     onCreateCategorySuccess,
+    onCreateCategoryError,
     onUpdateCategorySuccess,
+    onUpdateCategoryError,
   } = props;
   const { activeBlogAddress } = useUserBlog();
 
@@ -43,13 +50,25 @@ function CategoryForm(props: CategoryFormProps) {
 
   const [
     createCategory,
-    { isLoading: isCreating, isSuccess: createCategorySuccess },
+    {
+      isLoading: isCreating,
+      isSuccess: createCategorySuccess,
+      isError: isCreateCategoryError,
+      error: createCategoryError,
+      reset: resetCreateCategoryState,
+    },
   ] = useCreateCategoryMutation({
     fixedCacheKey: CATEGORY_CREATE_FIXED_CACHE_KEY,
   });
   const [
     updateCategory,
-    { isLoading: isUpdating, isSuccess: updateCategorySuccess },
+    {
+      isLoading: isUpdating,
+      isSuccess: updateCategorySuccess,
+      isError: isUpdateCategoryError,
+      error: updateCategoryError,
+      reset: resetUpdateCategoryState,
+    },
   ] = useUpdateCategoryMutation({
     fixedCacheKey: CATEGORY_UPDATE_FIXED_CACHE_KEY,
   });
@@ -82,6 +101,31 @@ function CategoryForm(props: CategoryFormProps) {
       onUpdateCategorySuccess();
     }
   }, [createCategorySuccess, updateCategorySuccess]);
+
+  useEffect(() => {
+    if (isCreateCategoryError && onCreateCategoryError) {
+      onCreateCategoryError(parseError(createCategoryError));
+    }
+    if (isUpdateCategoryError && onUpdateCategoryError) {
+      onUpdateCategoryError(parseError(updateCategoryError));
+    }
+  }, [
+    isCreateCategoryError,
+    isUpdateCategoryError,
+    createCategoryError,
+    updateCategoryError,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      // Reset state on unmounting the form.
+      if (category) {
+        resetUpdateCategoryState();
+      } else {
+        resetCreateCategoryState();
+      }
+    };
+  }, []);
 
   return (
     <FormProvider {...methods}>

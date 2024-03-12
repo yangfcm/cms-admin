@@ -9,10 +9,7 @@ import {
   useDeleteCategoryMutation,
 } from "../features/category/services";
 import useUserBlog from "../features/blog/useUserBlog";
-// import { Category } from "../features/category/types";
 import {
-  CATEGORY_CREATED,
-  CATEGORY_UPDATED,
   CATEGORY_DELETED,
   CATEGORY_DELETE_FIXED_CACHE_KEY,
   CATEGORY_CREATE_FIXED_CACHE_KEY,
@@ -85,17 +82,6 @@ function Categories() {
 
   return (
     <Container>
-      <ErrorMessage open={hasError} messages={errorMessages} onClose={reset} />
-      <SuccessMessage
-        open={createCategoryState.isSuccess}
-        message={CATEGORY_CREATED}
-        onClose={createCategoryState.reset}
-      />
-      <SuccessMessage
-        open={updateCategoryState.isSuccess}
-        message={CATEGORY_UPDATED}
-        onClose={updateCategoryState.reset}
-      />
       <SuccessMessage
         open={deleteCategoryState.isSuccess}
         message={CATEGORY_DELETED}

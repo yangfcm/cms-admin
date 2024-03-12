@@ -5,6 +5,8 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import CategoryForm from "../forms/CategoryForm";
 import FormDialog from "../FormDialog";
 import { Category } from "../../features/category/types";
+import { useSnackbar } from "../SnackbarProvider";
+import { CATEGORY_UPDATED } from "../../settings/constants";
 
 type EditCategoryProps = {
   category: Category;
@@ -12,6 +14,7 @@ type EditCategoryProps = {
 
 function EditCategory({ category }: EditCategoryProps) {
   const [open, setOpen] = useState(false);
+  const { addSnackbar } = useSnackbar();
 
   return (
     <>
@@ -29,7 +32,17 @@ function EditCategory({ category }: EditCategoryProps) {
           <CategoryForm
             category={category}
             onCancel={() => setOpen(false)}
-            onUpdateCategorySuccess={() => setOpen(false)}
+            onUpdateCategorySuccess={() => {
+              setOpen(false);
+              addSnackbar({ message: CATEGORY_UPDATED, severity: "success" });
+            }}
+            onUpdateCategoryError={(error) => {
+              addSnackbar({
+                title: "Error",
+                message: error,
+                severity: "error",
+              });
+            }}
           />
         }
       />
