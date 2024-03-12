@@ -1,8 +1,13 @@
 import { createContext, useContext, useState, useCallback } from "react";
-import SuccessMessage from "./SuccessMessage";
+import SnackbarMessage from "./SnackbarMessage";
+
+type SnackbarValue = {
+  message: string | string[];
+  severity?: "error" | "info" | "success" | "warning";
+};
 
 const SnackbarContext = createContext<{
-  addSnackbar: (message: string) => void;
+  addSnackbar: (value: SnackbarValue) => void;
 }>({
   addSnackbar: () => {},
 });
@@ -10,24 +15,28 @@ const SnackbarContext = createContext<{
 export const useSnackbar = () => {
   return useContext(SnackbarContext);
 };
-
 function SnackbarProvider({ children }: { children: JSX.Element }) {
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const [snackbarValue, setSnackbarValue] = useState<SnackbarValue>({
+    message: "",
+    severity: "info",
+  });
+
   const addSnackbar = useCallback(
-    (message: string) => {
+    (value: SnackbarValue) => {
       setOpen(true);
-      setMessage(message);
+      setSnackbarValue(value);
     },
-    [setOpen, setMessage]
+    [setOpen, setSnackbarValue]
   );
 
   return (
     <SnackbarContext.Provider value={{ addSnackbar }}>
       <>
-        <SuccessMessage
+        <SnackbarMessage
           open={open}
-          message={message}
+          message={snackbarValue.message}
+          severity={snackbarValue.severity}
           onClose={() => setOpen(false)}
         />
         {children}

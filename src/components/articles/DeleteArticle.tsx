@@ -31,7 +31,7 @@ function DeleteArticle({ article }: DeleteArticleProps) {
 
   useEffect(() => {
     if (isSuccess) {
-      addSnackbar(ARTICLE_DELETED);
+      addSnackbar({ message: ARTICLE_DELETED });
     }
   }, [isSuccess]);
 
