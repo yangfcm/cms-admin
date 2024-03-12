@@ -17,6 +17,7 @@ const SnackbarContext = createContext<{
 export const useSnackbar = () => {
   return useContext(SnackbarContext);
 };
+
 function SnackbarProvider({ children }: { children: JSX.Element }) {
   const [open, setOpen] = useState(false);
   const [snackbarValue, setSnackbarValue] = useState<SnackbarValue>({

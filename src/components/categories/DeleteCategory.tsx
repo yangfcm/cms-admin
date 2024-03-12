@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -6,7 +6,12 @@ import ConfirmDialog from "../ConfirmDialog";
 import { Category } from "../../features/category/types";
 import { useDeleteCategoryMutation } from "../../features/category/services";
 import useUserBlog from "../../features/blog/useUserBlog";
-import { CATEGORY_DELETE_FIXED_CACHE_KEY } from "../../settings/constants";
+import { useSnackbar } from "../SnackbarProvider";
+import {
+  CATEGORY_DELETED,
+  CATEGORY_DELETE_FIXED_CACHE_KEY,
+} from "../../settings/constants";
+import parseError from "../../utils/parseError";
 
 type DeleteCategoryProps = {
   category: Category;
@@ -16,9 +21,9 @@ function DeleteCategory({ category }: DeleteCategoryProps) {
   const [open, setOpen] = useState(false);
 
   const { activeBlogAddress } = useUserBlog();
-  const [deleteCategory, { isLoading }] = useDeleteCategoryMutation({
-    fixedCacheKey: CATEGORY_DELETE_FIXED_CACHE_KEY,
-  });
+  const [deleteCategory, { isLoading, isError, error, isSuccess, reset }] =
+    useDeleteCategoryMutation();
+  const { addSnackbar } = useSnackbar();
 
   const handleDeleteCategory = useCallback(() => {
     deleteCategory({
@@ -26,6 +31,22 @@ function DeleteCategory({ category }: DeleteCategoryProps) {
       categoryId: category.id,
     });
   }, [category.id, activeBlogAddress]);
+
+  useEffect(() => {
+    if (isError) {
+      addSnackbar({ message: parseError(error), severity: "error" });
+    }
+  }, [isError, error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      addSnackbar({ message: CATEGORY_DELETED, severity: "success" });
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    return reset;
+  }, []);
 
   return (
     <>

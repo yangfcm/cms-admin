@@ -38,7 +38,6 @@ function EditCategory({ category }: EditCategoryProps) {
             }}
             onUpdateCategoryError={(error) => {
               addSnackbar({
-                title: "Error",
                 message: error,
                 severity: "error",
               });
