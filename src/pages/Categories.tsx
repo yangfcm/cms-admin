@@ -9,9 +9,9 @@ import { useSnackbar } from "../components/SnackbarProvider";
 import parseError from "../utils/parseError";
 
 function Categories() {
-  const { activeBlog } = useUserBlog();
-  const address = activeBlog?.address || "";
-  const { data, isError, isLoading, error } = useReadCategoriesQuery(address);
+  const { activeBlogAddress } = useUserBlog();
+  const { data, isError, isLoading, error } =
+    useReadCategoriesQuery(activeBlogAddress);
   const { addSnackbar } = useSnackbar();
 
   useEffect(() => {
