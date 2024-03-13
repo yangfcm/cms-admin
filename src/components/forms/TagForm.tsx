@@ -16,15 +16,26 @@ import {
   TAG_NAME_REQUIRED,
   TAG_UPDATE_FIXED_CACHE_KEY,
 } from "../../settings/constants";
+import parseError from "../../utils/parseError";
 
 type TagFormProps = {
   tag?: Tag;
   onCancel?: () => void;
   onCreateTagSuccess?: () => void;
   onUpdateTagSuccess?: () => void;
+  onCreateTagError?: (error: string | string[]) => void;
+  onUpdateTagError?: (error: string | string[]) => void;
 };
+
 function TagForm(props: TagFormProps) {
-  const { tag, onCancel, onCreateTagSuccess, onUpdateTagSuccess } = props;
+  const {
+    tag,
+    onCancel,
+    onCreateTagSuccess,
+    onUpdateTagSuccess,
+    onCreateTagError,
+    onUpdateTagError,
+  } = props;
   const { activeBlogAddress } = useUserBlog();
 
   const methods = useForm({
@@ -34,12 +45,29 @@ function TagForm(props: TagFormProps) {
     },
   });
 
-  const [createTag, { isLoading: isCreating, isSuccess: createTagSuccess }] =
-    useCreateTagMutation({ fixedCacheKey: TAG_CREATE_FIXED_CACHE_KEY });
-  const [updateTag, { isLoading: isUpdating, isSuccess: updateTagSuccess }] =
-    useUpdateTagMutation({
-      fixedCacheKey: TAG_UPDATE_FIXED_CACHE_KEY,
-    });
+  const [
+    createTag,
+    {
+      isLoading: isCreating,
+      isSuccess: createTagSuccess,
+      isError: isCreateTagError,
+      error: createTagError,
+      reset: resetCreateTagState,
+    },
+  ] = useCreateTagMutation({ fixedCacheKey: TAG_CREATE_FIXED_CACHE_KEY });
+
+  const [
+    updateTag,
+    {
+      isLoading: isUpdating,
+      isSuccess: updateTagSuccess,
+      isError: isUpdateTagError,
+      error: updateTagError,
+      reset: resetUpdateTagState,
+    },
+  ] = useUpdateTagMutation({
+    fixedCacheKey: TAG_UPDATE_FIXED_CACHE_KEY,
+  });
 
   const onSubmit = useCallback(
     (data: PostTag) => {
@@ -69,6 +97,25 @@ function TagForm(props: TagFormProps) {
       onUpdateTagSuccess();
     }
   }, [createTagSuccess, updateTagSuccess]);
+
+  useEffect(() => {
+    if (isCreateTagError && onCreateTagError) {
+      onCreateTagError(parseError(createTagError));
+    }
+    if (isUpdateTagError && onUpdateTagError) {
+      onUpdateTagError(parseError(createTagError));
+    }
+  }, [isCreateTagError, isUpdateTagError, createTagError, updateTagError]);
+
+  useEffect(() => {
+    return () => {
+      if (tag) {
+        resetUpdateTagState();
+      } else {
+        resetCreateTagState();
+      }
+    };
+  }, []);
 
   return (
     <FormProvider {...methods}>

@@ -29,6 +29,9 @@ function AddCategory() {
               setOpen(false);
               addSnackbar({ message: CATEGORY_CREATED, severity: "success" });
             }}
+            onCreateCategoryError={(error) => {
+              addSnackbar({ message: error, severity: "error" });
+            }}
           />
         }
       />
