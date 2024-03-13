@@ -74,7 +74,7 @@ function TextInput(props: TextInputProps) {
               key={name}
             />
             <FormHelperText error sx={{ height: "20px" }}>
-              <>{errors && errors[name] ? errors[name]!.message : ""}</>
+              <> {errors[name]?.message || ""}</>
             </FormHelperText>
           </>
         )}

@@ -17,7 +17,10 @@ import {
 } from "../../features/article/services";
 import { useReadCategoriesQuery } from "../../features/category/services";
 import { useReadTagsQuery } from "../../features/tag/services";
-import { ARTICLE_TITLE_REQUIRED } from "../../settings/constants";
+import {
+  ARTICLE_CATEGORY_REQUIRED,
+  ARTICLE_TITLE_REQUIRED,
+} from "../../settings/constants";
 import parseError from "../../utils/parseError";
 
 type ArticleFormProps = {
@@ -150,7 +153,7 @@ function ArticleForm(props: ArticleFormProps) {
         <Box mb={3}>
           <EditorInput name="content" />
         </Box>
-        <Grid container spacing={2} mb={3}>
+        <Grid container spacing={2} mb={1}>
           <Grid item xs={12} sm={6}>
             <SelectInput
               name="categoryId"
@@ -160,6 +163,7 @@ function ArticleForm(props: ArticleFormProps) {
                 label: category.name,
               }))}
               disabled={categories.length === 0}
+              rules={{ required: ARTICLE_CATEGORY_REQUIRED }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>

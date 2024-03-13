@@ -41,6 +41,7 @@ export const TAG_UPDATED = "Tag is updated successfully.";
 export const TAG_DELETED = "Tag is deleted successfully.";
 
 export const ARTICLE_TITLE_REQUIRED = "Article's title is required.";
+export const ARTICLE_CATEGORY_REQUIRED = "Category is required";
 export const ARTICLE_CREATED = "Article is created successfully.";
 export const ARTICLE_UPDATED = "Article is updated successfully.";
 export const ARTICLE_DELETED = "Article is deleted successfully.";
