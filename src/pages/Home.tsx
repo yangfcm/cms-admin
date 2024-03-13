@@ -1,9 +1,12 @@
-import { useParams } from "react-router-dom";
+import Container from "@mui/material/Container";
+import PageTitle from "../components/PageTitle";
 
 function Home() {
-  const { address } = useParams();
-
-  return <div> homepage {address}</div>;
+  return (
+    <Container>
+      <PageTitle title="HomePage - Under development" />
+    </Container>
+  );
 }
 
 export default Home;

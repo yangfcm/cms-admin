@@ -1,4 +1,3 @@
-import { useEffect, useMemo, useCallback } from "react";
 import Container from "@mui/material/Container";
 import { useReadTagsQuery } from "../features/tag/services";
 import useUserBlog from "../features/blog/useUserBlog";
@@ -10,9 +9,9 @@ function Tags() {
   const { activeBlogAddress } = useUserBlog();
   const {
     data,
-    isError: isReadingTagsError,
+    // isError: isReadingTagsError,
     isLoading: isReadingTags,
-    error: readTagsError,
+    // error: readTagsError,
   } = useReadTagsQuery(activeBlogAddress);
 
   return (

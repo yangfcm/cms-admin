@@ -11,12 +11,8 @@ import parseError from "../utils/parseError";
 function Categories() {
   const { activeBlog } = useUserBlog();
   const address = activeBlog?.address || "";
-  const {
-    data,
-    isError,
-    isLoading: isReadingCategories,
-    error,
-  } = useReadCategoriesQuery(address);
+  const { data, isError, isLoading, isSuccess, error } =
+    useReadCategoriesQuery(address);
   const { addSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -28,8 +24,8 @@ function Categories() {
   return (
     <Container>
       <PageTitle title="Categories Admin" />
-      {isReadingCategories && <Loader />}
-      {!isReadingCategories && (
+      {isLoading && <Loader />}
+      {!isLoading && isSuccess && (
         <CategoriesTable categories={data?.categories || []} />
       )}
     </Container>
