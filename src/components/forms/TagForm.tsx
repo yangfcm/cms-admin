@@ -103,7 +103,7 @@ function TagForm(props: TagFormProps) {
       onCreateTagError(parseError(createTagError));
     }
     if (isUpdateTagError && onUpdateTagError) {
-      onUpdateTagError(parseError(createTagError));
+      onUpdateTagError(parseError(updateTagError));
     }
   }, [isCreateTagError, isUpdateTagError, createTagError, updateTagError]);
 

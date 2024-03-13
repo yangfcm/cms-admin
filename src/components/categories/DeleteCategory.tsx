@@ -7,10 +7,7 @@ import { Category } from "../../features/category/types";
 import { useDeleteCategoryMutation } from "../../features/category/services";
 import useUserBlog from "../../features/blog/useUserBlog";
 import { useSnackbar } from "../SnackbarProvider";
-import {
-  CATEGORY_DELETED,
-  CATEGORY_DELETE_FIXED_CACHE_KEY,
-} from "../../settings/constants";
+import { CATEGORY_DELETED } from "../../settings/constants";
 import parseError from "../../utils/parseError";
 
 type DeleteCategoryProps = {

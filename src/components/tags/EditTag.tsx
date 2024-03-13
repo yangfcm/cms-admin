@@ -5,6 +5,8 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import TagForm from "../forms/TagForm";
 import FormDialog from "../FormDialog";
 import { Tag } from "../../features/tag/types";
+import { useSnackbar } from "../SnackbarProvider";
+import { TAG_UPDATED } from "../../settings/constants";
 
 type EditTagProps = {
   tag: Tag;
@@ -12,6 +14,7 @@ type EditTagProps = {
 
 function EditTag({ tag }: EditTagProps) {
   const [open, setOpen] = useState(false);
+  const { addSnackbar } = useSnackbar();
 
   return (
     <>
@@ -29,7 +32,16 @@ function EditTag({ tag }: EditTagProps) {
           <TagForm
             tag={tag}
             onCancel={() => setOpen(false)}
-            onUpdateTagSuccess={() => setOpen(false)}
+            onUpdateTagSuccess={() => {
+              setOpen(false);
+              addSnackbar({ message: TAG_UPDATED, severity: "success" });
+            }}
+            onUpdateTagError={(error) => {
+              addSnackbar({
+                message: error,
+                severity: "error",
+              });
+            }}
           />
         }
       />
