@@ -6,9 +6,9 @@ import ConfirmDialog from "../ConfirmDialog";
 import useUserBlog from "../../features/blog/useUserBlog";
 import { useDeleteArticleMutation } from "../../features/article/services";
 import { Article } from "../../features/article/types";
-import ErrorMessage from "../ErrorMessage";
 import { useSnackbar } from "../SnackbarProvider";
 import { ARTICLE_DELETED } from "../../settings/constants";
+import parseError from "../../utils/parseError";
 
 type DeleteArticleProps = {
   article: Article;
@@ -31,13 +31,18 @@ function DeleteArticle({ article }: DeleteArticleProps) {
 
   useEffect(() => {
     if (isSuccess) {
-      addSnackbar({ message: ARTICLE_DELETED });
+      addSnackbar({ message: ARTICLE_DELETED, severity: "success" });
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (isError) {
+      addSnackbar({ message: parseError(error), severity: "error" });
+    }
+  }, [isError, error]);
+
   return (
     <>
-      <ErrorMessage open={isError} messages={error} />
       <Tooltip title="Delete">
         <span>
           <IconButton onClick={() => setOpen(true)}>
