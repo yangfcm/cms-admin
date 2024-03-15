@@ -6,8 +6,6 @@ import CreateIcon from "@mui/icons-material/Create";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import TextInput from "../inputs/TextInput";
-import ErrorMessage from "../ErrorMessage";
-import SuccessMessage from "../SuccessMessage";
 import {
   BLOG_ADDRESS_REQUIRED,
   BLOG_ADDRESS_INVALID,
@@ -15,6 +13,8 @@ import {
   BLOG_TITLE_REQUIRED,
   BLOG_TITLE_TOO_LONG,
   CREATE_BLOG_CACHE_KEY,
+  BLOG_CREATED_ERROR,
+  BLOG_UPDATED_ERROR,
 } from "../../settings/constants";
 import {
   useCreateBlogMutation,
@@ -23,6 +23,8 @@ import {
 import { isValidCharacters } from "../../utils/validators";
 import { Blog, PostBlog } from "../../features/blog/types";
 import UndoIcon from "@mui/icons-material/Undo";
+import { useSnackbar } from "../SnackbarProvider";
+import parseError from "../../utils/parseError";
 
 type NewBlogFormProps = {
   blog?: Blog;
@@ -31,6 +33,8 @@ type NewBlogFormProps = {
 
 function NewBlogForm(props: NewBlogFormProps) {
   const { blog, onSuccess } = props;
+  const { addSnackbar } = useSnackbar();
+
   const methods = useForm<PostBlog>({
     mode: "onSubmit",
     defaultValues: {
@@ -84,6 +88,23 @@ function NewBlogForm(props: NewBlogFormProps) {
       });
   }, [isCreateSuccess, isUpdateSuccess]);
 
+  useEffect(() => {
+    if (hasCreateError) {
+      addSnackbar({
+        title: BLOG_CREATED_ERROR,
+        message: parseError(createError),
+        severity: "error",
+      });
+    }
+    if (hasUpdateError) {
+      addSnackbar({
+        title: BLOG_UPDATED_ERROR,
+        message: parseError(updateError),
+        severity: "error",
+      });
+    }
+  }, [hasCreateError, hasUpdateError, createError, updateError]);
+
   const onSubmit: SubmitHandler<PostBlog> = useCallback(
     (data) => {
       if (blog) {
@@ -104,14 +125,6 @@ function NewBlogForm(props: NewBlogFormProps) {
   return (
     <FormProvider {...(methods as any)}>
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
-        <ErrorMessage
-          open={hasCreateError || hasUpdateError}
-          messages={createError || updateError}
-        />
-        <SuccessMessage
-          open={isUpdateSuccess}
-          message={"Blog basic settings are saved."}
-        />
         <TextInput
           name="title"
           id="onboarding-title-input"
