@@ -32,6 +32,7 @@ function DeleteBlogButton({ blog, onSuccess }: DeleteBlogButtonProps) {
 
   useEffect(() => {
     if (isSuccess) {
+      setOpen(false);
       addSnackbar({
         message: BLOG_DELETED,
         severity: "success",

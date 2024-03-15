@@ -6,6 +6,7 @@ type SnackbarValue = {
   severity?: "error" | "info" | "success" | "warning";
   title?: string;
   autoHideDuration?: number;
+  onClose?: () => void;
 };
 
 const SnackbarContext = createContext<{
@@ -24,6 +25,7 @@ function SnackbarProvider({ children }: { children: JSX.Element }) {
     message: "",
     severity: "info",
     title: "",
+    onClose: () => {},
   });
 
   const addSnackbar = useCallback(

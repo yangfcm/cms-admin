@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet, Navigate, useParams, useNavigate } from "react-router-dom";
+import { Outlet, Navigate, useParams } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import Sidebar from "../components/Sidebar";
@@ -7,19 +7,8 @@ import Header from "../components/Header";
 import useUserBlog from "../features/blog/useUserBlog";
 
 function BlogProvider({ children }: { children: JSX.Element }) {
-  const navigate = useNavigate();
   const { address } = useParams();
-  const { setActiveBlog, blogs, activeBlog } = useUserBlog();
-
-  useEffect(() => {
-    if (activeBlog) {
-      // When blog is deleted, navigate to the home page of next active blog.
-      navigate(`/blog/${activeBlog.address}`);
-    } else {
-      // If the blog deleted is the last blog, navigate to onboarding page.
-      navigate("/new-blog");
-    }
-  }, [activeBlog]);
+  const { setActiveBlog, blogs } = useUserBlog();
 
   useEffect(() => {
     if (address) {
