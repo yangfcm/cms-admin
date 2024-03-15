@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
@@ -11,7 +11,8 @@ import {
 } from "../../settings/constants";
 import TextInput from "../inputs/TextInput";
 import { useSigninMutation } from "../../features/user/services";
-import ErrorMessage from "../ErrorMessage";
+import { useSnackbar } from "../SnackbarProvider";
+import parseError from "../../utils/parseError";
 
 type SignInFormData = {
   usernameOrEmail: string;
@@ -19,6 +20,7 @@ type SignInFormData = {
 };
 
 function SignInForm() {
+  const { addSnackbar } = useSnackbar();
   const [signin, { isError, isLoading, error }] = useSigninMutation();
 
   const methods = useForm<SignInFormData>({
@@ -31,12 +33,18 @@ function SignInForm() {
 
   const onSubmit: SubmitHandler<SignInFormData> = useCallback(signin, [signin]);
 
+  useEffect(() => {
+    if (isError) {
+      addSnackbar({
+        message: parseError(error),
+        severity: "error",
+      });
+    }
+  }, [isError, error]);
+
   return (
-    <FormProvider {...(methods as any)}>
-      {/* Bypass the TS warning: Type instantiation is excessively deep and
-      possibly infinite. ts(2589) */}
+    <FormProvider {...methods}>
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
-        <ErrorMessage open={isError} messages={error} />
         <TextInput
           name="usernameOrEmail"
           id="signin-username-input"
