@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import Box from "@mui/material/Box";
 import { LoadingButton } from "@mui/lab";
@@ -18,9 +18,11 @@ import {
   INVALID_USERNAME,
   USERNAME_MAX_LENGTH,
   USERNAME_TOO_LONG,
+  SIGNUP_ERROR,
 } from "../../settings/constants";
 import TextInput from "../inputs/TextInput";
-import ErrorMessage from "../ErrorMessage";
+import { useSnackbar } from "../SnackbarProvider";
+import parseError from "../../utils/parseError";
 
 type SignUpFormData = {
   email: string;
@@ -38,17 +40,25 @@ function SignUpForm() {
     },
   });
   const [signupMutation, { isError, isLoading, error }] = useSignupMutation();
+  const { addSnackbar } = useSnackbar();
 
   const onSubmit: SubmitHandler<SignUpFormData> = useCallback(signupMutation, [
     signupMutation,
   ]);
 
+  useEffect(() => {
+    if (isError) {
+      addSnackbar({
+        title: SIGNUP_ERROR,
+        message: parseError(error),
+        severity: "error",
+      });
+    }
+  }, [isError, error]);
+
   return (
-    <FormProvider {...(methods as any)}>
-      {/* Bypass the TS warning: Type instantiation is excessively deep and
-      possibly infinite. ts(2589) */}
+    <FormProvider {...methods}>
       <Box component="form" onSubmit={methods.handleSubmit(onSubmit)}>
-        <ErrorMessage open={isError} messages={error} />
         <TextInput
           name="email"
           id="signup-email-input"
