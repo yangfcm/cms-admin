@@ -7,24 +7,13 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import SuccessMessage from "../components/SuccessMessage";
 import useUserBlog from "../features/blog/useUserBlog";
-import blogApi, {
-  useCreateBlogMutation,
-  useDeleteBlogMutation,
-} from "../features/blog/services";
-import {
-  BLOG_CREATED,
-  BLOG_DELETED,
-  CREATE_BLOG_CACHE_KEY,
-  DELETE_BLOG_CACHE_KEY,
-} from "../settings/constants";
+import blogApi, { useDeleteBlogMutation } from "../features/blog/services";
+import { BLOG_DELETED, DELETE_BLOG_CACHE_KEY } from "../settings/constants";
 
 function BlogProvider({ children }: { children: JSX.Element }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { address } = useParams();
-  const [, { isSuccess: blogIsCreated }] = useCreateBlogMutation({
-    fixedCacheKey: CREATE_BLOG_CACHE_KEY,
-  });
   const [, { isSuccess: blogIsDeleted }] = useDeleteBlogMutation({
     fixedCacheKey: DELETE_BLOG_CACHE_KEY,
   });
@@ -54,13 +43,6 @@ function BlogProvider({ children }: { children: JSX.Element }) {
 
   return (
     <>
-      <SuccessMessage
-        message={BLOG_CREATED}
-        open={blogIsCreated}
-        onClose={() => {
-          dispatch(blogApi.util.resetApiState());
-        }}
-      />
       <SuccessMessage
         message={BLOG_DELETED}
         open={blogIsDeleted}

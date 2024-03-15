@@ -13,6 +13,8 @@ import {
   BLOG_TITLE_REQUIRED,
   BLOG_TITLE_TOO_LONG,
   CREATE_BLOG_CACHE_KEY,
+  BLOG_CREATED,
+  BLOG_UPDATED,
   BLOG_CREATED_ERROR,
   BLOG_UPDATED_ERROR,
 } from "../../settings/constants";
@@ -78,14 +80,23 @@ function NewBlogForm(props: NewBlogFormProps) {
   useEffect(() => {
     const values = methods.getValues();
     if (onSuccess && (isCreateSuccess || isUpdateSuccess)) {
+      addSnackbar({
+        message: BLOG_CREATED,
+        severity: "success",
+      });
       onSuccess(values);
     }
-    if (isUpdateSuccess)
+    if (isUpdateSuccess) {
       // Reset form with new values on updating success.
+      addSnackbar({
+        message: BLOG_UPDATED,
+        severity: "success",
+      });
       methods.reset({
         ...blog,
         ...methods.getValues(),
       });
+    }
   }, [isCreateSuccess, isUpdateSuccess]);
 
   useEffect(() => {
