@@ -22,6 +22,7 @@ export const BLOG_UPDATED = `Blog is updated.`;
 export const BLOG_UPDATED_ERROR = "Error in updating blog.";
 export const CREATE_BLOG_CACHE_KEY = "CREATE_BLOG_CACHE_KEY";
 export const BLOG_DELETED = "Blog is deleted.";
+export const BLOG_DELETED_ERROR = "Error in deleting blog.";
 export const DELETE_BLOG_CACHE_KEY = "DELETE_BLOG_CACHE_KEY";
 
 export const SIGNUP_ERROR = "Failed to sign up.";

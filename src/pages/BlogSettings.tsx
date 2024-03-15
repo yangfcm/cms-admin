@@ -8,11 +8,12 @@ import { red } from "@mui/material/colors";
 import useUserBlog from "../features/blog/useUserBlog";
 import NewBlogForm from "../components/forms/NewBlogForm";
 import ConfirmDialog from "../components/ConfirmDialog";
-import ErrorMessage from "../components/ErrorMessage";
 import { Blog } from "../features/blog/types";
 import { useDeleteBlogMutation } from "../features/blog/services";
-import { DELETE_BLOG_CACHE_KEY } from "../settings/constants";
+import { BLOG_DELETED } from "../settings/constants";
 import PageTitle from "../components/PageTitle";
+import { useSnackbar } from "../components/SnackbarProvider";
+import parseError from "../utils/parseError";
 
 type DeleteBlogButtonProps = {
   blog: Blog;
@@ -22,23 +23,34 @@ type DeleteBlogButtonProps = {
 function DeleteBlogButton({ blog, onSuccess }: DeleteBlogButtonProps) {
   const [open, setOpen] = useState(false);
   const [deleteBlog, { isError, isLoading, error, isSuccess }] =
-    useDeleteBlogMutation({
-      fixedCacheKey: DELETE_BLOG_CACHE_KEY,
-    });
+    useDeleteBlogMutation();
+  const { addSnackbar } = useSnackbar();
 
   const handleDeleteDialog = useCallback(() => {
-    deleteBlog(blog.id);
+    deleteBlog("dfere");
   }, [blog]);
 
   useEffect(() => {
-    if (isSuccess && onSuccess) {
-      onSuccess();
+    if (isSuccess) {
+      addSnackbar({
+        message: BLOG_DELETED,
+        severity: "success",
+      });
+      onSuccess && onSuccess();
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (isError) {
+      addSnackbar({
+        message: parseError(error),
+        severity: "error",
+      });
+    }
+  }, [isError, error]);
+
   return (
     <>
-      <ErrorMessage open={isError} messages={error} />
       <Button variant="contained" color="error" onClick={() => setOpen(true)}>
         Delete Blog
       </Button>
