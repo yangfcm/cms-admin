@@ -41,8 +41,11 @@ function SnackbarProvider({ children }: { children: JSX.Element }) {
       <>
         <SnackbarMessage
           open={open}
-          onClose={() => setOpen(false)}
           {...snackbarValue}
+          onClose={() => {
+            setOpen(false);
+            snackbarValue.onClose && snackbarValue.onClose();
+          }}
         />
         {children}
       </>

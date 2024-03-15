@@ -61,6 +61,7 @@ function NewBlogForm(props: NewBlogFormProps) {
       isLoading: isCreating,
       error: createError,
       isSuccess: isCreateSuccess,
+      reset: resetCreateState,
     },
   ] = useCreateBlogMutation({
     fixedCacheKey: CREATE_BLOG_CACHE_KEY,
@@ -83,6 +84,7 @@ function NewBlogForm(props: NewBlogFormProps) {
       addSnackbar({
         message: BLOG_CREATED,
         severity: "success",
+        onClose: resetCreateState,
       });
       onSuccess(values);
     }
