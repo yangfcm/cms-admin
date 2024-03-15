@@ -21,20 +21,11 @@ export const CREATE_BLOG_CACHE_KEY = "CREATE_BLOG_CACHE_KEY";
 export const BLOG_DELETED = "Blog is deleted.";
 export const DELETE_BLOG_CACHE_KEY = "DELETE_BLOG_CACHE_KEY";
 
-export const CATEGORY_CREATE_FIXED_CACHE_KEY =
-  "CATEGORY_CREATE_FIXED_CACHE_KEY";
-export const CATEGORY_UPDATE_FIXED_CACHE_KEY =
-  "CATEGORY_UPDATE_FIXED_CACHE_KEY";
-export const CATEGORY_DELETE_FIXED_CACHE_KEY =
-  "CATEGORY_DELETE_FIXED_CACHE_KEY";
 export const CATEGORY_CREATED = "Category is created successfully.";
 export const CATEGORY_UPDATED = "Category is updated successfully.";
 export const CATEGORY_DELETED = "Category is deleted successfully.";
 export const CATEGORY_NAME_REQUIRED = "Category name is required.";
 
-export const TAG_CREATE_FIXED_CACHE_KEY = "TAG_CREATE_FIXED_CACHE_KEY";
-export const TAG_UPDATE_FIXED_CACHE_KEY = "TAG_UPDATE_FIXED_CACHE_KEY";
-export const TAG_DELETE_FIXED_CACHE_KEY = "TAG_DELETE_FIXED_CACHE_KEY";
 export const TAG_NAME_REQUIRED = "Tag name is required.";
 export const TAG_CREATED = "Tag is created successfully.";
 export const TAG_UPDATED = "Tag is updated successfully.";

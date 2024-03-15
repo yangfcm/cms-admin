@@ -11,11 +11,7 @@ import {
   useUpdateTagMutation,
 } from "../../features/tag/services";
 import { PostTag, Tag } from "../../features/tag/types";
-import {
-  TAG_CREATE_FIXED_CACHE_KEY,
-  TAG_NAME_REQUIRED,
-  TAG_UPDATE_FIXED_CACHE_KEY,
-} from "../../settings/constants";
+import { TAG_NAME_REQUIRED } from "../../settings/constants";
 import parseError from "../../utils/parseError";
 
 type TagFormProps = {
@@ -54,7 +50,7 @@ function TagForm(props: TagFormProps) {
       error: createTagError,
       reset: resetCreateTagState,
     },
-  ] = useCreateTagMutation({ fixedCacheKey: TAG_CREATE_FIXED_CACHE_KEY });
+  ] = useCreateTagMutation();
 
   const [
     updateTag,
@@ -65,9 +61,7 @@ function TagForm(props: TagFormProps) {
       error: updateTagError,
       reset: resetUpdateTagState,
     },
-  ] = useUpdateTagMutation({
-    fixedCacheKey: TAG_UPDATE_FIXED_CACHE_KEY,
-  });
+  ] = useUpdateTagMutation();
 
   const onSubmit = useCallback(
     (data: PostTag) => {
