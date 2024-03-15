@@ -27,7 +27,7 @@ function DeleteBlogButton({ blog, onSuccess }: DeleteBlogButtonProps) {
   const { addSnackbar } = useSnackbar();
 
   const handleDeleteDialog = useCallback(() => {
-    deleteBlog("dfere");
+    deleteBlog(blog.id);
   }, [blog]);
 
   useEffect(() => {
