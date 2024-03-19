@@ -3,8 +3,6 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Table from "@yangfcm/react-mui-table";
-import ErrorMessage from "../components/ErrorMessage";
-import SuccessMessage from "../components/SuccessMessage";
 import {
   useReadCategoriesQuery,
   useCreateCategoryMutation,
@@ -20,6 +18,8 @@ import {
   CATEGORY_DELETED,
 } from "../settings/constants";
 import { Category, PostCategory } from "../features/category/types";
+import SnackbarMessage from "../components/SnackbarMessage";
+import parseError from "../utils/parseError";
 
 function MuiCategories() {
   const { activeBlog } = useUserBlog();
@@ -110,16 +110,16 @@ function MuiCategories() {
 
   return (
     <Container>
-      <ErrorMessage open={hasError} messages={errorMessages} />
-      <SuccessMessage
+      <SnackbarMessage open={hasError} message={parseError(errorMessages)} />
+      <SnackbarMessage
         open={createCategoryState.isSuccess}
         message={CATEGORY_CREATED}
       />
-      <SuccessMessage
+      <SnackbarMessage
         open={updateCategoryState.isSuccess}
         message={CATEGORY_UPDATED}
       />
-      <SuccessMessage
+      <SnackbarMessage
         open={deleteCategoryState.isSuccess}
         message={CATEGORY_DELETED}
       />
@@ -153,7 +153,9 @@ function MuiCategories() {
               }
             });
           },
-          onRowEdit: (editData: Pick<Category, 'id'> & Partial<PostCategory>) => {
+          onRowEdit: (
+            editData: Pick<Category, "id"> & Partial<PostCategory>
+          ) => {
             return new Promise(async (resolve, reject) => {
               const response = await updateCategory({
                 blogAddress: address,
@@ -166,7 +168,7 @@ function MuiCategories() {
               }
             });
           },
-          onRowDelete: (deleteData: Pick<Category, 'id'>) => {
+          onRowDelete: (deleteData: Pick<Category, "id">) => {
             return new Promise(async (resolve, reject) => {
               const response = await deleteCategory({
                 blogAddress: address,
